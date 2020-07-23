@@ -25,7 +25,7 @@ collections:
     folder: "content/users" 
     create: true
     slug: "{{slug}}" 
-    path: "{{slug}}/index.md" 
+    path: "{{slug}}/index" 
     fields: 
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Updated", name: "updated", format: "LLL", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
@@ -36,7 +36,7 @@ collections:
     folder: "content/platform" 
     create: true
     slug: "{{slug}}" 
-    path: "{{slug}}/index.md" 
+    path: "{{slug}}/index" 
     fields: 
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Updated", name: "updated", format: "LLL", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
@@ -47,7 +47,7 @@ collections:
     folder: "content/libraries" 
     create: true
     slug: "{{slug}}" 
-    path: "{{slug}}/index.md"
+    path: "{{slug}}/index"
     fields: 
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Updated", name: "updated", format: "LLL", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
@@ -58,7 +58,7 @@ collections:
     folder: "content/workflows" 
     create: true
     slug: "{{slug}}" # Slugified Title 
-    path: "{{slug}}/index.md" # Content in index.md leaving room for RWO-style examples folder
+    path: "{{slug}}/index" # Content in index.md leaving room for RWO-style examples folder
     fields: 
       - label: "Authors"
         name: "authors"
@@ -70,27 +70,18 @@ collections:
       - {label: "Updated", name: "updated", format: "LLL", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
       - label: "Users"
         name: "users"
-        widget: "relation"
-        collection: "users"
-        searchFields: ["title"]
-        valueField: "title"
-        displayField: "title"
+        widget: "list"
+        field: {label: "User", name: "user", widget: "relation", collection: "users", searchFields: ["title"], valueField: "title", displayField: "title"}
       - label: "Platform Tools"
         name: "tools"
         required: false 
-        widget: "relation"
-        collection: "platform"
-        searchFields: ["title"]
-        valueField: "title"
-        displayField: "title"
+        widget: "list"
+        field: {label: "Tool", name: "tool", widget: "relation", collection: "platform", searchFields: ["title"], valueField: "title", displayField: "title"}
       - label: "Community Libraries"
         name: "libraries"
-        widget: "relation"
+        widget: "list"
         required: false
-        collection: "libraries"
-        searchFields: ["title"]
-        valueField: "title"
-        displayField: "title"
+        field: {label: "Library", name: "library", widget: "relation", collection: "libraries", searchFields: ["title"], valueField: "title", displayField: "title"}
       - {label: "Body", name: "body", widget: "markdown"}
   - label: "Pages"
     name: "pages"
