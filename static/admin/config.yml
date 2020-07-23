@@ -1,0 +1,88 @@
+backend:
+  name: git-gateway
+  branch: trunk
+
+# This allows the branch/PR review workflow
+publish_mode: editorial_workflow
+
+
+# Overview 
+# Collections: Workflows, Users, Platform Tools and Community Libraries
+# Pages: Main explore landing page
+#
+# Relations: 
+#    - Workflow uses 0 or more platform tools
+#    - Workflow uses 0 or more community libraries
+#    - Workflows have 1 or more users
+#
+# The build process can then build the inverse relations like 
+# a tool is used in multiple workflows etc. 
+
+collections:
+  - name: "users" 
+    label: "Users" 
+    folder: "content/users" 
+    create: true
+    slug: "{{slug}}" 
+    path: "{{slug}}/index.md" 
+    fields: 
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Updated", name: "updated", format: "LLL", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - {label: "Short Description", name: "description", widget: "text"}
+      - {label: "Body", name: "body", widget: "markdown"}
+  - name: "platform" 
+    label: "Platform" 
+    folder: "content/platform" 
+    create: true
+    slug: "{{slug}}" 
+    path: "{{slug}}/index.md" 
+    fields: 
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Updated", name: "updated", format: "LLL", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - {label: "Short Description", name: "description", widget: "text"}
+      - {label: "Body", name: "body", widget: "markdown"}
+  - name: "libraries" 
+    label: "Libraries" 
+    folder: "content/libraries" 
+    create: true
+    slug: "{{slug}}" 
+    path: "{{slug}}/index.md"
+    fields: 
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Updated", name: "updated", format: "LLL", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - {label: "Short Description", name: "description", widget: "text"}
+      - {label: "Body", name: "body", widget: "markdown"}
+  - name: "workflows" 
+    label: "Workflows" 
+    folder: "content/workflows" 
+    create: true
+    slug: "{{slug}}" # Slugified Title 
+    path: "{{slug}}/index.md" # Content in index.md leaving room for RWO-style examples folder
+    fields: 
+      - label: "Authors"
+        name: "authors"
+        collapsed: false
+        widget: "list"
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Updated", name: "updated", format: "LLL", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - label: "Tags"
+        name: "tags"
+        collapsed: true
+        widget: "list"
+      - label: "Users"
+        name: "users"
+        widget: "relation"
+        collection: "users"
+        searchFields: ["title"]
+        valueField: "title"
+        displayField: "title"
+      - {label: "Body", name: "body", widget: "markdown"}
+  - label: "Pages"
+    name: "pages"
+    files:
+      - label: "Explore Homepage"
+        name: "index"
+        file: "content/index.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Body", name: "body", widget: "markdown"}
