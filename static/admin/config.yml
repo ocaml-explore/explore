@@ -66,14 +66,26 @@ collections:
         widget: "list"
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Updated", name: "updated", format: "LLL", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
-      - label: "Tags"
-        name: "tags"
-        collapsed: true
-        widget: "list"
       - label: "Users"
         name: "users"
         widget: "relation"
         collection: "users"
+        searchFields: ["title"]
+        valueField: "title"
+        displayField: "title"
+      - label: "Platform Tools"
+        name: "tools"
+        required: false 
+        widget: "relation"
+        collection: "platform"
+        searchFields: ["title"]
+        valueField: "title"
+        displayField: "title"
+      - label: "Community Libraries"
+        name: "libraries"
+        widget: "relation"
+        required: false
+        collection: "libraries"
         searchFields: ["title"]
         valueField: "title"
         displayField: "title"
