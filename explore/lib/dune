@@ -1,0 +1,6 @@
+(library
+ (name explore)
+ (public_name explore)
+ (libraries core tyxml)
+ (preprocess
+  (pps tyxml-ppx)))

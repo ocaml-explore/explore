@@ -1,0 +1,6 @@
+(executable
+ (name main)
+ (public_name explore)
+ (libraries explore omd core)
+ (preprocess
+  (pps ppx_jane)))

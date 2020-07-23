@@ -1,0 +1,131 @@
+html {
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 1.1em;
+}
+
+a {
+  text-decoration: none;
+  color: orange;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+summary {
+  font-size: 1.1em;
+  margin: 5% 0%;
+}
+
+h2, h3 {
+  margin-top: 5%;
+}
+
+.link {
+  color: orange;
+}
+
+.link:hover {
+  color: orange;
+}
+
+p, li {
+  line-height: 145%;
+  margin: 2% 0%;
+}
+
+code {
+  font-family: 'Roboto Mono', monospace;
+  border-radius: 5px;
+  background: lemonchiffon;
+  padding: 0px 3px;
+}
+
+.content {
+  padding: 0% 21%;
+}
+
+.nav-buttons {
+  grid-column: 3;
+  grid-row: 1;
+  width: 100%;
+}
+
+.nav {
+  margin-bottom: 40px;
+  margin: 15px 10%;
+}
+
+@media screen and (max-width: 640px) {
+  .content {
+    padding: 0% 2%;
+  }
+
+  .nav-buttons {
+    grid-column: 2 / span 2;
+    grid-row: 1;
+  }
+
+  #nav {
+    margin-bottom: 40px;
+    margin: 15px 0%;
+  }
+}
+
+img {
+  width: 100%;
+}
+
+/* Flex rules */
+.flex-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-container > div {
+  background-color: #f1f1f1;
+  width: 100px;
+  margin: 10px;
+  text-align: center;
+  line-height: 75px;
+  font-size: 30px;
+}
+
+/* Very simple container system */
+.container-two-by-one {
+  display: grid;
+  grid-template-columns: 47.25% 47.25%;
+  column-gap: 5%;
+  justify-items: center;
+  align-items: center;
+  grid-template-rows: 100%;
+  margin: 15px 0px;
+}
+
+.container-three-by-one {
+  display: grid;
+  grid-template-columns: 30% 30% 30%;
+  column-gap: 5%;
+  justify-items: center;
+  align-items: center;
+  grid-template-rows: 100%;
+}
+
+.one-one {
+  grid-column: 1;
+  grid-row: 1;
+}
+.one-two {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.one-three {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.one-span-two-three {
+  grid-column: 2 / span 2;
+  grid-row: 1;
+}

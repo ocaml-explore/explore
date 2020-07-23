@@ -1,0 +1,32 @@
+name: Build Site
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+      with:
+        ref: trunk
+    - uses: avsm/setup-ocaml@v1.1.0
+      with:
+        ocaml-version: "4.10.0"
+    - run: opam pin add explore.dev -n .
+    - name: External Dependencies
+      run: opam depext -yt explore
+    - name: Dependencies
+      run: opam install .
+    - name: Build
+      run: opam exec -- dune build 
+    - name: Install
+      run: opam exec -- dune install 
+    - name: Build Site 🔨
+      run: explore build 
+    - name: Copy static content 
+      run: cp -r ./static ./content
+    - name: Deploy to GH Pages 🚀
+      uses: JamesIves/github-pages-deploy-action@3.5.7
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: site-test 
+        FOLDER: content
