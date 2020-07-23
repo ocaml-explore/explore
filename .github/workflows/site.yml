@@ -22,8 +22,8 @@ jobs:
       run: opam exec -- dune install 
     - name: Build Site 🔨
       run: opam exec -- explore build 
-    - name: Copy static content 
-      run: cp -r ./static ./content
+    - name: Move static content 
+      run: mv ./static* ./content
     - name: Deploy to GH Pages 🚀
       uses: JamesIves/github-pages-deploy-action@3.5.7
       with:
