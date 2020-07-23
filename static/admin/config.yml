@@ -5,6 +5,7 @@ backend:
 # This allows the branch/PR review workflow
 publish_mode: editorial_workflow
 
+media_folder: "content/images"
 
 # Overview 
 # Collections: Workflows, Users, Platform Tools and Community Libraries
