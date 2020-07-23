@@ -28,7 +28,7 @@ collections:
     path: "{{slug}}/index" 
     fields: 
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Updated", name: "updated", format: "LLL", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - {label: "Updated", name: "updated", format: "YYYY-MM-DD HH:mm:SS", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
       - {label: "Short Description", name: "description", widget: "text"}
       - {label: "Body", name: "body", widget: "markdown"}
   - name: "platform" 
@@ -39,7 +39,7 @@ collections:
     path: "{{slug}}/index" 
     fields: 
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Updated", name: "updated", format: "LLL", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - {label: "Updated", name: "updated", format: "YYYY-MM-DD HH:mm:SS", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
       - {label: "Short Description", name: "description", widget: "text"}
       - {label: "Body", name: "body", widget: "markdown"}
   - name: "libraries" 
@@ -50,7 +50,7 @@ collections:
     path: "{{slug}}/index"
     fields: 
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Updated", name: "updated", format: "LLL", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - {label: "Updated", name: "updated", format: "YYYY-MM-DD HH:mm:SS", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
       - {label: "Short Description", name: "description", widget: "text"}
       - {label: "Body", name: "body", widget: "markdown"}
   - name: "workflows" 
@@ -67,7 +67,7 @@ collections:
         summary: '{{fields.name}}'
         field: {label: "Name", name: "name", widget: "string"}
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Updated", name: "updated", format: "LLL", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - {label: "Updated", name: "updated", format: "YYYY-MM-DD HH:mm:SS", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
       - label: "Users"
         name: "users"
         widget: "list"
