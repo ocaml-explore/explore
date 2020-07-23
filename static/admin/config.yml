@@ -64,6 +64,8 @@ collections:
         name: "authors"
         collapsed: false
         widget: "list"
+        summary: '{{fields.name}}'
+        field: {label: "Name", name: "name", widget: "string"}
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Updated", name: "updated", format: "LLL", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
       - label: "Users"
