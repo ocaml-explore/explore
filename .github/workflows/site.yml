@@ -21,7 +21,7 @@ jobs:
     - name: Install
       run: opam exec -- dune install 
     - name: Build Site 🔨
-      run: explore build 
+      run: opam exec -- explore build 
     - name: Copy static content 
       run: cp -r ./static ./content
     - name: Deploy to GH Pages 🚀
