@@ -1,6 +1,6 @@
 (library
  (name explore)
  (public_name explore)
- (libraries core tyxml)
+ (libraries core tyxml yaml ezjsonm re omd jekyll-format)
  (preprocess
   (pps tyxml-ppx)))

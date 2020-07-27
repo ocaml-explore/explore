@@ -29,5 +29,9 @@
   core
   tyxml
   omd
+  yaml
   tyxml-ppx
-  ppx_jane))
+  ppx_jane
+  ezjsonm
+  jekyll-format
+  re))

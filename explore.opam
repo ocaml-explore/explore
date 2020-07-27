@@ -13,8 +13,12 @@ depends: [
   "core"
   "tyxml"
   "omd"
+  "yaml"
   "tyxml-ppx"
   "ppx_jane"
+  "ezjsonm"
+  "jekyll-format"
+  "re"
 ]
 build: [
   ["dune" "subst"] {pinned}
@@ -31,3 +35,6 @@ build: [
   ]
 ]
 dev-repo: "git+https://github.com/patricoferris/explore.git"
+pin-depends: [
+  "jekyll-format.dev" "git+https://github.com/avsm/jekyll-format"
+]

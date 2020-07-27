@@ -1,6 +1,6 @@
 ---
 title: Library Authors
-updated: July 23, 2020 3:18 PM
+date: 2020-07-27 09:35:49
 description: Library authors build code that is consumable by others whilst also
   using other people's libraries to build their own.
 ---
