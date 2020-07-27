@@ -1,11 +1,11 @@
 ---
 authors:
   - Patrick Ferris
-title: "Adding Unit Tests to your Project "
-updated: July 23, 2020 4:48 PM
+title: Adding Unit Tests to your Project
+date: 2020-07-27 09:35:49
 users:
   - Library Authors
-  - "Application Developers "
+  - Application Developers
 tools:
   - Dune
 libraries:

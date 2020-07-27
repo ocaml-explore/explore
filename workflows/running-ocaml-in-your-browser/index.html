@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head><title>Running OCaml in your Browser</title>
+  <meta name="viewport" content="width = device-width, initial-scale = 1"/>
+  <link rel="stylesheet"
+   href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
+   />
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/base.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet" href="/static/css/main.css"/>
+  <link rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
+   />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js">
+  </script>
+  <script
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"
+   >
+  </script>
+  <script charset="UTF-8"
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/ocaml.min.js"
+   >
+  </script><script>hljs.initHighlightingOnLoad();</script>
+ </head>
+ <body>
+  <div class="pure-g">
+                          
+   <div class="pure-u-1-3">
+                                 
+    <a class="title-link" href="/">
+                                           
+     <h2 style="text-align: center">Explore OCaml</h2>
+                                                            
+    </a>
+            
+   </div>
+             
+   <div class="pure-u-1-3">
+                               </div>
+   
+       
+   <div class="pure-u-1-3 flex-col flex-vert">
+                                                    
+    <div class="flex-row flex-center">
+                                              
+     <div class="nav-button">
+                                       
+      <a href="/platform">
+                                      Tools 
+                                    </a>
+      
+              
+     </div>
+                   
+     <div class="nav-button">
+                                       
+      <a href="/users">
+                                   Users
+                                 </a>
+      
+              
+     </div>
+                   
+     <div class="nav-button">
+                                       
+      <a href="/libraries">
+                                     Libraries
+                                     </a>
+      
+              
+     </div>
+                 
+    </div>
+              
+   </div>
+           
+  </div>
+                
+  <div class="pure-g">
+                                
+   <div class="pure-u-1-12 pure-u-md-1-4">
+                                                    </div>
+   
+             
+   <div class="pure-u-5-6 pure-u-md-1-2">
+                                                 
+    <h2 id="Overview">Overview</h2>
+
+<p><hr/>OCaml byte-code can be compiled to Javascript to run in your browser using the <code>js_of_ocaml</code> compiler linked in the libraries tag. This allows you to write statically type-checked OCaml code to run in a website rather than dynamically typed Javascript - this gives you more guarantees over what errors you will get at runtime.</p>
+<h2 id="Recommended-Workflow">Recommended Workflow</h2>
+
+<p><hr/></p>
+<h3 id="Js-of-ocaml">Js_of_ocaml</h3>
+
+<p>Dune has built-in support for compiling byte-code to Javascript. Consider a &quot;hello-world&quot; example:</p>
+<pre class='ocaml'><code class='ocaml'>(* main.ml *)
+let () = print_endline &quot;Hello World&quot;</code></pre>
+
+<p>This can be built with <code>dune build</code>, provided the <code>js_of_ocaml</code> package is installed (to get the cross-compiler) and the following dune file:</p>
+<pre><code>(executable
+ (name main)
+ (modes js))</code></pre>
+
+<p>This will output your main file into a Javascript file called <code>main.bc.js</code>. To get this running in your browser you can then create an <code>index.html</code> file in the same <code>_build/default</code> folder and include the JS file in a script tag: <code>&lt;script src=&quot;main.bc.js&gt;&lt;/script&gt;</code>. This is the quickest way to get started.</p>
+<p>Although Javascript has many features in common with functional-styled programming, it primarily works using objects and mutable data. To make the transition from OCaml to Javascript easier, there is a <a href='https://ocsigen.org/js_of_ocaml/3.1.0/manual/ppx'>PPX</a> to make objects using the OCaml syntax. Once installed, you can make objects fairly simply, make sure you add <code>(preprocess (pps js_of_ocaml-ppx))</code> to your dune file.</p>
+<pre class='ocaml'><code class='ocaml'>let () = 
+  let person = 
+    object%js (self)
+      val name = &quot;Alice&quot; [@@readwrite]
+      method set str = self##.name := str 
+      method get = self##.name
+    end in 
+  print_endline (person##get); (* Prints Alice *)
+  person##set &quot;Bob&quot;;
+  print_endline (person##get); (* Prints Bob *)</code></pre>
+
+<h2 id="Alternatives">Alternatives</h2>
+
+<p><hr/></p>
+<h3 id="Bucklescript">Bucklescript</h3>
+
+<p>An alternative is to use Bucklescript to compile your OCaml code to Javascript. At this point you will have to leave dune behind you and venture into the world of Bucklescript and <code>npm</code> - <a href='https://discuss.ocaml.org/t/js-of-ocaml-vs-bucklescript/2293/7'>this post on discuss OCaml</a> might be worthwhile reading to find out which is best for you.</p>
+<p><a href='https://bucklescript.github.io/'>BuckleScript · A faster, simpler and more robust take on JavaScript.</a></p>
+<h2 id="Real-World-Examples">Real World Examples</h2>
+
+<p><hr/><a href='https://github.com/janestreet/incr_dom'>janestreet/incr_dom</a></p>
+
+     
+              
+   </div>
+                 
+  </div>
+            
+          
+        </body>
+</html>

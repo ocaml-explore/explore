@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head><title>Opam Files</title>
+  <meta name="viewport" content="width = device-width, initial-scale = 1"/>
+  <link rel="stylesheet"
+   href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
+   />
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/base.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet" href="/static/css/main.css"/>
+  <link rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
+   />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js">
+  </script>
+  <script
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"
+   >
+  </script>
+  <script charset="UTF-8"
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/ocaml.min.js"
+   >
+  </script><script>hljs.initHighlightingOnLoad();</script>
+ </head>
+ <body>
+  <div class="pure-g">
+                          
+   <div class="pure-u-1-3">
+                                 
+    <a class="title-link" href="/">
+                                           
+     <h2 style="text-align: center">Explore OCaml</h2>
+                                                            
+    </a>
+            
+   </div>
+             
+   <div class="pure-u-1-3">
+                               </div>
+   
+       
+   <div class="pure-u-1-3 flex-col flex-vert">
+                                                    
+    <div class="flex-row flex-center">
+                                              
+     <div class="nav-button">
+                                       
+      <a href="/platform">
+                                      Tools 
+                                    </a>
+      
+              
+     </div>
+                   
+     <div class="nav-button">
+                                       
+      <a href="/users">
+                                   Users
+                                 </a>
+      
+              
+     </div>
+                   
+     <div class="nav-button">
+                                       
+      <a href="/libraries">
+                                     Libraries
+                                     </a>
+      
+              
+     </div>
+                 
+    </div>
+              
+   </div>
+           
+  </div>
+                
+  <div class="pure-g">
+                                
+   <div class="pure-u-1-12 pure-u-md-1-4">
+                                                    </div>
+   
+             
+   <div class="pure-u-5-6 pure-u-md-1-2">
+                                                 
+    <h1>Opam Files</h1>
+                           
+    <p><em> Last updated: 2020-07-27 09:35:49 +00:00 </em></p><hr/> 
+    <p>Your project&#39;s opam file is the key to unlocking the power of the OCaml Platform. It will be used for much more than just publishing your library for others to use - with it for example you can:</p>
+<ul><li>Automate the installation of external dependencies</li><li>Give users points of contact - like where to submit issues</li><li>Pin your project locally making it much easier to develop other tools and do continuous integration</li><li>Install your project as a CLI tool</li></ul>
+
+<h2 id="Versioning">Versioning</h2>
+
+<p>One of the best features of opam files is versioning. Every file begins with <code>opam-version</code>, a field indicating what version of opam your project uses.  This solves the problem that <em><a href='https://github.com/nvm-sh/nvm#nvmrc'>nvm solves with nvmrc files</a>.</em> It makes it easier to catch versioning mismatches quickly.</p>
+<h2 id="Example-File">Example File</h2>
+
+<p>Below is a very minimal opam file - there tend to be two main sections to an opam file. Metadata about the package and dependency/build information.</p>
+<pre><code>opam-version: &quot;2.0&quot;
+version: &quot;~dev&quot;
+synopsis: &quot;A short sentence about your project&quot;
+maintainer: &quot;&lt;username&gt; &lt;email&gt;&quot;
+authors: [&quot;&lt;username1&gt; &lt;email1&gt;&quot;]
+license: &quot;ISC&quot;
+homepage: &quot;&lt;github-page-or-similar&gt;&quot;
+bug-reports: &quot;&lt;github-issues-page-or-similar&gt;&quot;
+depends: [
+  &quot;ocaml&quot;   {&gt;= &quot;4.07.0&quot;}
+  &quot;dune&quot;    {&gt;= &quot;2.0.0&quot;}
+  &quot;zarith&quot;
+  &quot;alcotest&quot; {with-test}
+]
+build: [
+  [&quot;dune&quot; &quot;build&quot; &quot;-p&quot; name &quot;-j&quot; jobs]
+  [&quot;dune&quot; &quot;runtest&quot; &quot;-p&quot; name] {with-test}
+]</code></pre>
+
+<h3 id="Common-Opam-File-Parameters">Common Opam File Parameters</h3>
+
+<ul><li><em>depends</em>: this describes your project&#39;s dependencies with versioning constraints and <a href='https://opam.ocaml.org/doc/Manual.html#Package-variables'>package variables</a>. For example <code>with-test</code> is a boolean variable which is set to true if tests have been enabled, if they haven&#39;t then opam will not try and installed <code>alcotest</code>.</li><li><em>build:</em> specifies the list of commands to run in order to build your program. The same filtering can applied here to ensure only certain commands run. When using dune there is no need to add an <code>install</code> parameter to your opam file - dune can install the package for you.</li><li><em>pin-depends: s</em>ome times your package will depend on unreleased versions of other packages, this mean if you spe them as dependencies in <em>depends</em> opam will not be able to find them. To handles this you can add a <em>pin-depends</em> parameter to point opam in the direction of the latest source code.</li></ul>
+
+<pre><code>depends: [
+  ...
+  &quot;omd&quot;
+  ...
+]
+pin-depends: [
+  &quot;omd.dev&quot; &quot;git+https://github.com/ocaml/omd&quot;
+]</code></pre>
+     
+              
+   </div>
+                 
+  </div>
+            
+          
+        </body>
+</html>

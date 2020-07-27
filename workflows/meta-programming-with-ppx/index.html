@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head><title>Meta-programming with PPX</title>
+  <meta name="viewport" content="width = device-width, initial-scale = 1"/>
+  <link rel="stylesheet"
+   href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
+   />
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/base.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet" href="/static/css/main.css"/>
+  <link rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
+   />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js">
+  </script>
+  <script
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"
+   >
+  </script>
+  <script charset="UTF-8"
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/ocaml.min.js"
+   >
+  </script><script>hljs.initHighlightingOnLoad();</script>
+ </head>
+ <body>
+  <div class="pure-g">
+                          
+   <div class="pure-u-1-3">
+                                 
+    <a class="title-link" href="/">
+                                           
+     <h2 style="text-align: center">Explore OCaml</h2>
+                                                            
+    </a>
+            
+   </div>
+             
+   <div class="pure-u-1-3">
+                               </div>
+   
+       
+   <div class="pure-u-1-3 flex-col flex-vert">
+                                                    
+    <div class="flex-row flex-center">
+                                              
+     <div class="nav-button">
+                                       
+      <a href="/platform">
+                                      Tools 
+                                    </a>
+      
+              
+     </div>
+                   
+     <div class="nav-button">
+                                       
+      <a href="/users">
+                                   Users
+                                 </a>
+      
+              
+     </div>
+                   
+     <div class="nav-button">
+                                       
+      <a href="/libraries">
+                                     Libraries
+                                     </a>
+      
+              
+     </div>
+                 
+    </div>
+              
+   </div>
+           
+  </div>
+                
+  <div class="pure-g">
+                                
+   <div class="pure-u-1-12 pure-u-md-1-4">
+                                                    </div>
+   
+             
+   <div class="pure-u-5-6 pure-u-md-1-2">
+                                                 
+    <h2 id="Overview">Overview</h2>
+
+<p><hr/>Ppx allows programmers to meta-program directly on the abstract syntax tree of OCaml code. This means simple tasks like writing comparison functions or hashing functions can be automated through clever inference on types.</p>
+<h2 id="Recommended-Workflow">Recommended Workflow</h2>
+
+<p><hr/></p>
+<h3 id="Using-PPX-libraries">Using PPX libraries</h3>
+
+<p>Dune comes with ppx support which makes it very easy to start using different ppx libraries to meta-program in OCaml. In this example we will add <code>ppx_hash</code> to a small example.</p>
+<p>Suppose we have type of person - to generate a hashing function we label it with a type attribute:</p>
+<pre class='ocaml'><code class='ocaml'>(* person.ml file *)
+open Core
+
+type person = {
+    name: string;
+    age: int;
+} [@@deriving hash]
+
+let () = 
+    let p = { name = &quot;Alice&quot;; age = 42 } in 
+        Printf.fprintf stdout &quot;%i\n&quot; (hash_person p)</code></pre>
+
+<p>This example illustrates that ppx libraries can make assumptions - <code>ppx_hash</code> expects the Jane Street Core standard library to be open in order to use some of the functions that are there that aren&#39;t in the standard library packaged by OCaml.</p>
+<p>The dune file will be:</p>
+<pre><code>(executable
+  (name person)
+    (libraries core)
+    (preprocess (pps ppx_hash)))</code></pre>
+
+<h3 id="Writing-PPX-libraries">Writing PPX libraries</h3>
+
+<p>To write your own ppx library you are strongly encourage to use <code>ppxlib</code> (linked in the libraries section). It provides a wrapper around the compiler hooks that ppx uses to modify the AST. The user documentation does a very good job at getting you started writing your own ppx libraries.</p>
+<p><a href='https://ppxlib.readthedocs.io/en/latest/'>ppxlib&#39;s user manual - ppxlib documentation</a></p>
+<p>In addition to that, the article in the resources tag does a very thorough job of explaining how to use ppxlib.</p>
+<h2 id="Real-World-Examples">Real World Examples</h2>
+
+<p><hr/><a href='https://github.com/ocaml-ppx/ppx_deriving_yojson'>ocaml-ppx/ppx_deriving_yojson</a></p>
+<p><a href='https://github.com/ocaml-ppx/ppx_deriving_protobuf'>ocaml-ppx/ppx_deriving_protobuf</a></p>
+
+     
+              
+   </div>
+                 
+  </div>
+            
+          
+        </body>
+</html>

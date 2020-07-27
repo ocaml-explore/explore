@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head><title>Fuzz Testing your Project</title>
+  <meta name="viewport" content="width = device-width, initial-scale = 1"/>
+  <link rel="stylesheet"
+   href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
+   />
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/base.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet" href="/static/css/main.css"/>
+  <link rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
+   />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js">
+  </script>
+  <script
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"
+   >
+  </script>
+  <script charset="UTF-8"
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/ocaml.min.js"
+   >
+  </script><script>hljs.initHighlightingOnLoad();</script>
+ </head>
+ <body>
+  <div class="pure-g">
+                          
+   <div class="pure-u-1-3">
+                                 
+    <a class="title-link" href="/">
+                                           
+     <h2 style="text-align: center">Explore OCaml</h2>
+                                                            
+    </a>
+            
+   </div>
+             
+   <div class="pure-u-1-3">
+                               </div>
+   
+       
+   <div class="pure-u-1-3 flex-col flex-vert">
+                                                    
+    <div class="flex-row flex-center">
+                                              
+     <div class="nav-button">
+                                       
+      <a href="/platform">
+                                      Tools 
+                                    </a>
+      
+              
+     </div>
+                   
+     <div class="nav-button">
+                                       
+      <a href="/users">
+                                   Users
+                                 </a>
+      
+              
+     </div>
+                   
+     <div class="nav-button">
+                                       
+      <a href="/libraries">
+                                     Libraries
+                                     </a>
+      
+              
+     </div>
+                 
+    </div>
+              
+   </div>
+           
+  </div>
+                
+  <div class="pure-g">
+                                
+   <div class="pure-u-1-12 pure-u-md-1-4">
+                                                    </div>
+   
+             
+   <div class="pure-u-5-6 pure-u-md-1-2">
+                                                 
+    <h2 id="Overview">Overview</h2>
+
+<p><hr/>Fuzz testing (or fuzzing) is a way to find test cases that break your code programmatically using instrumented binaries. This can extremely useful for complex parsers or protocols which are expected to cope with a large variety of inputs.</p>
+<h2 id="Recommended-Workflow">Recommended Workflow</h2>
+
+<p><hr/>To get started with fuzzing your project you will need to do the following:</p>
+<ol><li>Install AFL on your machine </li><li>Install an AFL variant of the OCaml compiler into a new switch</li><li>Install crowbar and bun using opam </li></ol>
+
+<p>This Github repository and the accompanying article found in the resource tag are a great place to start.</p>
+<p><a href='https://github.com/NathanReb/ocaml-afl-examples'>NathanReb/ocaml-afl-examples</a></p>
+<h2 id="Real-World-Examples">Real World Examples</h2>
+
+<p><hr/></p>
+
+     
+              
+   </div>
+                 
+  </div>
+            
+          
+        </body>
+</html>

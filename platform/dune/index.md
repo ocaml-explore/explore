@@ -1,7 +1,8 @@
 ---
 title: Dune
-updated: July 23, 2020 3:21 PM
+date: 2020-07-27 09:35:49
 description: Dune is a build tool that has been widely adopted in the OCaml world
+license: MIT
 ---
 ## Overview
 

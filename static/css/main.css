@@ -1,6 +1,38 @@
-html {
+html, body {
+  font-size: 1.05em;
   font-family: 'Ubuntu', sans-serif;
-  font-size: 1.1em;
+}
+
+/* Some basic stylings à la SimpleGrid */
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.375rem;
+}
+
+h4 {
+  font-size: 1.125rem;
+}
+
+h5 {
+  font-size: 1rem;
+}
+
+h6 {
+  font-size: 0.875rem;
+}
+
+p, li {
+  font-size: 1.1rem;
+  font-weight: 200;
+  line-height: 1.8em;
 }
 
 a {
@@ -10,6 +42,11 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+.title-link {
+  text-decoration: none;
+  color: black;
 }
 
 summary {
@@ -29,11 +66,6 @@ h2, h3 {
   color: orange;
 }
 
-p, li {
-  line-height: 145%;
-  margin: 2% 0%;
-}
-
 code {
   font-family: 'Roboto Mono', monospace;
   border-radius: 5px;
@@ -41,91 +73,34 @@ code {
   padding: 0px 3px;
 }
 
-.content {
-  padding: 0% 21%;
+.global-wrapper {
+  padding: 0% 5%;
 }
 
-.nav-buttons {
-  grid-column: 3;
-  grid-row: 1;
-  width: 100%;
-}
-
-.nav {
-  margin-bottom: 40px;
-  margin: 15px 10%;
-}
-
-@media screen and (max-width: 640px) {
-  .content {
-    padding: 0% 2%;
-  }
-
-  .nav-buttons {
-    grid-column: 2 / span 2;
-    grid-row: 1;
-  }
-
-  #nav {
-    margin-bottom: 40px;
-    margin: 15px 0%;
-  }
+.nav-button {
+  height: 100%;
 }
 
 img {
   width: 100%;
 }
 
-/* Flex rules */
-.flex-container {
+/* ==== FLEX RULES ==== */
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-col {
   display: flex;
   flex-direction: column;
 }
 
-.flex-container > div {
-  background-color: #f1f1f1;
-  width: 100px;
-  margin: 10px;
-  text-align: center;
-  line-height: 75px;
-  font-size: 30px;
+.flex-center {
+  width: 100%;
+  justify-content: space-around;
 }
 
-/* Very simple container system */
-.container-two-by-one {
-  display: grid;
-  grid-template-columns: 47.25% 47.25%;
-  column-gap: 5%;
-  justify-items: center;
-  align-items: center;
-  grid-template-rows: 100%;
-  margin: 15px 0px;
-}
-
-.container-three-by-one {
-  display: grid;
-  grid-template-columns: 30% 30% 30%;
-  column-gap: 5%;
-  justify-items: center;
-  align-items: center;
-  grid-template-rows: 100%;
-}
-
-.one-one {
-  grid-column: 1;
-  grid-row: 1;
-}
-.one-two {
-  grid-column: 2;
-  grid-row: 1;
-}
-
-.one-three {
-  grid-column: 3;
-  grid-row: 1;
-}
-
-.one-span-two-three {
-  grid-column: 2 / span 2;
-  grid-row: 1;
+.flex-vert {
+  justify-content: center;
 }

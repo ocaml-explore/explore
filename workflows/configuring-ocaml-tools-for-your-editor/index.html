@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head><title>Configuring OCaml Tools for your Editor</title>
+  <meta name="viewport" content="width = device-width, initial-scale = 1"/>
+  <link rel="stylesheet"
+   href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
+   />
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/base.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet" href="/static/css/main.css"/>
+  <link rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
+   />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js">
+  </script>
+  <script
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"
+   >
+  </script>
+  <script charset="UTF-8"
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/ocaml.min.js"
+   >
+  </script><script>hljs.initHighlightingOnLoad();</script>
+ </head>
+ <body>
+  <div class="pure-g">
+                          
+   <div class="pure-u-1-3">
+                                 
+    <a class="title-link" href="/">
+                                           
+     <h2 style="text-align: center">Explore OCaml</h2>
+                                                            
+    </a>
+            
+   </div>
+             
+   <div class="pure-u-1-3">
+                               </div>
+   
+       
+   <div class="pure-u-1-3 flex-col flex-vert">
+                                                    
+    <div class="flex-row flex-center">
+                                              
+     <div class="nav-button">
+                                       
+      <a href="/platform">
+                                      Tools 
+                                    </a>
+      
+              
+     </div>
+                   
+     <div class="nav-button">
+                                       
+      <a href="/users">
+                                   Users
+                                 </a>
+      
+              
+     </div>
+                   
+     <div class="nav-button">
+                                       
+      <a href="/libraries">
+                                     Libraries
+                                     </a>
+      
+              
+     </div>
+                 
+    </div>
+              
+   </div>
+           
+  </div>
+                
+  <div class="pure-g">
+                                
+   <div class="pure-u-1-12 pure-u-md-1-4">
+                                                    </div>
+   
+             
+   <div class="pure-u-5-6 pure-u-md-1-2">
+                                                 
+    <h2 id="Overview">Overview</h2>
+
+<p><hr/>Having a helpful development environment can boost productivity and help catch errors early. OCaml has a powerful type system which reduces runtime errors, with a good editor setup you&#39;ll be able to catch them before you run <code>dune build</code>.</p>
+<h2 id="Recommended-Workflow">Recommended Workflow</h2>
+
+<p><hr/>The recommended editor for OCaml is <strong>Visual Studio Code</strong> - an editor with a rich ecosystem of useful plugins, themes and developer tools.</p>
+<p>To get the best setup, there is a marketplace plugin and an opam package that must be installed.</p>
+<pre class='bash'><code class='bash'># This is the language server protocol for OCaml
+opam install ocaml-lsp-server
+
+# Install the OCaml Platform on VS Code Marketplace </code></pre>
+
+<p>From here make sure to add a <code>workplace</code> to VS Code for your project. And watch out for the following errors:</p>
+<ul><li>VS Code might complain about not being able to find <code>ocaml-lsp</code> - this is done on a per switch basis and clicking on the dialog box should let you pick the switch you installed it on.</li></ul>
+
+<h2 id="Alternatives">Alternatives</h2>
+
+<p><hr/></p>
+<h3 id="VS-Code">VS Code</h3>
+
+<p>Other extensions exist which offer support for OCaml and Reason including:</p>
+<p><a href='https://github.com/hackwaly/vscode-ocaml'>hackwaly/vscode-ocaml</a></p>
+<p><a href='https://github.com/reasonml-editor/vscode-reasonml'>reasonml-editor/vscode-reasonml</a></p>
+<h3 id="Vim">Vim</h3>
+
+<p>The to use with vim is merlin. OCaml LSP is the next generation of merlin, but for vim you will need merlin installed. There is also a useful opam plugin for getting up and running with the merlin features:</p>
+<pre class='bash'><code class='bash'>opam install merlin ocp-indent 
+opam user-setup install </code></pre>
+
+<p>To get code completion you will need to enable omnipresent in your <code>.vimrc</code> file:</p>
+<pre><code>filetype plugin on
+set omnifunc=syntaxcomplete#Complete</code></pre>
+
+<p>Then whilst in <code>INSERT</code> mode type <code>ctrl+c ctrl+o</code> to see completions for something like <code>List.m</code>.</p>
+<p>For syntax errors you need to add <em>syntastic</em> as a vim plugin. For this you&#39;ll need a vim plugin manager like pathogen. The <a href='https://github.com/vim-syntastic/syntastic'>syntastic documentation</a> will let you get started and then add the following to your <code>.vimrc</code> file.</p>
+<pre><code>execute pathogen#infect()
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_ocaml_checkers = [&#39;merlin&#39;]</code></pre>
+
+<p>For more features and information be sure to read the wiki on merlin linked in the resources.</p>
+<h3 id="Emacs">Emacs</h3>
+
+<p>The workflow for emacs is very similar to vim.</p>
+<pre class='bash'><code class='bash'>opam install merlin ocp-indent 
+opam user-setup install </code></pre>
+
+<p>After that the documentation in &quot;Emacs from Scratch&quot; linked in the resources tag will guide you through setting up OCaml with emacs.</p>
+
+     
+              
+   </div>
+                 
+  </div>
+            
+          
+        </body>
+</html>

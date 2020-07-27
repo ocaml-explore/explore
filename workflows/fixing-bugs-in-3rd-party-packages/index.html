@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head><title>Fixing Bugs in 3rd Party Packages</title>
+  <meta name="viewport" content="width = device-width, initial-scale = 1"/>
+  <link rel="stylesheet"
+   href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
+   />
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/base.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet" href="/static/css/main.css"/>
+  <link rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
+   />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js">
+  </script>
+  <script
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"
+   >
+  </script>
+  <script charset="UTF-8"
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/ocaml.min.js"
+   >
+  </script><script>hljs.initHighlightingOnLoad();</script>
+ </head>
+ <body>
+  <div class="pure-g">
+                          
+   <div class="pure-u-1-3">
+                                 
+    <a class="title-link" href="/">
+                                           
+     <h2 style="text-align: center">Explore OCaml</h2>
+                                                            
+    </a>
+            
+   </div>
+             
+   <div class="pure-u-1-3">
+                               </div>
+   
+       
+   <div class="pure-u-1-3 flex-col flex-vert">
+                                                    
+    <div class="flex-row flex-center">
+                                              
+     <div class="nav-button">
+                                       
+      <a href="/platform">
+                                      Tools 
+                                    </a>
+      
+              
+     </div>
+                   
+     <div class="nav-button">
+                                       
+      <a href="/users">
+                                   Users
+                                 </a>
+      
+              
+     </div>
+                   
+     <div class="nav-button">
+                                       
+      <a href="/libraries">
+                                     Libraries
+                                     </a>
+      
+              
+     </div>
+                 
+    </div>
+              
+   </div>
+           
+  </div>
+                
+  <div class="pure-g">
+                                
+   <div class="pure-u-1-12 pure-u-md-1-4">
+                                                    </div>
+   
+             
+   <div class="pure-u-5-6 pure-u-md-1-2">
+                                                 
+    <h2 id="Overview">Overview</h2>
+
+<p><hr/>Working with third-party packages means coming across areas for improvement or those that need fixing. Knowing how common codebases are structured and an appreciation for the tools allows you to more easily:</p>
+<ul><li>Fix the bug if you know how.</li><li>Raise an issue wherever the code is being hosted on.</li><li>Find and comment on an existing issue with extra information you have from my own debugging.</li></ul>
+
+<p>This will also give you insight into how you can structure your own code to allow others to more easily debug it.</p>
+<p>There are multiple aspects to unpack in this workflow including:</p>
+<ol><li>Getting the source code.</li><li>Pinning packages locally. </li><li>Logging libraries </li></ol>
+
+<p>Quite a lot of this workflow is made simpler by using the opam client.</p>
+<p><a href='../opam%20client%20af5eb8b02bdf4c17931004d79002243e.md'>opam client</a></p>
+<h2 id="Recommended-Workflow">Recommended Workflow</h2>
+
+<p><hr/></p>
+<h3 id="Getting-the-Source-Code">Getting the Source Code</h3>
+
+<p>If the library is part of the <em>opam-repository</em> then the easiest way to get the source code is using the opam client: <code>opam source &lt;package&gt;</code> - this can also be given an optional version constraint.</p>
+<pre class='bash'><code class='bash'># Downloads latest version of Irmin - at time of writing 2.2.0
+opam source irmin
+
+# Download the 2.0.0 version of Irmin
+opam source irmin.2.0.0</code></pre>
+
+<p>If you envisage wanting to make a pull request to fix something then forking and cloning the package is probably a better way to go about it.</p>
+<pre class='bash'><code class='bash'>git clone https://github.com/patricoferris/irmin.git
+cd irmin
+git checkout -b my-awesome-fix</code></pre>
+
+<h3 id="Locally-pinning">Locally pinning</h3>
+
+<p>To tell opam that you want to use a modified version of a package you <strong>pin</strong> it. This is like pinning a note to the package in the opam-respository that points to the source code you are developing (rather than the locally clone released version from Github).</p>
+<pre class='bash'><code class='bash'># In the clone irmin directory 
+opam pin add irmin . --kind=path </code></pre>
+
+<p>Note: it is quite common to have multiple opam packages per repository. Irmin for example has <code>irmin</code>, <code>irmin-unix</code>, <code>irmin-graphql</code>... If your changes are only for a certain package it is best to only pin that one package. <code>--kind=path</code> means we don&#39;t have to commit the changes as by default opam tries to use git pins.</p>
+<p>Opam will rebuild dependent projects as well - depending on what package you change and how many dependent projects you have installed in your switch this can take a bit of time.</p>
+<h3 id="Subsequent-Changes-amp-Upgrading">Subsequent Changes &amp; Upgrading</h3>
+
+<p>Pinning a package tells opam where the source code is coming from but as you add new bits of code, opam doesn&#39;t see these. In order to add those you will have to run <code>opam upgrade</code> to get the latest changes of pinned packages.</p>
+<p>&quot;The Joy of Dune Vendoring&quot; linked in the resources discusses this process and the future of vendoring in OCaml.</p>
+
+     
+              
+   </div>
+                 
+  </div>
+            
+          
+        </body>
+</html>

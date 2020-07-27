@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head><title>Incorporating non-OCaml Code into your Project</title>
+  <meta name="viewport" content="width = device-width, initial-scale = 1"/>
+  <link rel="stylesheet"
+   href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
+   />
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/base.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet" href="/static/css/main.css"/>
+  <link rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
+   />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js">
+  </script>
+  <script
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"
+   >
+  </script>
+  <script charset="UTF-8"
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/ocaml.min.js"
+   >
+  </script><script>hljs.initHighlightingOnLoad();</script>
+ </head>
+ <body>
+  <div class="pure-g">
+                          
+   <div class="pure-u-1-3">
+                                 
+    <a class="title-link" href="/">
+                                           
+     <h2 style="text-align: center">Explore OCaml</h2>
+                                                            
+    </a>
+            
+   </div>
+             
+   <div class="pure-u-1-3">
+                               </div>
+   
+       
+   <div class="pure-u-1-3 flex-col flex-vert">
+                                                    
+    <div class="flex-row flex-center">
+                                              
+     <div class="nav-button">
+                                       
+      <a href="/platform">
+                                      Tools 
+                                    </a>
+      
+              
+     </div>
+                   
+     <div class="nav-button">
+                                       
+      <a href="/users">
+                                   Users
+                                 </a>
+      
+              
+     </div>
+                   
+     <div class="nav-button">
+                                       
+      <a href="/libraries">
+                                     Libraries
+                                     </a>
+      
+              
+     </div>
+                 
+    </div>
+              
+   </div>
+           
+  </div>
+                
+  <div class="pure-g">
+                                
+   <div class="pure-u-1-12 pure-u-md-1-4">
+                                                    </div>
+   
+             
+   <div class="pure-u-5-6 pure-u-md-1-2">
+                                                 
+    <h2 id="Overview">Overview</h2>
+
+<p><hr/>Sometimes OCaml just can&#39;t do what lower level languages can do or you want to use pre-existing code written in C or Rust from OCaml.</p>
+<h2 id="Recommended-Workflow">Recommended Workflow</h2>
+
+<p><hr/></p>
+<h3 id="Interacting-with-C">Interacting with C</h3>
+
+<p>To interact with C code you need to use the Foreign Function Interface (FFI) in OCaml and make some changes to your <code>dune</code> files to incorporate the extra code. To use a foreign C function in OCaml you need to add:</p>
+<pre class='ocaml'><code class='ocaml'>external &lt;ocaml-name&gt; : &lt;type-of-function&gt; = &quot;&lt;c-function-name&gt;&quot;</code></pre>
+
+<p>And then in your dune file you need to include the C code:</p>
+<pre><code>(executable
+ (name main)
+ (foreign_stubs
+  (language c)
+  (names &lt;c-filename&gt;)))</code></pre>
+
+<p>Take care with the difference between how C represents runtime values and how OCaml represents them (covered in the linked resources page). See this dune documentation page for more options for the <code>foreign_stubs</code> and this OCaml manual page for a more formal introduction to the C FFI.</p>
+<h3 id="Interfacing-with-C-Structs">Interfacing with C Structs</h3>
+
+<p>There is a <code>cstruct</code> library linked in the libraries tag that allows you to read and write structs from the C programming language.</p>
+<h3 id="Interacting-with-Rust">Interacting with Rust</h3>
+
+<p>Coming soon...</p>
+<h2 id="Real-World-Examples">Real World Examples</h2>
+
+<p><hr/></p>
+<h3 id="Using-C-code">Using C code</h3>
+
+<p><a href='https://github.com/mirage/digestif/tree/master/src-c/native'>mirage/digestif</a></p>
+<h3 id="Using-Cstruct">Using Cstruct</h3>
+
+<p><a href='https://github.com/mirage/ocaml-git'>mirage/ocaml-git</a></p>
+
+     
+              
+   </div>
+                 
+  </div>
+            
+          
+        </body>
+</html>
