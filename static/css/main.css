@@ -104,3 +104,26 @@ img {
 .flex-vert {
   justify-content: center;
 }
+
+/* === EXPLORE SPECIFIC RULES === */
+.index-a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.index-a:hover {
+  text-decoration: none;
+}
+
+.index-div {
+  padding: 0.8rem;
+  margin: 0.8rem;
+  border: thin solid grey;
+  border-radius: 2px;
+  transition: all ease-in-out 300ms;
+}
+
+.index-div:hover {
+  background-color: rgba(255, 94, 0, 0.7);
+  color: white;
+}

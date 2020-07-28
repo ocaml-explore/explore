@@ -18,6 +18,8 @@ module type S = sig
 
   val get_prop : coll:t -> ident:string -> Yaml.value option
 
+  val get_description : t -> string
+
   val to_html : t -> Tyxml.Html.doc
 
   val build_index : string -> t list -> Tyxml.Html.doc
@@ -53,6 +55,13 @@ module Basic : S = struct
     Components.wrap_body ~title:(get_title t)
       ~body:[ Html.Unsafe.data Omd.(to_html (of_string (get_md t))) ]
 
+  let get_prop ~coll ~ident = Jekyll_format.find ident (get_meta coll)
+
+  let get_description t =
+    match get_prop ~coll:t ~ident:"description" with
+    | Some (`String d) -> d
+    | _ -> failwith "Expected to find a description property, but got none."
+
   let build_index title ts =
     let lst =
       List.map
@@ -60,13 +69,12 @@ module Basic : S = struct
           ( "/"
             ^ fst
                 (Core.Filename.split (Files.drop_first_dir ~path:(get_path t))),
-            get_title t ))
+            get_title t,
+            get_description t ))
         ts
     in
     Components.wrap_body ~title
-      ~body:[ Components.make_title title; Components.make_link_list lst ]
-
-  let get_prop ~coll ~ident = Jekyll_format.find ident (get_meta coll)
+      ~body:[ Components.make_title title; Components.make_index_list lst ]
 
   let get_relations relation t =
     match Jekyll_format.find relation (get_meta t) with
@@ -96,10 +104,11 @@ module C = struct
           ( "/"
             ^ fst
                 (Core.Filename.split (Files.drop_first_dir ~path:(get_path w))),
-            Workflow.get_title w ))
+            Workflow.get_title w,
+            Workflow.get_description w ))
         related
     in
-    let workflow_comp = Components.make_link_list path_and_title in
+    let workflow_comp = Components.make_index_list path_and_title in
     let title = [%html "<h1>" [ Html.txt (get_title t) ] "</h1>"] in
     let workflows = [%html "<h3>" [ Html.txt "Related Workflows" ] "</h3>"] in
     let content =

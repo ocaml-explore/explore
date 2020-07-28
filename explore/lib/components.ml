@@ -49,7 +49,7 @@ let wrap_body ~title ~body =
       <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.0/build/grids-core.css" />
       <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.0/build/grids-units.css" />
       <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css" />
-      <link rel=stylesheet href="/static/css/main.css"/>
+      <link rel=stylesheet href="/css/main.css"/>
       <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css">
       <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script>
@@ -80,6 +80,18 @@ let make_link_list lst =
     |} (List.map ~f:to_link lst) {|
   </ul>
 |}]
+
+let make_index_list lst =
+  let to_elt (path, title, description) =
+    [%html
+      "<a class='index-a' href=" path "><div class='index-div'><h3>"
+        [ Html.txt title ] "</h3><p>" [ Html.txt description ] "</p></div></a>"]
+  in
+  [%html {|
+    <div>
+      |} (List.map ~f:to_elt lst) {|
+    </div>
+  |}]
 
 let emit_page filename html =
   let outc = Out_channel.create filename in

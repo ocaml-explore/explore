@@ -3,6 +3,7 @@ authors:
   - Patrick Ferris
 title: Documenting your Project
 date: 2020-07-27 09:35:49
+description: Write maintainable and useful documentation for your library
 users:
   - Library Authors
   - Application Developers

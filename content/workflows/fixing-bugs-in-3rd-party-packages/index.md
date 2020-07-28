@@ -3,6 +3,7 @@ authors:
   - Patrick Ferris
 title: Fixing Bugs in 3rd Party Packages
 date: 2020-07-27 09:35:49
+description: Track down and fix bugs in libraries that you use
 users:
   - Library Authors
 tools:

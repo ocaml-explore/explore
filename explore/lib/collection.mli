@@ -19,6 +19,8 @@ module type S = sig
 
   val get_prop : coll:t -> ident:string -> Yaml.value option
 
+  val get_description : t -> string
+
   val to_html : t -> Tyxml.Html.doc
 
   val build_index : string -> t list -> Tyxml.Html.doc

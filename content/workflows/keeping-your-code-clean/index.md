@@ -3,6 +3,7 @@ authors:
   - Patrick Ferris
 title: Keeping your Code Clean
 date: 2020-07-27 09:35:49
+description: Indent and apply formatting styles to your project
 users:
   - Library Authors
   - Application Developer

@@ -3,6 +3,7 @@ authors:
   - Patrick Ferris
 title: Adding Unit Tests to your Project
 date: 2020-07-27 09:35:49
+description: Write tests to check the functionality of your code using Alcotest 
 users:
   - Library Authors
   - Application Developers

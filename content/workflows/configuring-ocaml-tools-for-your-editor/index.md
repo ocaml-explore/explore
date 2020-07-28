@@ -3,6 +3,7 @@ authors:
   - Patrick Ferris
 title: Configuring OCaml Tools for your Editor
 date: 2020-07-27 09:35:49
+description: Add syntax highlighting and code completion to your editor
 users:
   - Beginner
   - Teacher

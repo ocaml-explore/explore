@@ -3,6 +3,7 @@ authors:
   - Patrick Ferris
 title: Setting up Continuous Integration
 date: 2020-07-27 09:35:49
+description: Add CI to your project using Github Actions 
 users:
   - Library Authors
   - Application Developer

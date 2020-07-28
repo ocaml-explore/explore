@@ -3,6 +3,7 @@ authors:
   - Patrick Ferris
 title: Meta-programming with PPX 
 date: 2020-07-27 09:35:49
+description: Automate code-generation with meta-programming
 users:
   - Library Authors
   - Application Developer
