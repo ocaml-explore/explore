@@ -5,6 +5,8 @@ module type S = sig
       collections like users and libraries can be built from the workflows. They
       do share some common functions *)
 
+  type resource = { url : string; title : string; description : string }
+
   val v : path:string -> content:string -> t
 
   val to_string : t -> string
@@ -20,6 +22,8 @@ module type S = sig
   val get_path : t -> string
 
   val get_prop : coll:t -> ident:string -> Yaml.value option
+
+  val get_resources : t -> resource list
 
   val get_description : t -> string
 

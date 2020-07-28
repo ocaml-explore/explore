@@ -11,6 +11,10 @@ tools:
   - Dune
 libraries:
   - Alcotest
+resources:
+  - url: https://ocaml.org
+    title: OCaml
+    description: abcd
 ---
 ## Overview
 

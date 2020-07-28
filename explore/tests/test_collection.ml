@@ -17,6 +17,12 @@ let relation =
 
 let test_getters () =
   let yaml = Alcotest.testable Yaml.pp Yaml.equal in
+  let pp_res ppf (p : W.resource) =
+    Format.pp_print_string ppf
+      (p.title ^ " " ^ p.description ^ " " ^ p.url ^ " ")
+  in
+  let equal_res = Stdlib.( = ) in
+  let resource = Alcotest.testable pp_res equal_res in
   let path = "adding-unit-tests-to-your-project.md" in
   let s = Files.read_file path in
   let v = Collection.Workflow.v ~path ~content:s in
@@ -28,6 +34,10 @@ let test_getters () =
   Alcotest.(check (result (list yaml) relation))
     "failed prop"
     (Ok [ `String "Library Authors"; `String "Application Developers" ])
-    (W.get_relations "users" v)
+    (W.get_relations "users" v);
+  Alcotest.(check (list resource))
+    "get resources"
+    [ { title = "OCaml"; description = "abcd"; url = "https://ocaml.org" } ]
+    (W.get_resources v)
 
 let tests = [ ("test_getters", `Quick, test_getters) ]

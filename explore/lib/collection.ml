@@ -4,6 +4,8 @@ open Tyxml
 module type S = sig
   type t
 
+  type resource = { url : string; title : string; description : string }
+
   val v : path:string -> content:string -> t
 
   val to_string : t -> string
@@ -20,6 +22,8 @@ module type S = sig
 
   val get_prop : coll:t -> ident:string -> Yaml.value option
 
+  val get_resources : t -> resource list
+
   val get_description : t -> string
 
   val to_html : t -> Tyxml.Html.doc
@@ -32,6 +36,8 @@ end
 
 module Basic : S = struct
   type t = { data : Jekyll_format.t; path : string }
+
+  type resource = { url : string; title : string; description : string }
 
   let get_meta t = Jekyll_format.fields t.data
 
@@ -62,17 +68,27 @@ module Basic : S = struct
 
   let to_string t = t.path
 
-  let to_html t =
-    let title = [%html "<h2>" [ Html.txt (get_title t) ] "</h2>"] in
-    let date =
-      [%html
-        {|<p><em> Last updated: |} [ Html.txt (get_date t) ] {| </em></p> |}]
-    in
-    Components.wrap_body ~title:(get_title t)
-      ~body:
-        [ title; date; Html.Unsafe.data Omd.(to_html (of_string (get_md t))) ]
-
   let get_prop ~coll ~ident = Jekyll_format.find ident (get_meta coll)
+
+  let get_resources t =
+    let assoc = List.Assoc.find ~equal:String.equal in
+    let build_resource = function
+      | `O res -> (
+          match
+            (assoc res "url", assoc res "title", assoc res "description")
+          with
+          | Some (`String url), Some (`String title), Some (`String description)
+            ->
+              Some { url; title; description }
+          | _ -> None)
+      | _ -> None
+    in
+    match get_prop ~coll:t ~ident:"resources" with
+    | Some (`A resources) ->
+        List.map ~f:build_resource resources
+        |> List.filter ~f:Option.is_some
+        |> List.map ~f:(function Some s -> s | None -> assert false)
+    | _ -> []
 
   let get_description t =
     match get_prop ~coll:t ~ident:"description" with
@@ -97,6 +113,37 @@ module Basic : S = struct
     match Jekyll_format.find relation (get_meta t) with
     | Some (`A lst) -> Ok lst
     | _ -> Error (`Msg "Malformed Frontmatter: Expected a list of relations")
+
+  let to_html t =
+    let make_resources lst =
+      let to_elt e =
+        [%html
+          "<li><a href=" e.url ">" [ Html.txt e.title ] "</a> - "
+            [ Html.txt e.description ] "</li>"]
+      in
+      [%html
+        {|
+        <ol>
+          |} (List.map ~f:to_elt lst)
+          {|
+        </ol>
+      |}]
+    in
+    let res_title = [%html "<h3>" [ Html.txt "Resources" ] "</h3>"] in
+    let resources = get_resources t in
+    let resources =
+      if List.length resources = 0 then []
+      else [ res_title; make_resources resources ]
+    in
+    let title = [%html "<h1>" [ Html.txt (get_title t) ] "</h1>"] in
+    let date =
+      [%html
+        {|<p><em> Last updated: |} [ Html.txt (get_date t) ] {| </em></p> |}]
+    in
+    Components.wrap_body ~title:(get_title t)
+      ~body:
+        ([ title; date; Html.Unsafe.data Omd.(to_html (of_string (get_md t))) ]
+        @ resources)
 end
 
 module Workflow = struct
