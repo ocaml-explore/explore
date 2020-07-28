@@ -23,7 +23,7 @@ jobs:
     - name: Build Site 🔨
       run: opam exec -- explore build 
     - name: Move static content 
-      run: cp -r static content
+      run: cp -r ./static/* ./content
     - name: Deploy to GH Pages 🚀
       uses: JamesIves/github-pages-deploy-action@3.5.7
       with:
