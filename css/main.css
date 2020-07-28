@@ -1,0 +1,106 @@
+html, body {
+  font-size: 1.05em;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+/* Some basic stylings à la SimpleGrid */
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.375rem;
+}
+
+h4 {
+  font-size: 1.125rem;
+}
+
+h5 {
+  font-size: 1rem;
+}
+
+h6 {
+  font-size: 0.875rem;
+}
+
+p, li {
+  font-size: 1.1rem;
+  font-weight: 200;
+  line-height: 1.8em;
+}
+
+a {
+  text-decoration: none;
+  color: orange;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.title-link {
+  text-decoration: none;
+  color: black;
+}
+
+summary {
+  font-size: 1.1em;
+  margin: 5% 0%;
+}
+
+h2, h3 {
+  margin-top: 5%;
+}
+
+.link {
+  color: orange;
+}
+
+.link:hover {
+  color: orange;
+}
+
+code {
+  font-family: 'Roboto Mono', monospace;
+  border-radius: 5px;
+  background: lemonchiffon;
+  padding: 0px 3px;
+}
+
+.global-wrapper {
+  padding: 0% 5%;
+}
+
+.nav-button {
+  height: 100%;
+}
+
+img {
+  width: 100%;
+}
+
+/* ==== FLEX RULES ==== */
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center {
+  width: 100%;
+  justify-content: space-around;
+}
+
+.flex-vert {
+  justify-content: center;
+}

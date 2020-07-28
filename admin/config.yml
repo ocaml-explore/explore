@@ -1,0 +1,97 @@
+backend:
+  name: git-gateway
+  branch: trunk
+
+# This allows the branch/PR review workflow
+publish_mode: editorial_workflow
+
+media_folder: "content/images"
+
+# Overview 
+# Collections: Workflows, Users, Platform Tools and Community Libraries
+# Pages: Main explore landing page
+#
+# Relations: 
+#    - Workflow uses 0 or more platform tools
+#    - Workflow uses 0 or more community libraries
+#    - Workflows have 1 or more users
+#
+# The build process can then build the inverse relations like 
+# a tool is used in multiple workflows etc. 
+
+collections:
+  - name: "users" 
+    label: "Users" 
+    folder: "content/users" 
+    create: true
+    slug: "{{slug}}" 
+    path: "{{slug}}/index" 
+    fields: 
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Updated", name: "date", format: "YYYY-MM-DD HH:mm:SS", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - {label: "Short Description", name: "description", widget: "text"}
+      - {label: "Body", name: "body", widget: "markdown"}
+  - name: "platform" 
+    label: "Platform" 
+    folder: "content/platform" 
+    create: true
+    slug: "{{slug}}" 
+    path: "{{slug}}/index" 
+    fields: 
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Updated", name: "date", format: "YYYY-MM-DD HH:mm:SS", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - {label: "Short Description", name: "description", widget: "text"}
+      - {label: "License", name: "license", widget: "string"}
+      - {label: "Body", name: "body", widget: "markdown"}
+  - name: "libraries" 
+    label: "Libraries" 
+    folder: "content/libraries" 
+    create: true
+    slug: "{{slug}}" 
+    path: "{{slug}}/index"
+    fields: 
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Updated", name: "date", format: "YYYY-MM-DD HH:mm:SS", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - {label: "Short Description", name: "description", widget: "text"}
+      - {label: "Body", name: "body", widget: "markdown"}
+  - name: "workflows" 
+    label: "Workflows" 
+    folder: "content/workflows" 
+    create: true
+    slug: "{{slug}}" # Slugified Title 
+    path: "{{slug}}/index" # Content in index.md leaving room for RWO-style examples folder
+    fields: 
+      - label: "Authors"
+        name: "authors"
+        collapsed: false
+        widget: "list"
+        summary: '{{fields.name}}'
+        field: {label: "Name", name: "name", widget: "string"}
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Updated", name: "date", format: "YYYY-MM-DD HH:mm:SS", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - {label: "Repository", name: "repo", widget: "string", required: false}
+      - label: "Users"
+        name: "users"
+        widget: "list"
+        field: {label: "User", name: "user", widget: "relation", collection: "users", searchFields: ["title"], valueField: "title", displayField: "title"}
+      - label: "Platform Tools"
+        name: "tools"
+        required: false 
+        widget: "list"
+        field: {label: "Tool", name: "tool", widget: "relation", collection: "platform", searchFields: ["title"], valueField: "title", displayField: "title"}
+      - label: "Community Libraries"
+        name: "libraries"
+        widget: "list"
+        required: false
+        field: {label: "Library", name: "library", widget: "relation", collection: "libraries", searchFields: ["title"], valueField: "title", displayField: "title"}
+      - {label: "Body", name: "body", widget: "markdown"}
+  - label: "Pages"
+    name: "pages"
+    files:
+      - label: "Explore Homepage"
+        name: "index"
+        file: "content/index.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Updated", name: "date", format: "YYYY-MM-DD HH:mm:SS", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+          - {label: "Body", name: "body", widget: "markdown"}
