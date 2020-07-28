@@ -36,5 +36,6 @@ build: [
 ]
 dev-repo: "git+https://github.com/patricoferris/explore.git"
 pin-depends: [
-  "jekyll-format.dev" "git+https://github.com/avsm/jekyll-format"
+  ["omd.dev" "git+https://github.com/ocaml/omd"]
+  ["jekyll-format.dev" "git+https://github.com/avsm/jekyll-format"]
 ]
