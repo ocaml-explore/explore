@@ -3,6 +3,7 @@ authors:
   - Patrick Ferris
 title: Checking Code Coverage
 date: 2020-07-27 09:35:49
+description: Use the Bisect tool to discover how much of your code is being tested
 users:
   - Library Authors
   - Application Developers

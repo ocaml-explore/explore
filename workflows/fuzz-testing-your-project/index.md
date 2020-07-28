@@ -3,6 +3,7 @@ authors:
   - Patrick Ferris
 title: Fuzz Testing your Project
 date: 2020-07-27 09:35:49
+description: Make fuzz tests to find uncover hard to find bugs in your code
 users:
   - Library Authors
   - Application Developers 

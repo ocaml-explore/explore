@@ -13,7 +13,7 @@
    href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
   <link rel="stylesheet"
    href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
-  <link rel="stylesheet" href="/static/css/main.css"/>
+  <link rel="stylesheet" href="/css/main.css"/>
   <link rel="stylesheet"
    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
    />
@@ -116,7 +116,7 @@
 <p>This site aims to answer these questions for you, as well as let you discover more advanced workflows as your use of OCaml grows. First, we'll introduce the only essential tool you need — opam.</p>
 <h1>Opam</h1>
 <hr />
-<p><a href="https://opam.ocaml.org/">Opam</a> is the the OCaml package manager.  In order to join the OCaml open source community, all you need to do is to add an <a href="./pages/opam-file">opam file</a> to your project.  This <code>opam</code> file describes the build instructions for your project, as well as any dependencies it might need. An <code>opam</code> file is useful for a project of any size — from toy learning exercises to big theorem provers — since it allows someone else to easily rebuild and replicate your work, and even extend it if they choose to.</p>
+<p><a href="https://opam.ocaml.org/">Opam</a> is the the OCaml package manager.  In order to join the OCaml open source community, all you need to do is to add an <a href="./pages/opam-files">opam file</a> to your project.  This <code>opam</code> file describes the build instructions for your project, as well as any dependencies it might need. An <code>opam</code> file is useful for a project of any size — from toy learning exercises to big theorem provers — since it allows someone else to easily rebuild and replicate your work, and even extend it if they choose to.</p>
 <p>Once you are comfortable with your code and want to share it more publicly, an opam file can be published to the central OCaml <a href="https://github.com/ocaml/opam-repository/">opam repository</a>.  This is a collection of tens of thousands of packages that have been contributed freely by the community since 2013.  The opam-repository does not contain the full source code to your project; instead, it tracks pointers to different versions of your code, and also the various compatibility constraints to automatically figure out which versions work with each other.  The usual mechanism to track your releases is to use a version control system such as git.  You can <a href="https://opam.ocaml.org">browse the packages</a> online to see what's available.</p>
 <p>How do you actually manipulate opam files?  There are several tools that can parse these files and repositories and install the software you want.  The primary reference implementation that runs on macOS and Linux is also the <a href="./pages/opam-client">opam client</a> , and is the first thing you will want to configure on your system to get started.  Read on below for more details about opam files and the client.  If you'd like to just get on with a particular task, skip to the next section to find out which archetype you best fit into.</p>
 <p><a href="./pages/opam-files">opam files</a></p>

@@ -3,6 +3,7 @@ authors:
   - Patrick Ferris
 title: Profiling your Project 
 date: 2020-07-27 09:35:49
+description: Profile the memory and performance of your application
 users:
   - Library Authors
   - Application Developer

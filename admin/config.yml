@@ -69,6 +69,7 @@ collections:
         field: {label: "Name", name: "name", widget: "string"}
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Updated", name: "date", format: "YYYY-MM-DD HH:mm:SS", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - {label: "Description", name: "description", widget: "string"}
       - {label: "Repository", name: "repo", widget: "string", required: false}
       - label: "Users"
         name: "users"

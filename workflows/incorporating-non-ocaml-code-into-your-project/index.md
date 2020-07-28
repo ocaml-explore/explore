@@ -3,6 +3,7 @@ authors:
   - Patrick Ferris
 title: Incorporating non-OCaml Code into your Project
 date: 2020-07-27 09:35:49
+description: Add C code to your OCaml project
 users:
   - Library Authors
   - Application Developer
