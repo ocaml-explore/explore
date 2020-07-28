@@ -91,24 +91,27 @@
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
     <h1>OCamlformat</h1>
-    <h2 id="Overview">Overview</h2>
-
-<p><hr/><a href='https://github.com/ocaml-ppx/ocamlformat'>OCamlFormat</a> is a tool for applying formatting decisions to an OCaml project - it supports</p>
-<h2 id="Key-Concepts">Key Concepts</h2>
-
-<p><hr/></p>
-<h3 id="Versioning">Versioning</h3>
-
-<p>Like dune and opam, OCamlFormat uses versioning to ensure different installations of the tool don&#39;t mangle lots of code by accident when different versions are used. This is great for onboarding new people to a project preventing them from changing every file if they accidentally have the wrong version of OCamlFormat installed. Instead they will be made aware of the version mismatch. This is likely the only required property to set in the <code>.ocamlformat</code> file.</p>
-<p>It&#39;s important to note that OCamlFormat will not be able to change the formatting of syntactically incorrect code.</p>
-<h3 id="Options">Options</h3>
-
+    <h2>Overview</h2>
+<hr />
+<p><a href="https://github.com/ocaml-ppx/ocamlformat">OCamlFormat</a> is a tool for applying formatting decisions to an OCaml project - it supports</p>
+<h2>Key Concepts</h2>
+<hr />
+<h3>Versioning</h3>
+<p>Like dune and opam, OCamlFormat uses versioning to ensure different installations of the tool don't mangle lots of code by accident when different versions are used. This is great for onboarding new people to a project preventing them from changing every file if they accidentally have the wrong version of OCamlFormat installed. Instead they will be made aware of the version mismatch. This is likely the only required property to set in the <code>.ocamlformat</code> file.</p>
+<p>It's important to note that OCamlFormat will not be able to change the formatting of syntactically incorrect code.</p>
+<h3>Options</h3>
 <p>The full, tuneable options list can be seen with <code>ocamlformat --help</code> but to give you a taste of what is possible here are a few options:</p>
-<ul><li><em>parse-docstring=true:</em>  this will ensure OCamlFormat parse documentation strings.</li><li><em>break-infix=fit-or-vertical:</em> this will move sequences of infix operations to new lines if they don&#39;t fit which makes these sequences much easier to read (useful for <code>&gt;&gt;=</code> sequences with <a href='http://ocsigen.org/lwt/5.2.0/manual/manual'>Lwt</a>)</li><li><em>space-around-records=true</em>: this is set by default (along with arrays and lists) which formats these values as <code>{ age = 3 }</code> rather than <code>{age=3}</code> which again helps with legibility.</li></ul>
-
-<h2 id="In-the-Wild">In the Wild</h2>
-
-<p><hr/>Lots of large code bases now uses OCamlFormat to make styling one less thing to worry about. Facebook&#39;s <a href='https://github.com/facebook/infer/blob/master/infer/src/.ocamlformat'>Infer</a> uses it as well as <a href='https://github.com/mirage/mirage/blob/master/.ocamlformat'>Mirage</a>.</p>
+<ul>
+<li><em>parse-docstring=true:</em>  this will ensure OCamlFormat parse documentation strings.
+</li>
+<li><em>break-infix=fit-or-vertical:</em> this will move sequences of infix operations to new lines if they don't fit which makes these sequences much easier to read (useful for <code>&gt;&gt;=</code> sequences with <a href="http://ocsigen.org/lwt/5.2.0/manual/manual">Lwt</a>)
+</li>
+<li><em>space-around-records=true</em>: this is set by default (along with arrays and lists) which formats these values as <code>{ age = 3 }</code> rather than <code>{age=3}</code> which again helps with legibility.
+</li>
+</ul>
+<h2>In the Wild</h2>
+<hr />
+<p>Lots of large code bases now uses OCamlFormat to make styling one less thing to worry about. Facebook's <a href="https://github.com/facebook/infer/blob/master/infer/src/.ocamlformat">Infer</a> uses it as well as <a href="https://github.com/mirage/mirage/blob/master/.ocamlformat">Mirage</a>.</p>
 
      
               

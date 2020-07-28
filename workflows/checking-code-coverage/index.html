@@ -90,36 +90,36 @@
              
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h2 id="Overview">Overview</h2>
-
-<p><hr/>Code coverage can be a good indicator into how well your code does what it is supposed to do. Of course, the goal is not to blindly chase 100% coverage, but to use the output to help you write correct and maintainable code.</p>
-<h2 id="Recommended-Workflow">Recommended Workflow</h2>
-
-<p><hr/>Setting up code coverage requires changes to your <code>dune</code> file for the libraries you want to cover. You will also need to update your opam file to depend on <code>ppx_bisect</code>. The opam file will add <code>bisec_ppx</code> as a dependency:</p>
+    <h2>Overview</h2>
+<hr />
+<p>Code coverage can be a good indicator into how well your code does what it is supposed to do. Of course, the goal is not to blindly chase 100% coverage, but to use the output to help you write correct and maintainable code.</p>
+<h2>Recommended Workflow</h2>
+<hr />
+<p>Setting up code coverage requires changes to your <code>dune</code> file for the libraries you want to cover. You will also need to update your opam file to depend on <code>ppx_bisect</code>. The opam file will add <code>bisec_ppx</code> as a dependency:</p>
 <pre><code>depends: [
-    ...
+	...
   &quot;bisect_ppx&quot; {dev &amp; &gt;= &quot;2.0.0&quot;}
-] </code></pre>
-
+] 
+</code></pre>
 <p>And in the a library we want to cover, say a library called <code>numberz</code> we need to add a preprocessor.</p>
 <pre><code>(library
  (name numberz)
  (public_name numberz)
- (preprocess (pps bisect_ppx --conditional)))</code></pre>
-
+ (preprocess (pps bisect_ppx --conditional)))
+</code></pre>
 <p>To run the tests with bisect enabled and to get the summary of the coverage you can run:</p>
-<pre class='bash'><code class='bash'># This will produce the bisect results 
+<pre><code class="language-bash"># This will produce the bisect results 
 BISECT_ENABLE=yes dune runtest --force
 
 # Tells you in the terminal 
 bisect-ppx-report summary
 
 # Produces coverage in _coverage directory
-bisect-ppx-report html</code></pre>
-
-<h2 id="Real-World-Examples">Real World Examples</h2>
-
-<p><hr/><a href='https://github.com/arenadotio/ocaml-mssql'>arenadotio/ocaml-mssql</a></p>
+bisect-ppx-report html
+</code></pre>
+<h2>Real World Examples</h2>
+<hr />
+<p><a href="https://github.com/arenadotio/ocaml-mssql">arenadotio/ocaml-mssql</a></p>
 
      
               

@@ -90,25 +90,27 @@
              
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h2 id="Overview">Overview</h2>
-
-<p><hr/>For profiling programs there tend to be two main properties that most developers care about:</p>
-<ol><li>Performance</li><li>Memory Usage</li></ol>
-
+    <h2>Overview</h2>
+<hr />
+<p>For profiling programs there tend to be two main properties that most developers care about:</p>
+<ol>
+<li>Performance
+</li>
+<li>Memory Usage
+</li>
+</ol>
 <p>OCaml is a garbage-collected programming language, but there are ways to alleviate the the strain on the GC. There is also good support for profiling the performance of your program to find the sections that are consuming the most execution time.</p>
-<h2 id="Recommended-Workflow">Recommended Workflow</h2>
-
-<p><hr/></p>
-<h3 id="Memory">Memory</h3>
-
+<h2>Recommended Workflow</h2>
+<hr />
+<h3>Memory</h3>
 <p>To enable memory profiling (much like with fuzzing) you need to install specific variants of the OCaml compiler - in particular it must have <code>+spacetime</code> in its package name.</p>
 <p>Spacetime monitors the OCaml heap - this is where values are stored if they are not represented as unboxed integers. You can set the interval you want spacetime to monitor at by issuing:</p>
-<pre class='bash'><code class='bash'>ocamlopt -o &lt;executable&gt; somefile.ml
-OCAML_SPACETIME_INTERVAL=1000 &lt;executable&gt;</code></pre>
-
+<pre><code class="language-bash">ocamlopt -o &lt;executable&gt; somefile.ml
+OCAML_SPACETIME_INTERVAL=1000 &lt;executable&gt;
+</code></pre>
 <p><em><strong>Note: this is a little dependent on what shell you use, for example with fish you will have to preprend <code>env</code> to the <code>OCAML...</code> command.</strong></em></p>
 <p>The workflow is very similar to <code>gprof</code> with OCaml in that you run the instrumented version which produces additional files, and then use a tool to make sense of the results. If we have some <code>mem_test.ml</code> file we want to profile, the series of commands may look something like this:</p>
-<pre class='bash'><code class='bash'># Create a new spacetime enable switch 
+<pre><code class="language-bash"># Create a new spacetime enable switch 
 opam switch create 4.10.0+spacetime
 eval $(opam env)
 
@@ -125,20 +127,17 @@ OCAML_SPACETIME_INTERVAL=1000 ./mem_test
 prof_spacetime process spacetime-&lt;id&gt;
 
 # View the results in a browser 
-prof_spacetime serve -p spacetime-&lt;id&gt;.p</code></pre>
-
-<h3 id="Performance">Performance</h3>
-
+prof_spacetime serve -p spacetime-&lt;id&gt;.p
+</code></pre>
+<h3>Performance</h3>
 <p>Perf is a tool that can be used to profile programs without any additional instrumentation.</p>
-<h2 id="Alternatives">Alternatives</h2>
-
-<p><hr/></p>
-<h3 id="Performance-with-gprof">Performance with <code>gprof</code></h3>
-
+<h2>Alternatives</h2>
+<hr />
+<h3>Performance with <code>gprof</code></h3>
 <p><em><strong>Note: gprof is only supported up to version 4.08.0 of the OCaml compiler. Additionally, because of the required linking options with Clang and MacOS you may encounter the following error &quot;<strong>the clang compiler does not support -pg option on versions of OS X 10.9 and later</strong>&quot;</strong></em></p>
-<p><a href='https://sourceware.org/binutils/docs/gprof/'>Gprof</a> is the GNU profiler and can be used to track how much time is spent in different parts of your application. Like memory profiling this requires additional instrumentation in your binaries. However, unlike spacetime profiling, it doesn&#39;t require a specific switch, just some flags to be set.</p>
+<p><a href="https://sourceware.org/binutils/docs/gprof/">Gprof</a> is the GNU profiler and can be used to track how much time is spent in different parts of your application. Like memory profiling this requires additional instrumentation in your binaries. However, unlike spacetime profiling, it doesn't require a specific switch, just some flags to be set.</p>
 <p>In the simplest case (compiling by hand) the following is sufficient:</p>
-<pre class='bash'><code class='bash'># Create compatible compiler in new switch  
+<pre><code class="language-bash"># Create compatible compiler in new switch  
 opam switch create 4.08.0
 eval $(opam env)
 
@@ -149,13 +148,13 @@ ocamlopt -p -o test test.ml
 ./test
 
 # View the results 
-gprof test | less </code></pre>
-
+gprof test | less 
+</code></pre>
 <p>If you are using dune to build your project you will need something like the following in your dune file at the root of your project:</p>
 <pre><code>(env
  (perf
-  (flags (:standard -p))))</code></pre>
-
+  (flags (:standard -p))))
+</code></pre>
 <p>There after the process is very similar:</p>
 <pre><code># Compile the program with profiling enabled 
 dune build --profile perf 
@@ -164,11 +163,10 @@ dune build --profile perf
 _build/default/test.exe
 
 # See the profiling results 
-gprof _build/default/test.exe | less </code></pre>
-
-<h3 id="Real-World-Examples">Real World Examples</h3>
-
-<p><hr/></p>
+gprof _build/default/test.exe | less 
+</code></pre>
+<h3>Real World Examples</h3>
+<hr />
 
      
               

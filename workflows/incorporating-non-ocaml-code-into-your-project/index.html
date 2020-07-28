@@ -90,40 +90,33 @@
              
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h2 id="Overview">Overview</h2>
-
-<p><hr/>Sometimes OCaml just can&#39;t do what lower level languages can do or you want to use pre-existing code written in C or Rust from OCaml.</p>
-<h2 id="Recommended-Workflow">Recommended Workflow</h2>
-
-<p><hr/></p>
-<h3 id="Interacting-with-C">Interacting with C</h3>
-
+    <h2>Overview</h2>
+<hr />
+<p>Sometimes OCaml just can't do what lower level languages can do or you want to use pre-existing code written in C or Rust from OCaml.</p>
+<h2>Recommended Workflow</h2>
+<hr />
+<h3>Interacting with C</h3>
 <p>To interact with C code you need to use the Foreign Function Interface (FFI) in OCaml and make some changes to your <code>dune</code> files to incorporate the extra code. To use a foreign C function in OCaml you need to add:</p>
-<pre class='ocaml'><code class='ocaml'>external &lt;ocaml-name&gt; : &lt;type-of-function&gt; = &quot;&lt;c-function-name&gt;&quot;</code></pre>
-
+<pre><code class="language-ocaml">external &lt;ocaml-name&gt; : &lt;type-of-function&gt; = &quot;&lt;c-function-name&gt;&quot;
+</code></pre>
 <p>And then in your dune file you need to include the C code:</p>
 <pre><code>(executable
  (name main)
  (foreign_stubs
   (language c)
-  (names &lt;c-filename&gt;)))</code></pre>
-
+  (names &lt;c-filename&gt;)))
+</code></pre>
 <p>Take care with the difference between how C represents runtime values and how OCaml represents them (covered in the linked resources page). See this dune documentation page for more options for the <code>foreign_stubs</code> and this OCaml manual page for a more formal introduction to the C FFI.</p>
-<h3 id="Interfacing-with-C-Structs">Interfacing with C Structs</h3>
-
+<h3>Interfacing with C Structs</h3>
 <p>There is a <code>cstruct</code> library linked in the libraries tag that allows you to read and write structs from the C programming language.</p>
-<h3 id="Interacting-with-Rust">Interacting with Rust</h3>
-
+<h3>Interacting with Rust</h3>
 <p>Coming soon...</p>
-<h2 id="Real-World-Examples">Real World Examples</h2>
-
-<p><hr/></p>
-<h3 id="Using-C-code">Using C code</h3>
-
-<p><a href='https://github.com/mirage/digestif/tree/master/src-c/native'>mirage/digestif</a></p>
-<h3 id="Using-Cstruct">Using Cstruct</h3>
-
-<p><a href='https://github.com/mirage/ocaml-git'>mirage/ocaml-git</a></p>
+<h2>Real World Examples</h2>
+<hr />
+<h3>Using C code</h3>
+<p><a href="https://github.com/mirage/digestif/tree/master/src-c/native">mirage/digestif</a></p>
+<h3>Using Cstruct</h3>
+<p><a href="https://github.com/mirage/ocaml-git">mirage/ocaml-git</a></p>
 
      
               

@@ -90,113 +90,119 @@
              
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h2 id="Overview">Overview</h2>
-
-<p><hr/>Testing is critical to ensuring the longevity of your project. When writing code it is very likely some new implementation will break something you wrote before. Testing provides visibility into this.</p>
+    <h2>Overview</h2>
+<hr />
+<p>Testing is critical to ensuring the longevity of your project. When writing code it is very likely some new implementation will break something you wrote before. Testing provides visibility into this.</p>
 <p>There are lots of ways you can go about testing and a large part of this is dependent on the type of project you are working on - is it a command line tool, a library, a web-application etc. This workflow focuses mainly on writing unit tests for your OCaml code and so will likely be applicable to most applications.</p>
-<h2 id="Recommended-Workflow">Recommended Workflow</h2>
-
-<p><hr/></p>
-<h3 id="Testing-a-library-with-Alcotest">Testing a library with Alcotest</h3>
-
+<h2>Recommended Workflow</h2>
+<hr />
+<h3>Testing a library with Alcotest</h3>
 <p>Alcotest (linked in the libraries) is a unit testing framework. It has a very good example in the repository README.</p>
-<p>To add unit testing to your library you&#39;ll want to create a test directory with the following <code>dune</code> file.</p>
+<p>To add unit testing to your library you'll want to create a test directory with the following <code>dune</code> file.</p>
 <pre><code>; located in tests/dune
 (test
   (name test)
-  (libraries &lt;library-public-name&gt; alcotest))</code></pre>
-
+  (libraries &lt;library-public-name&gt; alcotest))
+</code></pre>
 <p>The test entry point will be a <code>test.ml</code> file, which may look something like:</p>
-<pre class='ocaml'><code class='ocaml'>(* tests/test.ml *)
+<pre><code class="language-ocaml">(* tests/test.ml *)
 let () = 
   Alcotest.run &quot;Numbers&quot; [
     &quot;Fib&quot;, Test_fib.tests;
-  ]</code></pre>
-
+  ]
+</code></pre>
 <p>Each module can then get its own <code>test-module.ml</code> which exports in the  <code>.mli</code> file, a list of Alcotest tests.</p>
-<pre class='ocaml'><code class='ocaml'>(* tests/test_fib.ml *)
+<pre><code class="language-ocaml">(* tests/test_fib.ml *)
 let test_int () = 
-    Alcotest.(check int) &quot;fib of 10&quot; 55 fib2
+	Alcotest.(check int) &quot;fib of 10&quot; 55 fib2
 
 let tests = [
-    &quot;test_int&quot;, `Quick, test_int
+	&quot;test_int&quot;, `Quick, test_int
 ]
 
 (* tests/test_fib.mli *)
-val tests : unit Alcotest.test_case list</code></pre>
-
+val tests : unit Alcotest.test_case list
+</code></pre>
 <p>The documentation for Alcotest has a more thorough examples and the <strong>real world examples</strong> section at the bottom links some libraries which are already using Alcotest to perform unit testing.</p>
-<p>The tests can be run from the command line with <code>dune runtest</code> - it is also common to augment your opam file&#39;s build command with running tests:</p>
+<p>The tests can be run from the command line with <code>dune runtest</code> - it is also common to augment your opam file's build command with running tests:</p>
 <pre><code>build: [
  [&quot;dune&quot; &quot;build&quot; &quot;-p&quot; name &quot;-j&quot; jobs]
  [&quot;dune&quot; &quot;runtest&quot; &quot;-p&quot; name] {with-test}
-]</code></pre>
-
-<h3 id="Testing-executables-with-MDX">Testing executables with MDX</h3>
-
+]
+</code></pre>
+<h3>Testing executables with MDX</h3>
 <p>Alcotest offers a flexible but relatively simple way for testing functionality within components of your program. If you project is a CLI tool or an executable run from the command-line you will need another tool for testing it.</p>
-<p>Mdx allows you to write markdown with executable blocks, this could be in pure OCaml or in shell script. With dune&#39;s promote feature you can take snapshots of what <em>expect</em> your program to produce and ensure subsequent code doesn&#39;t break this.</p>
-<p>If it does make changes (ones you want) you can promote the new changes to your file and commit the results. If you have ever worked with <a href='https://jestjs.io/docs/en/snapshot-testing'>ReactJS and Jest snapshots</a>, it is very similar.</p>
+<p>Mdx allows you to write markdown with executable blocks, this could be in pure OCaml or in shell script. With dune's promote feature you can take snapshots of what <em>expect</em> your program to produce and ensure subsequent code doesn't break this.</p>
+<p>If it does make changes (ones you want) you can promote the new changes to your file and commit the results. If you have ever worked with <a href="https://jestjs.io/docs/en/snapshot-testing">ReactJS and Jest snapshots</a>, it is very similar.</p>
 <p>Take for example a simple CLI tool that takes a number and prints that number plus one.</p>
-<pre class='ocaml'><code class='ocaml'>(* --- bin/main.ml -------------- *)
+<pre><code class="language-ocaml">(* --- bin/main.ml -------------- *)
 let () =
   if Array.length Sys.argv &lt; 2 
-    then print_endline &quot;Need to supply a number&quot;
-  else print_int (int_of_string Sys.argv.(1) + 2)</code></pre>
-
+	then print_endline &quot;Need to supply a number&quot;
+  else print_int (int_of_string Sys.argv.(1) + 2)
+</code></pre>
 <p>Which with an appropriate opam file can be built with the following dune file. In order to make to globally available with a <code>public_name</code> we need the opam file.</p>
 <pre><code>(* --- bin/dune -------------- *)
 (executable
  (name main)
- (public_name main))</code></pre>
-
+ (public_name main))
+</code></pre>
 <p>Now we can build a simple test of the CLI tool using mdx. In a <code>tests/bin</code> folder we writes a <code>test.md</code> file and pass it some tests in markdown code blocks.</p>
-<pre class='markdown'><code class='markdown'># Testing the command line 
+<pre><code class="language-markdown"># Testing the command line 
 
-## Should print that a number should be supplied </code></pre><p>sh
-$ main</p>
+## Should print that a number should be supplied 
+```sh
+$ main
+</code></pre>
+<h2>Should print that 11</h2>
+<pre><code class="language-sh">$ main 10
+</code></pre>
+<p>## Should print that 0</p>
+<pre><code class="language-sh">$ main -1
+</code></pre>
 <pre><code>
+And add a dune file: 
 
-## Should print that 11 </code></pre><p>sh
-$ main 10</p>
+</code></pre>
+<p>(mdx
+(files test.md)
+(packages main))</p>
 <pre><code>
+Now when we run `dune runtest` we'll be greeted with a diff of our markdown file with the proposed outputs of our small shell scripts. We can add these to the file by promoting them with `dune promote` then commit them to the repository. If tests fail in the future we will get the diff and can decided whether to promote them or not. 
 
-## Should print that 0 </code></pre><p>sh
-$ main -1
-<code></code></p>
-<p>And add a dune file:</p>
-<pre><code>(mdx
- (files test.md)
- (packages main))</code></pre>
-
-<p>Now when we run <code>dune runtest</code> we&#39;ll be greeted with a diff of our markdown file with the proposed outputs of our small shell scripts. We can add these to the file by promoting them with <code>dune promote</code> then commit them to the repository. If tests fail in the future we will get the diff and can decided whether to promote them or not.</p>
-<pre class='diff'><code class='diff'>## Should print that a number should be supplied 
- </code></pre><p>sh
+```diff
+## Should print that a number should be supplied 
+ ```sh
  $ main
-+Need to supply a number</p>
-<pre><code> 
- ## Should print that 11 
- </code></pre><p>sh
- $ main 10
-+11</p>
-<pre><code> 
- ## Should print that 0 
- </code></pre><p>sh
- $ main -1
++Need to supply a number
+</code></pre>
+<h2>Should print that 11</h2>
+<pre><code class="language-sh">$ main 10
++11
+</code></pre>
+<h2>Should print that 0</h2>
+<pre><code class="language-sh">$ main -1
 +0
- <code></code></p>
-<h2 id="Alternatives">Alternatives</h2>
+</code></pre>
+<pre><code>
+## Alternatives
 
-<p><hr/></p>
-<h3 id="QCheck">QCheck</h3>
+---
 
-<p><a href='https://github.com/c-cube/qcheck'>QCheck</a> is based on Haskell&#39;s <a href='https://hackage.haskell.org/package/QuickCheck'>QuickCheck</a> library for property-based testing. It also offers a sub-library that can integrate directly with Alcotest.</p>
-<h3 id="Dune-Expect-Tests">Dune Expect Tests</h3>
+### QCheck
 
-<p>These tests tend to be written inline with your source OCaml code using <code>ppx_inline_test</code>. To get expect tests you can use <code>ppx_expect</code> to write assertions about parts of your program. The <a href='https://dune.readthedocs.io/en/stable/tests.html'>documentation</a> covers all of this in much more detail.</p>
-<h2 id="Real-World-Examples">Real World Examples</h2>
+[QCheck](https://github.com/c-cube/qcheck) is based on Haskell's [QuickCheck](https://hackage.haskell.org/package/QuickCheck) library for property-based testing. It also offers a sub-library that can integrate directly with Alcotest.  
 
-<p><hr/><a href='https://github.com/ocaml-community/yojson/tree/master/test'>Yojson</a> is good example of using Alcotest to unit test the different aspects of the library. <a href='https://github.com/ocamllabs/dune-release/tree/master/tests/bin'>Dune-release</a>, part of the OCaml Platform, uses Mdx to ensure the CLI tool is properly tested.</p>
+### Dune Expect Tests
+
+These tests tend to be written inline with your source OCaml code using `ppx_inline_test`. To get expect tests you can use `ppx_expect` to write assertions about parts of your program. The [documentation](https://dune.readthedocs.io/en/stable/tests.html) covers all of this in much more detail. 
+
+## Real World Examples
+
+---
+
+[Yojson](https://github.com/ocaml-community/yojson/tree/master/test) is good example of using Alcotest to unit test the different aspects of the library. [Dune-release](https://github.com/ocamllabs/dune-release/tree/master/tests/bin), part of the OCaml Platform, uses Mdx to ensure the CLI tool is properly tested.
+</code></pre>
 
      
               

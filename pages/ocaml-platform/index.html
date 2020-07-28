@@ -93,53 +93,155 @@
     <h1>OCaml Platform</h1>
                                
     <p><em> Last updated: 2020-07-27 09:35:49 +00:00 </em></p><hr/> 
-    <p><a href='https://www.youtube.com/watch?v=oyeKLAYPmQQ'>https://www.youtube.com/watch?v=oyeKLAYPmQQ</a></p>
-<p><hr/></p>
-<h3 id="Summary-in-a-Q-amp-A-Format">Summary in a Q&amp;A Format</h3>
-
+    <p><a href="https://www.youtube.com/watch?v=oyeKLAYPmQQ">https://www.youtube.com/watch?v=oyeKLAYPmQQ</a></p>
+<hr />
+<h3>Summary in a Q&amp;A Format</h3>
 <p><strong>User Concerns:</strong></p>
-<ul><li>What is the OCaml Platform?<ul><li>It is an idea of an ecosystem of tools that work well together along with the OCaml compiler to make it easy, fast and powerful to build projects in OCaml.</li><li>The OCaml Platform brings together the essential tooling for building projects to provide:<ul><li>Unified licensing and contribution guides</li><li>Full CI for <em><strong>many OSes and CPU Archs.</strong></em> - this is crucial in ensuring <em>anybody</em> can get up and running with building things in OCaml.</li></ul></li></ul></li><li>Why use the <code>opam</code> tool for publishing libraries?<ul><li>Without some form of package manager the barrier to entry is high for programmers to get started building projects. How would you  easily share, update and release libraries? How would you managed dependencies and constraints? How can you quickly test new versions of a library with your changes?</li><li>OCaml is statically-typed - this provides some great safety properties of your code. The simplest is making sure you know what your functions expect and return.<ul><li>Simple JS vs OCaml Example
-
-<pre class='jsx'><code class='jsx'>function addOne(x) {
-    return x + 1;
+<ul>
+<li>
+<p>What is the OCaml Platform?</p>
+<ul>
+<li>It is an idea of an ecosystem of tools that work well together along with the OCaml compiler to make it easy, fast and powerful to build projects in OCaml.
+</li>
+<li>The OCaml Platform brings together the essential tooling for building projects to provide:
+<ul>
+<li>Unified licensing and contribution guides
+</li>
+<li>Full CI for <em><strong>many OSes and CPU Archs.</strong></em> - this is crucial in ensuring <em>anybody</em> can get up and running with building things in OCaml.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Why use the <code>opam</code> tool for publishing libraries?</p>
+<ul>
+<li>
+<p>Without some form of package manager the barrier to entry is high for programmers to get started building projects. How would you  easily share, update and release libraries? How would you managed dependencies and constraints? How can you quickly test new versions of a library with your changes?</p>
+</li>
+<li>
+<p>OCaml is statically-typed - this provides some great safety properties of your code. The simplest is making sure you know what your functions expect and return.</p>
+<ul>
+<li>
+<p>Simple JS vs OCaml Example</p>
+<pre><code class="language-jsx">function addOne(x) {
+	return x + 1;
 }
 
-addOne(&quot;1&quot;) // returns the string &quot;11&quot;</code></pre>
-
-Whereas in OCaml: 
-
-<pre class='ocaml'><code class='ocaml'>let addOne x = x + 1 
+addOne(&quot;1&quot;) // returns the string &quot;11&quot;
+</code></pre>
+<p>Whereas in OCaml:</p>
+<pre><code class="language-ocaml">let addOne x = x + 1 
 
 addOne &quot;1&quot; 
 (* Error: 
    This expression has type string but an 
-   expression was expected of type int *)</code></pre></li></ul></li></ul></li></ul>
+   expression was expected of type int *)
+</code></pre>
+</li>
+<li>
+<p>Static-typing and Library Dependencies</p>
+<p>With this static-typing comes a cost for recompiling a library. Libraries can depend on each other, and they also depend on certain function having certain types, or even certain types being defined in a specific way. In the next example <code>Library Y</code> depends on <code>Library X</code> for the <code>camel</code> type.</p>
+<pre><code class="language-ocaml">(* Library X *) 
+type camel = Bactrian of int 
 
-<pre><code>    - Static-typing and Library Dependencies
+(* Library Y *)
+let print_humps = function 
+  | Bactrian x -&gt; print_int x 
+</code></pre>
+<p>What happens if you update your <code>Library X</code> to the following:</p>
+<pre><code class="language-ocaml">type camel - Bactrian of int | Dromedary of int 
+</code></pre>
+<p>Now <code>Library Y</code> has a non-exhaustive pattern-match. This is probably the simplest example but it illustrates how recompilation is trickier with OCaml and why a <em>smart</em> package manager is important.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Opam comes with a fast, built-in constraint solver to make sure your project and its dependencies can all be met and compiler correctly. It also has great sandboxing features - source code is downloaded and built on your machine securely.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Why use <code>dune</code> for building OCaml code?</p>
+<ul>
+<li>Build tools are prolific (and also infamous) in any programming language - they solve the problem of taking a project and producing some executable or library.
+</li>
+<li>Dune is built to (a) scale well for large projects with lots of dependencies and (b) be usable for small libraries or even compiling &quot;hello-world&quot; examples.
+</li>
+<li><strong>Compositional Builds:</strong> <code>dune</code> file per directory to define the shape of the build, one <code>dune build</code> command to build everything. Or step down to a single directory to build just that code.
+</li>
+</ul>
+</li>
+<li>
+<p>How does it support legacy code and not get bogged down in the process?</p>
+<ul>
+<li>Versioning is also an infamous problem in programming and building projects. How do you alleviate the painful experience of something not working just because you have the wrong version of tool <code>X</code> installed.
+</li>
+<li>In the metadata itself versions are recorded of the tools required to build projects. This allows the tools to give accurate error messages if a tool fails to do its job properly.
+</li>
+</ul>
+</li>
+<li>
+<p>How has <code>opam</code> changed the OCaml compiler?</p>
+<ul>
+<li>By introducing a publishing and package management tool, the OCaml compiler no longer needs to provide lots of libraries and utilities out-of-the-box. Instead, these have slowly left the compiler making it more lightweight.
+</li>
+</ul>
+</li>
+<li>
+<p>How does the OCaml Platform interact with different OS Package Managers?</p>
+<ul>
+<li>Where possible with the metadata files of <code>dune</code> and <code>opam</code> the goal is to make the CI/CD surrounding this as simple as possible.
+</li>
+</ul>
+</li>
+<li>
+<p>What can be expected from OCaml Platform releases?</p>
+<ul>
+<li>Long term support for <em>important</em> versions of the OCaml compiler (for example those used by Bucklescript)
+</li>
+<li>Precompiled tools to make getting started as quick as possible (similar to <code>go get</code>).
+</li>
+<li>The <em>monorepo</em> approach provides better visibility into how changes in a single platform tools impacts others.
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<p><strong>Technical Details</strong></p>
+<ul>
+<li>What is <strong>the duniverse and why is it useful?</strong>
+<ul>
+<li>TL;DR - it is a clever <em>monorepo</em> generator removing the need to use <code>opam</code> for those that don't need it. Also allows devs to have <em>distributed development</em>.
+</li>
+<li>Currently all of the platform tools exist as independent git repositories e.g. <a href="https://github.com/ocaml/opam">https://github.com/ocaml/opam</a> which are then published under some version to the <code>opam</code> repository.
+</li>
+<li>Duniverse bridges <code>opam</code> and <code>dune</code> - it allows you to make a local copy of the all the source code needed in order to build it with <code>dune</code> - this is done from the <code>opam</code> metadata file.
+</li>
+<li>What this does is alleviate the need to have <code>opam</code> for those users that do not need it.
+</li>
+</ul>
+</li>
+<li>How does it fit in with <strong>the platform?</strong>
+<ul>
+<li>The end goal of the platform is simple: provide a standalone, versioned monorepo that bootstraps cleanly from a C compiler for all supported OS distributions.
+</li>
+<li>Less <em>technical translation</em>:
+<ul>
+<li>Getting started with OCaml and the tools that allow you to build better, safer projects should be simple.
+</li>
+<li>Currently this is not the case.
+</li>
+<li>The root through <code>opam</code> is a scary and winding path with lots of little gotchas.
+</li>
+<li>With the Platform this should be hidden from the end-user but also meticulously CI/CD (tested and deployed) to provide OCaml users the best experience possible not matter what they are trying to run OCaml on.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
-        With this static-typing comes a cost for recompiling a library. Libraries can depend on each other, and they also depend on certain function having certain types, or even certain types being defined in a specific way. In the next example `Library Y` depends on `Library X` for the `camel` type. 
-
-        ```ocaml
-        (* Library X *) 
-        type camel = Bactrian of int 
-
-        (* Library Y *)
-        let print_humps = function 
-          | Bactrian x -&gt; print_int x 
-        ```
-
-        What happens if you update your `Library X` to the following: 
-
-        ```ocaml
-        type camel - Bactrian of int | Dromedary of int 
-        ```
-
-        Now `Library Y` has a non-exhaustive pattern-match. This is probably the simplest example but it illustrates how recompilation is trickier with OCaml and why a *smart* package manager is important. 
-
-- Opam comes with a fast, built-in constraint solver to make sure your project and its dependencies can all be met and compiler correctly. It also has great sandboxing features - source code is downloaded and built on your machine securely.</code></pre><ul><li>Why use <code>dune</code> for building OCaml code?<ul><li>Build tools are prolific (and also infamous) in any programming language - they solve the problem of taking a project and producing some executable or library.</li><li>Dune is built to (a) scale well for large projects with lots of dependencies and (b) be usable for small libraries or even compiling &quot;hello-world&quot; examples.</li><li><strong>Compositional Builds:</strong> <code>dune</code> file per directory to define the shape of the build, one <code>dune build</code> command to build everything. Or step down to a single directory to build just that code.</li></ul></li><li>How does it support legacy code and not get bogged down in the process?<ul><li>Versioning is also an infamous problem in programming and building projects. How do you alleviate the painful experience of something not working just because you have the wrong version of tool <code>X</code> installed.</li><li>In the metadata itself versions are recorded of the tools required to build projects. This allows the tools to give accurate error messages if a tool fails to do its job properly.</li></ul></li><li>How has <code>opam</code> changed the OCaml compiler?<ul><li>By introducing a publishing and package management tool, the OCaml compiler no longer needs to provide lots of libraries and utilities out-of-the-box. Instead, these have slowly left the compiler making it more lightweight.</li></ul></li><li>How does the OCaml Platform interact with different OS Package Managers?<ul><li>Where possible with the metadata files of <code>dune</code> and <code>opam</code> the goal is to make the CI/CD surrounding this as simple as possible.</li></ul></li><li>What can be expected from OCaml Platform releases?<ul><li>Long term support for <em>important</em> versions of the OCaml compiler (for example those used by Bucklescript)</li><li>Precompiled tools to make getting started as quick as possible (similar to <code>go get</code>).</li><li>The <em>monorepo</em> approach provides better visibility into how changes in a single platform tools impacts others.</li></ul></li></ul>
-
-<p><hr/><strong>Technical Details</strong></p>
-<ul><li>What is <strong>the duniverse and why is it useful?</strong><ul><li>TL;DR - it is a clever <em>monorepo</em> generator removing the need to use <code>opam</code> for those that don&#39;t need it. Also allows devs to have <em>distributed development</em>.</li><li>Currently all of the platform tools exist as independent git repositories e.g. <a href='https://github.com/ocaml/opam'>https://github.com/ocaml/opam</a> which are then published under some version to the <code>opam</code> repository.</li><li>Duniverse bridges <code>opam</code> and <code>dune</code> - it allows you to make a local copy of the all the source code needed in order to build it with <code>dune</code> - this is done from the <code>opam</code> metadata file.</li><li>What this does is alleviate the need to have <code>opam</code> for those users that do not need it.</li></ul></li><li>How does it fit in with <strong>the platform?</strong><ul><li>The end goal of the platform is simple: provide a standalone, versioned monorepo that bootstraps cleanly from a C compiler for all supported OS distributions.</li><li>Less <em>technical translation</em>:<ul><li>Getting started with OCaml and the tools that allow you to build better, safer projects should be simple.</li><li>Currently this is not the case.</li><li>The root through <code>opam</code> is a scary and winding path with lots of little gotchas.</li><li>With the Platform this should be hidden from the end-user but also meticulously CI/CD (tested and deployed) to provide OCaml users the best experience possible not matter what they are trying to run OCaml on.</li></ul></li></ul></li></ul>
      
               
    </div>

@@ -90,33 +90,38 @@
              
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h2 id="Overview">Overview</h2>
-
-<p><hr/>Having a unified approach to formatting is important for multiple reasons:</p>
-<ul><li>Good for beginners: using tooling to help properly format, code-complete, syntax highlighting etc. removes this burden (somewhat) for new people lowering the barrier of entry for contributions.</li><li>Easier to read: the code tends to be easier to read (or will be once the standard formatting is learnt) which helps onboard new people to a codebase and also discover bugs.</li></ul>
-
-<h2 id="Recommended-Workflow">Recommended Workflow</h2>
-
-<p><hr/></p>
-<h3 id="OCamlformat">OCamlformat</h3>
-
+    <h2>Overview</h2>
+<hr />
+<p>Having a unified approach to formatting is important for multiple reasons:</p>
+<ul>
+<li>Good for beginners: using tooling to help properly format, code-complete, syntax highlighting etc. removes this burden (somewhat) for new people lowering the barrier of entry for contributions.
+</li>
+<li>Easier to read: the code tends to be easier to read (or will be once the standard formatting is learnt) which helps onboard new people to a codebase and also discover bugs.
+</li>
+</ul>
+<h2>Recommended Workflow</h2>
+<hr />
+<h3>OCamlformat</h3>
 <p>OCamlformat tends to be the tool of choice for enforcing formatting styles in a project. It requires a very simple <code>.ocamlformat</code> file in the root of the project which can specify a few configuration options.</p>
 <p>A bare bones file will contain the version of OCamlformat you want to use:</p>
-<pre><code>version=0.14.2</code></pre>
-
+<pre><code>version=0.14.2
+</code></pre>
 <p>From there, depending on your setup and editor, you can:</p>
-<ul><li>Run <code>ocamlformat</code> on builds</li><li>Run <code>ocamlformat</code> when saving a file (works very well with VS Code)</li></ul>
-
+<ul>
+<li>Run <code>ocamlformat</code> on builds
+</li>
+<li>Run <code>ocamlformat</code> when saving a file (works very well with VS Code)
+</li>
+</ul>
 <p>Formatting on save should just work if you have the OCaml Platform plugin installed in VS Code (see related workflows)</p>
-<h3 id="Ocp-indent">Ocp-indent</h3>
-
+<h3>Ocp-indent</h3>
 <p>Ocp-indent is an indentation tool for OCaml. It is particularly useful for <em>vim</em> and <em>emacs.</em> If you followed the setup for those editors in the related workflow you should only need to add the following to your <code>.vimrc</code>.</p>
-<pre><code>set rtp^=&quot;$(opam config var ocp-indent:share)/vim&quot;</code></pre>
-
-<h2 id="Real-World-Examples">Real World Examples</h2>
-
-<p><hr/><a href='https://github.com/mirage/alcotest/blob/master/.ocamlformat'>mirage/alcotest</a></p>
-<p><a href='https://github.com/ocaml-ppx/ocamlformat/blob/master/.ocp-indent'>ocaml-ppx/ocamlformat</a></p>
+<pre><code>set rtp^=&quot;$(opam config var ocp-indent:share)/vim&quot;
+</code></pre>
+<h2>Real World Examples</h2>
+<hr />
+<p><a href="https://github.com/mirage/alcotest/blob/master/.ocamlformat">mirage/alcotest</a></p>
+<p><a href="https://github.com/ocaml-ppx/ocamlformat/blob/master/.ocp-indent">ocaml-ppx/ocamlformat</a></p>
 
      
               

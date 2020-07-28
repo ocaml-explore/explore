@@ -90,42 +90,39 @@
              
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h2 id="Overview">Overview</h2>
-
-<p><hr/>Jupyter notebooks combine an interactive read-evaluate-print-loop (REPL) with markdown text (with support for LATEX) to offer a unique solution for people wanting to teach, explore OCaml or perform more data-centric operations (ML models etc.)</p>
+    <h2>Overview</h2>
+<hr />
+<p>Jupyter notebooks combine an interactive read-evaluate-print-loop (REPL) with markdown text (with support for LATEX) to offer a unique solution for people wanting to teach, explore OCaml or perform more data-centric operations (ML models etc.)</p>
 <p>From a learning point-of-view, students are more concerned with <em>syntax</em> and <em>concepts</em> rather than tooling (in the beginning). Much like <code>utop</code> the REPL format is great for learning, but with <strong>jupyter</strong> you can also write notes, explain algorithms etc.</p>
-<h2 id="Recommended-Workflow">Recommended Workflow</h2>
-
-<p><hr/></p>
-<h3 id="Locally-Running-an-OCaml-Jupyter-Notebook">Locally Running an OCaml Jupyter Notebook</h3>
-
-<p>The best way to get <em>ocaml-juptyer</em> up and running is through <code>opam</code> and installing <code>jupyter</code> using <code>pip</code> the python package manager. More information on python and <code>pip</code> can be found in their <a href='https://docs.python.org/3/installing/index.html'>documentation</a>.</p>
+<h2>Recommended Workflow</h2>
+<hr />
+<h3>Locally Running an OCaml Jupyter Notebook</h3>
+<p>The best way to get <em>ocaml-juptyer</em> up and running is through <code>opam</code> and installing <code>jupyter</code> using <code>pip</code> the python package manager. More information on python and <code>pip</code> can be found in their <a href="https://docs.python.org/3/installing/index.html">documentation</a>.</p>
 <p>With <code>pip</code> and <code>opam</code> installed, the following should represent a typical way of getting started with a jupyter notebook with an OCaml kernel.</p>
-<pre class='bash'><code class='bash'>$ pip install jupyter # Install jupyter
+<pre><code class="language-bash">$ pip install jupyter # Install jupyter
 $ opam install jupyter # Install jupyter opam package 
 $ opam install jupyter-archimedes  # Jupyter-friendly 2D plotting library
 $ ocaml-jupyter-opam-genspec
-$ jupyter kernelspec install [ --user ] --name ocaml-jupyter &quot;$(opam var share)/jupyter&quot;</code></pre>
-
-<p>Further documentation can be found at in the <a href='https://github.com/akabe/ocaml-jupyter'>OCaml Jupyter repository</a>.</p>
-<h3 id="Presentation-tools">Presentation tools</h3>
-
-<p>For teachers or presenters you can use the <a href='https://rise.readthedocs.io/en/stable/'>RISE</a> tool to present your code and text in the browser from a running OCaml Jupyer Notebook. It will generate interactive slides from the code and text blocks in your notebook.</p>
-<h2 id="Alternatives">Alternatives</h2>
-
-<p><hr/></p>
-<h3 id="Using-Docker-to-run-a-Notebook">Using Docker to run a Notebook</h3>
-
+$ jupyter kernelspec install [ --user ] --name ocaml-jupyter &quot;$(opam var share)/jupyter&quot;
+</code></pre>
+<p>Further documentation can be found at in the <a href="https://github.com/akabe/ocaml-jupyter">OCaml Jupyter repository</a>.</p>
+<h3>Presentation tools</h3>
+<p>For teachers or presenters you can use the <a href="https://rise.readthedocs.io/en/stable/">RISE</a> tool to present your code and text in the browser from a running OCaml Jupyer Notebook. It will generate interactive slides from the code and text blocks in your notebook.</p>
+<h2>Alternatives</h2>
+<hr />
+<h3>Using Docker to run a Notebook</h3>
 <p>Using the link below, a jupyter notebook can be created inside a docker container and connected to a port so users can begin coding fairly quickly. This involves a second level of indirection in installing docker.</p>
-<ul><li><em>Limitations - the dockerfiles exposed here are very data-science oriented (i.e. large images with many preinstalled packages) and only go up to OCaml 4.07.</em></li></ul>
-
-<pre class='bash'><code class='bash'>docker run -it -p 8888:8888 akabe/ocaml-jupyter-datascience -v $PWD:/notebooks akabe/ocaml-jupyter-datascience
-# Go to http://localhost:8888/?token=&lt;token&gt;</code></pre>
-
-<p><a href='https://github.com/akabe/docker-ocaml-jupyter-datascience'>akabe/docker-ocaml-jupyter-datascience</a></p>
-<h2 id="Real-World-Examples">Real World Examples</h2>
-
-<p><hr/><a href='https://kcsrk.info/ocaml/prolog/jupyter/notebooks/2020/01/19/OCaml-Prolog-Jupyter/'></a></p>
+<ul>
+<li><em>Limitations - the dockerfiles exposed here are very data-science oriented (i.e. large images with many preinstalled packages) and only go up to OCaml 4.07.</em>
+</li>
+</ul>
+<pre><code class="language-bash">docker run -it -p 8888:8888 akabe/ocaml-jupyter-datascience -v $PWD:/notebooks akabe/ocaml-jupyter-datascience
+# Go to http://localhost:8888/?token=&lt;token&gt;
+</code></pre>
+<p><a href="https://github.com/akabe/docker-ocaml-jupyter-datascience">akabe/docker-ocaml-jupyter-datascience</a></p>
+<h2>Real World Examples</h2>
+<hr />
+<p><a href="https://kcsrk.info/ocaml/prolog/jupyter/notebooks/2020/01/19/OCaml-Prolog-Jupyter/"></a></p>
 
      
               

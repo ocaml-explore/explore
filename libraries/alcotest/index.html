@@ -91,9 +91,9 @@
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
     <h1>Alcotest</h1>
-    <h3 id="Key-Concepts">Key Concepts</h3>
-
-<p><hr/>The structure of your tests should look something like:</p>
+    <h3>Key Concepts</h3>
+<hr />
+<p>The structure of your tests should look something like:</p>
 <pre><code>.
 |-- suite1
 |   |-- Quick
@@ -106,23 +106,25 @@
     |   `-- test1
     `-- Slow
         |-- test1
-        `-- test2</code></pre>
-
+        `-- test2
+</code></pre>
 <p>A typical way of achieving this is to have separate files for each test-suite for a particular component of your project e.g. <code>test_parser.ml</code> where you define unit tests for your parser than in an <code>mli</code> file export the tests:</p>
-<pre><code>val tests : unit Alcotest.test_case list</code></pre>
-
+<pre><code>val tests : unit Alcotest.test_case list
+</code></pre>
 <p>After that you can collect all of your suites together in <code>[test.ml](http://test.ml)</code> file that will be run for testing your project. It is also common case to have <code>[testable.ml](http://testable.ml)</code> file where you can produce testable version of your types:</p>
-<pre class='ocaml'><code class='ocaml'>(* Some type you have - camel.ml *)
+<pre><code class="language-ocaml">(* Some type you have - camel.ml *)
 type camel = Bactrian of string 
 
 let pp_camel fmt = function
-    | Bactrian str  -&gt; Format.pp_print_string fmt str 
+	| Bactrian str  -&gt; Format.pp_print_string fmt str 
 
 let compare a b = match a, b with 
-    | Bactrian s1, Bactrian s2 -&gt; String.compare s1 s2
+	| Bactrian s1, Bactrian s2 -&gt; String.compare s1 s2
 
 (* Making camels testable - testable.ml *) 
-let camel = Alcotest.testable Camel.pp_camel Camel.compare</code></pre>
+let camel = Alcotest.testable Camel.pp_camel Camel.compare
+</code></pre>
+
      
               
    </div>

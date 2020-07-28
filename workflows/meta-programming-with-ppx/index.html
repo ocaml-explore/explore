@@ -90,44 +90,41 @@
              
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h2 id="Overview">Overview</h2>
-
-<p><hr/>Ppx allows programmers to meta-program directly on the abstract syntax tree of OCaml code. This means simple tasks like writing comparison functions or hashing functions can be automated through clever inference on types.</p>
-<h2 id="Recommended-Workflow">Recommended Workflow</h2>
-
-<p><hr/></p>
-<h3 id="Using-PPX-libraries">Using PPX libraries</h3>
-
+    <h2>Overview</h2>
+<hr />
+<p>Ppx allows programmers to meta-program directly on the abstract syntax tree of OCaml code. This means simple tasks like writing comparison functions or hashing functions can be automated through clever inference on types.</p>
+<h2>Recommended Workflow</h2>
+<hr />
+<h3>Using PPX libraries</h3>
 <p>Dune comes with ppx support which makes it very easy to start using different ppx libraries to meta-program in OCaml. In this example we will add <code>ppx_hash</code> to a small example.</p>
 <p>Suppose we have type of person - to generate a hashing function we label it with a type attribute:</p>
-<pre class='ocaml'><code class='ocaml'>(* person.ml file *)
+<pre><code class="language-ocaml">(* person.ml file *)
 open Core
 
 type person = {
-    name: string;
-    age: int;
+	name: string;
+	age: int;
 } [@@deriving hash]
 
 let () = 
-    let p = { name = &quot;Alice&quot;; age = 42 } in 
-        Printf.fprintf stdout &quot;%i\n&quot; (hash_person p)</code></pre>
-
-<p>This example illustrates that ppx libraries can make assumptions - <code>ppx_hash</code> expects the Jane Street Core standard library to be open in order to use some of the functions that are there that aren&#39;t in the standard library packaged by OCaml.</p>
+	let p = { name = &quot;Alice&quot;; age = 42 } in 
+		Printf.fprintf stdout &quot;%i\n&quot; (hash_person p)
+</code></pre>
+<p>This example illustrates that ppx libraries can make assumptions - <code>ppx_hash</code> expects the Jane Street Core standard library to be open in order to use some of the functions that are there that aren't in the standard library packaged by OCaml.</p>
 <p>The dune file will be:</p>
 <pre><code>(executable
   (name person)
-    (libraries core)
-    (preprocess (pps ppx_hash)))</code></pre>
-
-<h3 id="Writing-PPX-libraries">Writing PPX libraries</h3>
-
+	(libraries core)
+	(preprocess (pps ppx_hash)))
+</code></pre>
+<h3>Writing PPX libraries</h3>
 <p>To write your own ppx library you are strongly encourage to use <code>ppxlib</code> (linked in the libraries section). It provides a wrapper around the compiler hooks that ppx uses to modify the AST. The user documentation does a very good job at getting you started writing your own ppx libraries.</p>
-<p><a href='https://ppxlib.readthedocs.io/en/latest/'>ppxlib&#39;s user manual - ppxlib documentation</a></p>
+<p><a href="https://ppxlib.readthedocs.io/en/latest/">ppxlib's user manual - ppxlib documentation</a></p>
 <p>In addition to that, the article in the resources tag does a very thorough job of explaining how to use ppxlib.</p>
-<h2 id="Real-World-Examples">Real World Examples</h2>
-
-<p><hr/><a href='https://github.com/ocaml-ppx/ppx_deriving_yojson'>ocaml-ppx/ppx_deriving_yojson</a></p>
-<p><a href='https://github.com/ocaml-ppx/ppx_deriving_protobuf'>ocaml-ppx/ppx_deriving_protobuf</a></p>
+<h2>Real World Examples</h2>
+<hr />
+<p><a href="https://github.com/ocaml-ppx/ppx_deriving_yojson">ocaml-ppx/ppx_deriving_yojson</a></p>
+<p><a href="https://github.com/ocaml-ppx/ppx_deriving_protobuf">ocaml-ppx/ppx_deriving_protobuf</a></p>
 
      
               

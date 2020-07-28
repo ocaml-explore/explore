@@ -90,56 +90,54 @@
              
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h2 id="Overview">Overview</h2>
-
-<p><hr/>Having a helpful development environment can boost productivity and help catch errors early. OCaml has a powerful type system which reduces runtime errors, with a good editor setup you&#39;ll be able to catch them before you run <code>dune build</code>.</p>
-<h2 id="Recommended-Workflow">Recommended Workflow</h2>
-
-<p><hr/>The recommended editor for OCaml is <strong>Visual Studio Code</strong> - an editor with a rich ecosystem of useful plugins, themes and developer tools.</p>
+    <h2>Overview</h2>
+<hr />
+<p>Having a helpful development environment can boost productivity and help catch errors early. OCaml has a powerful type system which reduces runtime errors, with a good editor setup you'll be able to catch them before you run <code>dune build</code>.</p>
+<h2>Recommended Workflow</h2>
+<hr />
+<p>The recommended editor for OCaml is <strong>Visual Studio Code</strong> - an editor with a rich ecosystem of useful plugins, themes and developer tools.</p>
 <p>To get the best setup, there is a marketplace plugin and an opam package that must be installed.</p>
-<pre class='bash'><code class='bash'># This is the language server protocol for OCaml
+<pre><code class="language-bash"># This is the language server protocol for OCaml
 opam install ocaml-lsp-server
 
-# Install the OCaml Platform on VS Code Marketplace </code></pre>
-
+# Install the OCaml Platform on VS Code Marketplace 
+</code></pre>
 <p>From here make sure to add a <code>workplace</code> to VS Code for your project. And watch out for the following errors:</p>
-<ul><li>VS Code might complain about not being able to find <code>ocaml-lsp</code> - this is done on a per switch basis and clicking on the dialog box should let you pick the switch you installed it on.</li></ul>
-
-<h2 id="Alternatives">Alternatives</h2>
-
-<p><hr/></p>
-<h3 id="VS-Code">VS Code</h3>
-
+<ul>
+<li>VS Code might complain about not being able to find <code>ocaml-lsp</code> - this is done on a per switch basis and clicking on the dialog box should let you pick the switch you installed it on.
+</li>
+</ul>
+<h2>Alternatives</h2>
+<hr />
+<h3>VS Code</h3>
 <p>Other extensions exist which offer support for OCaml and Reason including:</p>
-<p><a href='https://github.com/hackwaly/vscode-ocaml'>hackwaly/vscode-ocaml</a></p>
-<p><a href='https://github.com/reasonml-editor/vscode-reasonml'>reasonml-editor/vscode-reasonml</a></p>
-<h3 id="Vim">Vim</h3>
-
+<p><a href="https://github.com/hackwaly/vscode-ocaml">hackwaly/vscode-ocaml</a></p>
+<p><a href="https://github.com/reasonml-editor/vscode-reasonml">reasonml-editor/vscode-reasonml</a></p>
+<h3>Vim</h3>
 <p>The to use with vim is merlin. OCaml LSP is the next generation of merlin, but for vim you will need merlin installed. There is also a useful opam plugin for getting up and running with the merlin features:</p>
-<pre class='bash'><code class='bash'>opam install merlin ocp-indent 
-opam user-setup install </code></pre>
-
+<pre><code class="language-bash">opam install merlin ocp-indent 
+opam user-setup install 
+</code></pre>
 <p>To get code completion you will need to enable omnipresent in your <code>.vimrc</code> file:</p>
 <pre><code>filetype plugin on
-set omnifunc=syntaxcomplete#Complete</code></pre>
-
+set omnifunc=syntaxcomplete#Complete
+</code></pre>
 <p>Then whilst in <code>INSERT</code> mode type <code>ctrl+c ctrl+o</code> to see completions for something like <code>List.m</code>.</p>
-<p>For syntax errors you need to add <em>syntastic</em> as a vim plugin. For this you&#39;ll need a vim plugin manager like pathogen. The <a href='https://github.com/vim-syntastic/syntastic'>syntastic documentation</a> will let you get started and then add the following to your <code>.vimrc</code> file.</p>
+<p>For syntax errors you need to add <em>syntastic</em> as a vim plugin. For this you'll need a vim plugin manager like pathogen. The <a href="https://github.com/vim-syntastic/syntastic">syntastic documentation</a> will let you get started and then add the following to your <code>.vimrc</code> file.</p>
 <pre><code>execute pathogen#infect()
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_ocaml_checkers = [&#39;merlin&#39;]</code></pre>
-
+let g:syntastic_ocaml_checkers = ['merlin']
+</code></pre>
 <p>For more features and information be sure to read the wiki on merlin linked in the resources.</p>
-<h3 id="Emacs">Emacs</h3>
-
+<h3>Emacs</h3>
 <p>The workflow for emacs is very similar to vim.</p>
-<pre class='bash'><code class='bash'>opam install merlin ocp-indent 
-opam user-setup install </code></pre>
-
+<pre><code class="language-bash">opam install merlin ocp-indent 
+opam user-setup install 
+</code></pre>
 <p>After that the documentation in &quot;Emacs from Scratch&quot; linked in the resources tag will guide you through setting up OCaml with emacs.</p>
 
      

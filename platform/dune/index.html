@@ -91,27 +91,22 @@
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
     <h1>Dune</h1>
-    <h2 id="Overview">Overview</h2>
-
-<p><hr/>Dune is a build tool that has been widely adopted in the OCaml world - it plays nicely with lots of other tools like opam and mdx. The documentation is very thorough - but do checkout the <em>key concepts</em> to get a high-level overview of how dune works and how to get started building your OCaml project.</p>
-<p><a href='https://dune.readthedocs.io/en/stable/'>Welcome to dune&#39;s documentation! - dune documentation</a></p>
-<h2 id="Key-Concepts">Key Concepts</h2>
-
-<p><hr/></p>
-<h3 id="Compositional-Builds">Compositional Builds</h3>
-
+    <h2>Overview</h2>
+<hr />
+<p>Dune is a build tool that has been widely adopted in the OCaml world - it plays nicely with lots of other tools like opam and mdx. The documentation is very thorough - but do checkout the <em>key concepts</em> to get a high-level overview of how dune works and how to get started building your OCaml project.</p>
+<p><a href="https://dune.readthedocs.io/en/stable/">Welcome to dune's documentation! - dune documentation</a></p>
+<h2>Key Concepts</h2>
+<hr />
+<h3>Compositional Builds</h3>
 <p>Dune builds projects in a modular way generally based on file structure. This is somewhat different to say how <code>npm</code> would build Javascript projects more or less only based on the <code>package.json</code> at the root of the project. Looking at <em>Typical Project Layout</em> the compositionality is portrayed by the <code>dune</code> files in each directory. Each part is doing something different (building tests, the library, the unix version of the library etc.).</p>
-<h3 id="Declarative">Declarative</h3>
-
+<h3>Declarative</h3>
 <p>Unlike say <code>Makefiles</code>, dune is declarative. You tell it what you want and dune handles the nitty-gritty details but provides escape-hatches and <strong>a lot of customisability</strong> in your <code>dune</code> file to build complex projects.</p>
 <p>This allows dune to be a great build tool no matter what your project size or complexity is.</p>
-<h3 id="Build-Types">Build Types</h3>
-
-<p>There tend to be three main types of builds that will suffice for most projects: <em>executables, libraries and tests</em>. Each has its own <a href='https://dune.readthedocs.io/en/stable/dune-files.html#dune'>stanza reference</a>. The executable stanza will by default build a binary that you can run in the <code>_build/default</code> folder. Libraries are units of reusable code for other projects to benefit from packaged up under a module.</p>
-<h3 id="Typical-Project-Layout">Typical Project Layout</h3>
-
+<h3>Build Types</h3>
+<p>There tend to be three main types of builds that will suffice for most projects: <em>executables, libraries and tests</em>. Each has its own <a href="https://dune.readthedocs.io/en/stable/dune-files.html#dune">stanza reference</a>. The executable stanza will by default build a binary that you can run in the <code>_build/default</code> folder. Libraries are units of reusable code for other projects to benefit from packaged up under a module.</p>
+<h3>Typical Project Layout</h3>
 <p>The following file structure is taken from <code>ocaml-yaml</code> and has been trimmed to show only the relevant dune-related parts and still be readable.</p>
-<p><a href='https://github.com/avsm/ocaml-yaml'>avsm/ocaml-yaml</a></p>
+<p><a href="https://github.com/avsm/ocaml-yaml">avsm/ocaml-yaml</a></p>
 <pre><code>.
 |-- CHANGES.md
 |-- LICENSE.md
@@ -137,13 +132,13 @@
 |   |-- dune
 |   |-- yaml_unix.ml
 |   `-- yaml_unix.mli
-`-- yaml.opam</code></pre>
-
-<h2 id="In-the-Wild">In the Wild</h2>
-
-<p><hr/>Dune is used in a lot of OCaml projects thanks to its flexibility, integration with opam and lightweightness. Below are just a few projects using dune:</p>
-<p><a href='https://github.com/mirage/irmin'>mirage/irmin</a></p>
-<p><a href='https://github.com/janestreet/re2/'>janestreet/re2</a></p>
+`-- yaml.opam
+</code></pre>
+<h2>In the Wild</h2>
+<hr />
+<p>Dune is used in a lot of OCaml projects thanks to its flexibility, integration with opam and lightweightness. Below are just a few projects using dune:</p>
+<p><a href="https://github.com/mirage/irmin">mirage/irmin</a></p>
+<p><a href="https://github.com/janestreet/re2/">janestreet/re2</a></p>
 
      
               

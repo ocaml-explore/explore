@@ -90,47 +90,50 @@
              
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h2 id="Overview">Overview</h2>
-
-<p><hr/>Documentation is vital for your library to be used by other people, it also helps others to contribute and even reminds you of your design decisions.</p>
+    <h2>Overview</h2>
+<hr />
+<p>Documentation is vital for your library to be used by other people, it also helps others to contribute and even reminds you of your design decisions.</p>
 <p>The goal of the  workflow is to make your documentation:</p>
-<ul><li>Easily updatable - your documentation should evolve with your project and not be a painful experience in updating it.</li><li>Informative yet concise - your documentation workflow should allow you to be verbose where you need to be but concise everywhere else, code examples can tell a better story than prose in most cases.</li><li>Correct - your documentation will likely contain code examples and workflows, these should be checked for correctness in an automated way.</li></ul>
-
-<h2 id="Recommended-Workflow">Recommended Workflow</h2>
-
-<p><hr/></p>
-<h3 id="Generating-Documentation">Generating Documentation</h3>
-
+<ul>
+<li>Easily updatable - your documentation should evolve with your project and not be a painful experience in updating it.
+</li>
+<li>Informative yet concise - your documentation workflow should allow you to be verbose where you need to be but concise everywhere else, code examples can tell a better story than prose in most cases.
+</li>
+<li>Correct - your documentation will likely contain code examples and workflows, these should be checked for correctness in an automated way.
+</li>
+</ul>
+<h2>Recommended Workflow</h2>
+<hr />
+<h3>Generating Documentation</h3>
 <p>OCaml has a tool, odoc, for generating documentation from comments in the code that start with a double asterisk <code>(** my nice comment *)</code>.</p>
-<p>The full documentation for the syntax of documentation comments can be found <a href='https://caml.inria.fr/pub/docs/manual-ocaml/ocamldoc.html#s%3Aocamldoc-comments'>here</a>. Some of the most used features of the syntax include, source code styling with <code>[...]</code>:</p>
-<pre class='ocaml'><code class='ocaml'>val add : int -&gt; int -&gt; int 
-(** [add a b] takes the two integers [a] and [b] and produces their sum *) </code></pre>
-
+<p>The full documentation for the syntax of documentation comments can be found <a href="https://caml.inria.fr/pub/docs/manual-ocaml/ocamldoc.html#s%3Aocamldoc-comments">here</a>. Some of the most used features of the syntax include, source code styling with <code>[...]</code>:</p>
+<pre><code class="language-ocaml">val add : int -&gt; int -&gt; int 
+(** [add a b] takes the two integers [a] and [b] and produces their sum *) 
+</code></pre>
 <p>Inserting links to external sources <code>{{: link} text}</code>:</p>
-<pre class='ocaml'><code class='ocaml'>val gcd : int -&gt; int -&gt; int 
+<pre><code class="language-ocaml">val gcd : int -&gt; int -&gt; int 
 (** [gcd a b] computes the 
-    {{: https://en.wikipedia.org/wiki/Greatest_common_divisor} gcd} 
-    of two integers [a] and [b] *)</code></pre>
-
+	{{: https://en.wikipedia.org/wiki/Greatest_common_divisor} gcd} 
+	of two integers [a] and [b] *)
+</code></pre>
 <p>Cross referencing other types, modules or functions:</p>
-<pre class='ocaml'><code class='ocaml'>val mult : int -&gt; int -&gt; int 
-(** [mult a b] returns the product of [a] and [b] using {! Arith.add} to do so *)</code></pre>
-
+<pre><code class="language-ocaml">val mult : int -&gt; int -&gt; int 
+(** [mult a b] returns the product of [a] and [b] using {! Arith.add} to do so *)
+</code></pre>
 <p>If you are already using opam and dune then the hardest part to generating documentation is actually writing it. From the root of your project it is as simple as:</p>
-<pre class='bash'><code class='bash'>opam install odoc 
-dune build @doc </code></pre>
-
+<pre><code class="language-bash">opam install odoc 
+dune build @doc 
+</code></pre>
 <p>This will build a documentation website in <code>_build/default/_doc/_html</code>.</p>
-<h3 id="Releasing-Documentation">Releasing Documentation</h3>
-
-<p>If you are hosting your code on Github then you can also go one step further and deploy your documentation to <a href='https://pages.github.com/'>Github Pages</a>. This is done using dune-release which will build your documentation for you and push it to a <code>gh-pages</code> branch before moving it upstream.</p>
+<h3>Releasing Documentation</h3>
+<p>If you are hosting your code on Github then you can also go one step further and deploy your documentation to <a href="https://pages.github.com/">Github Pages</a>. This is done using dune-release which will build your documentation for you and push it to a <code>gh-pages</code> branch before moving it upstream.</p>
 <p>Dune-release will build the documentation from the <em>distribution archive</em> - this means you need to build that first in order to get your documentation.</p>
-<pre class='bash'><code class='bash'>$ dune-release distrib # build the distribution archive
-$ dune-release publish doc # build and push docs to gh-pages</code></pre>
-
-<h2 id="Real-World-Examples">Real World Examples</h2>
-
-<p><hr/>Many frequently used OCaml libraries take advantage of this easy workflow for publishing documentation as part of the release process for a new version of a package. Good examples are <a href='https://mirage.github.io/irmin/'>Irmin</a> and <a href='https://mirage.github.io/ocaml-cohttp/'>Cohttp</a>.</p>
+<pre><code class="language-bash">$ dune-release distrib # build the distribution archive
+$ dune-release publish doc # build and push docs to gh-pages
+</code></pre>
+<h2>Real World Examples</h2>
+<hr />
+<p>Many frequently used OCaml libraries take advantage of this easy workflow for publishing documentation as part of the release process for a new version of a package. Good examples are <a href="https://mirage.github.io/irmin/">Irmin</a> and <a href="https://mirage.github.io/ocaml-cohttp/">Cohttp</a>.</p>
 
      
               

@@ -90,23 +90,25 @@
              
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h2 id="Overview">Overview</h2>
-
-<p><hr/>Cross-compiling in OCaml is still an experimental feature, but there are plans to make it a fully supported one in the future.</p>
+    <h2>Overview</h2>
+<hr />
+<p>Cross-compiling in OCaml is still an experimental feature, but there are plans to make it a fully supported one in the future.</p>
 <p>Cross-compiling allows a programmer on an <em>x86</em> machine to compile OCaml code to run on a <em>RISC-V</em> device. **Usually the target architecture is the same as the architecture our machine is running on. This is particularly useful for embedded devices running architectures like <em>ARM-32, ESP-32 or RISC-V</em>.</p>
-<h2 id="Recommended-Workflow">Recommended Workflow</h2>
-
-<p><hr/>Dune has built-in support for cross-compilation thanks to toolchains in OCamlfind. To work with cross-compiling you will need the following:</p>
-<ol><li>The appropriate cross-compiling toolchains installed - OCaml uses a C compiler to build the OCaml compiler so a cross-compiling C compiler will be necessary. </li><li>A switch with a cross-compiling repository setup - this will handle installing the OCaml cross-compiler.</li></ol>
-
-<p>Luckily, that is fairly easy. Below, in real world examples, there are some repositories you can use. Instructions for installing say the <em>RISC-V</em> cross-compiler can be found in <a href='https://github.com/patricoferris/ocaml-on-riscv/blob/trunk/opam/Dockerfile'>this Dockerfile</a>. In the future the OCaml compiler will support cross-compilation out-of-the-box but for now you will have to use some modified versions of the compiler.</p>
-<h2 id="Real-World-Examples">Real World Examples</h2>
-
-<p><hr/></p>
-<h3 id="Example-opam-repositories">Example opam repositories</h3>
-
-<p><a href='https://github.com/well-typed-lightbulbs'>Well-typed lightbulbs</a></p>
-<p><a href='https://github.com/mirage-shakti-iitm'>mirage-shakti-iitm</a></p>
+<h2>Recommended Workflow</h2>
+<hr />
+<p>Dune has built-in support for cross-compilation thanks to toolchains in OCamlfind. To work with cross-compiling you will need the following:</p>
+<ol>
+<li>The appropriate cross-compiling toolchains installed - OCaml uses a C compiler to build the OCaml compiler so a cross-compiling C compiler will be necessary.
+</li>
+<li>A switch with a cross-compiling repository setup - this will handle installing the OCaml cross-compiler.
+</li>
+</ol>
+<p>Luckily, that is fairly easy. Below, in real world examples, there are some repositories you can use. Instructions for installing say the <em>RISC-V</em> cross-compiler can be found in <a href="https://github.com/patricoferris/ocaml-on-riscv/blob/trunk/opam/Dockerfile">this Dockerfile</a>. In the future the OCaml compiler will support cross-compilation out-of-the-box but for now you will have to use some modified versions of the compiler.</p>
+<h2>Real World Examples</h2>
+<hr />
+<h3>Example opam repositories</h3>
+<p><a href="https://github.com/well-typed-lightbulbs">Well-typed lightbulbs</a></p>
+<p><a href="https://github.com/mirage-shakti-iitm">mirage-shakti-iitm</a></p>
 
      
               

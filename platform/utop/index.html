@@ -91,18 +91,18 @@
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
     <h1>Utop</h1>
-    <h2 id="Overview">Overview</h2>
-
-<p><hr/><a href='https://github.com/ocaml-community/utop'>Utop</a> is the <em>universal top-level</em> for OCaml. It is essentially a <em>read-evaluate-print</em> loop which makes it great for prototyping functions, learning OCaml and checking type signatures. It can be installed using opam with <code>opam install utop</code>.</p>
-<h2 id="Key-Concepts">Key Concepts</h2>
-
-<p><hr/>Utop is much more than just a learning tool - it can help any OCaml programmer discover type signatures and prototype new ideas quickly without having to build a full program. Some of the most useful directives are:</p>
+    <h2>Overview</h2>
+<hr />
+<p><a href="https://github.com/ocaml-community/utop">Utop</a> is the <em>universal top-level</em> for OCaml. It is essentially a <em>read-evaluate-print</em> loop which makes it great for prototyping functions, learning OCaml and checking type signatures. It can be installed using opam with <code>opam install utop</code>.</p>
+<h2>Key Concepts</h2>
+<hr />
+<p>Utop is much more than just a learning tool - it can help any OCaml programmer discover type signatures and prototype new ideas quickly without having to build a full program. Some of the most useful directives are:</p>
 <pre><code>(* load external packages *)
 utop # #require &quot;omd&quot; 
 
 (* load source files providing dependent packages are loaded *)
-utop # #use &quot;src/utils.ml&quot; </code></pre>
-
+utop # #use &quot;src/utils.ml&quot; 
+</code></pre>
 <p>With packages loaded into the toplevel we can explore them to help speed up are development process when using them, for example if we wished to know what all of the exposed functions and types are for the <code>Omd</code> module we can run <code>#show omd</code> . For specific functions we can just print them.</p>
 <pre><code>(* load omd *)
 utop # #require &quot;omd&quot;
@@ -113,8 +113,8 @@ utop # Omd.of_channel;;
 
 (* see what the doc type aliases *)
 utop # #show Omd.doc;; 
-- : type nonrec doc = Omd.block list</code></pre>
-
+- : type nonrec doc = Omd.block list
+</code></pre>
 <p>This process is much faster and smoother than checking the online documentation or the source code. It also prints the return types of functions which is especially useful when you move beyond the primitive types like <code>float</code> and <code>int</code>.</p>
 <pre><code>(* see what the doc type aliases *)
 utop # Omd.of_string &quot;[OCaml](https://ocaml.org/)&quot;
@@ -126,8 +126,8 @@ utop # Omd.of_string &quot;[OCaml](https://ocaml.org/)&quot;
        {Omd.label = {Omd.il_desc = Omd.Text &quot;OCaml&quot;; il_attributes = []};
         destination = &quot;https://ocaml.org/&quot;; title = None};
      il_attributes = []};
-  bl_attributes = []}]</code></pre>
-
+  bl_attributes = []}]
+</code></pre>
 <p>This can help you make sure functions return the types you expect instead of having to find the pretty printer and add print statements over parts of your code you want to inspect.</p>
 
      
