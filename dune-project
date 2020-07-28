@@ -22,6 +22,7 @@
  (synopsis "Explore OCaml Sources")
  (description "Build tool, scripts and content for the Explore OCaml site")
  (depends
+  (alcotest :with-test)
   (ocaml
    (and
     (>= 4.10.0)

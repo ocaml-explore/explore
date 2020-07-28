@@ -12,6 +12,8 @@ module type S = sig
 
   val get_title : t -> string
 
+  val get_date : t -> string
+
   val get_md : t -> string
 
   val get_path : t -> string
@@ -40,6 +42,15 @@ module Basic : S = struct
     | Ok title -> title
     | Error _ -> failwith "Failed to get title for: " ^ get_path t
 
+  let get_date t =
+    let date_to_string p =
+      Ptime.pp Format.str_formatter p;
+      Format.flush_str_formatter ()
+    in
+    match Jekyll_format.(date (fields t.data)) with
+    | Ok date -> date_to_string date
+    | Error _ -> failwith "Failed to get date for: " ^ get_path t
+
   let get_md t = Jekyll_format.body t.data
 
   let v ~path ~content =
@@ -52,8 +63,14 @@ module Basic : S = struct
   let to_string t = t.path
 
   let to_html t =
+    let title = [%html "<h2>" [ Html.txt (get_title t) ] "</h2>"] in
+    let date =
+      [%html
+        {|<p><em> Last updated: |} [ Html.txt (get_date t) ] {| </em></p> |}]
+    in
     Components.wrap_body ~title:(get_title t)
-      ~body:[ Html.Unsafe.data Omd.(to_html (of_string (get_md t))) ]
+      ~body:
+        [ title; date; Html.Unsafe.data Omd.(to_html (of_string (get_md t))) ]
 
   let get_prop ~coll ~ident = Jekyll_format.find ident (get_meta coll)
 

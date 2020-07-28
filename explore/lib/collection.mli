@@ -13,6 +13,8 @@ module type S = sig
 
   val get_title : t -> string
 
+  val get_date : t -> string
+
   val get_md : t -> string
 
   val get_path : t -> string

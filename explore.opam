@@ -9,6 +9,7 @@ homepage: "https://github.com/patricoferris/explore"
 bug-reports: "https://github.com/patricoferris/explore/issues"
 depends: [
   "dune" {>= "2.6"}
+  "alcotest" {with-test}
   "ocaml" {>= "4.10.0" & < "4.11.0"}
   "core"
   "tyxml"
