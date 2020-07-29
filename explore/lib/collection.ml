@@ -48,6 +48,8 @@ module Basic : S = struct
     | Ok title -> title
     | Error _ -> failwith "Failed to get title for: " ^ get_path t
 
+  let get_md t = Jekyll_format.body t.data
+
   let get_date t =
     let date_to_string p =
       Ptime.pp Format.str_formatter p;
@@ -55,9 +57,7 @@ module Basic : S = struct
     in
     match Jekyll_format.(date (fields t.data)) with
     | Ok date -> date_to_string date
-    | Error _ -> failwith "Failed to get date for: " ^ get_path t
-
-  let get_md t = Jekyll_format.body t.data
+    | Error _ -> failwith "Failed to get date for: " ^ get_md t
 
   let v ~path ~content =
     match Jekyll_format.of_string content with
@@ -106,7 +106,7 @@ module Basic : S = struct
             get_description t ))
         ts
     in
-    Components.wrap_body ~title
+    Components.wrap_body ~toc:None ~title
       ~body:[ Components.make_title title; Components.make_index_list lst ]
 
   let get_relations relation t =
@@ -135,15 +135,15 @@ module Basic : S = struct
       if List.length resources = 0 then []
       else [ res_title; make_resources resources ]
     in
-    let title = [%html "<h1>" [ Html.txt (get_title t) ] "</h1>"] in
-    let date =
-      [%html
-        {|<p><em> Last updated: |} [ Html.txt (get_date t) ] {| </em></p> |}]
+    let td =
+      Components.make_omd_title_date ~title:(get_title t) ~date:(get_date t)
     in
-    Components.wrap_body ~title:(get_title t)
-      ~body:
-        ([ title; date; Html.Unsafe.data Omd.(to_html (of_string (get_md t))) ]
-        @ resources)
+    let omd = td @ Omd.of_string (get_md t) in
+    let toc = Toc.(to_html (toc omd)) in
+    Components.wrap_body
+      ~toc:(Some [ toc ])
+      ~title:(get_title t)
+      ~body:([ Html.Unsafe.data (Omd.to_html (Toc.transform omd)) ] @ resources)
 end
 
 module Workflow = struct
@@ -173,20 +173,23 @@ module C = struct
         related
     in
     let workflow_comp = Components.make_index_list path_and_title in
-    let title = [%html "<h1>" [ Html.txt (get_title t) ] "</h1>"] in
+    let td =
+      Components.make_omd_title_date ~title:(get_title t) ~date:(get_date t)
+    in
+    let omd = td @ Omd.of_string (get_md t) in
+    let toc = Toc.(to_html (toc omd)) in
     let workflows = [%html "<h3>" [ Html.txt "Related Workflows" ] "</h3>"] in
     let content =
       if List.is_empty path_and_title then
-        [ title; Html.Unsafe.data Omd.(to_html (of_string (get_md t))) ]
+        [ Html.Unsafe.data Omd.(to_html (Toc.transform omd)) ]
       else
         [
-          title;
-          Html.Unsafe.data Omd.(to_html (of_string (get_md t)));
+          Html.Unsafe.data Omd.(to_html (Toc.transform omd));
           workflows;
           workflow_comp;
         ]
     in
-    Components.wrap_body ~title:(get_title t) ~body:content
+    Components.wrap_body ~toc:(Some [ toc ]) ~title:(get_title t) ~body:content
 
   let get_workflows t (workflows : Workflow.t list) =
     let user_title = get_title t in

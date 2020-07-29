@@ -1,6 +1,6 @@
 ---
 title: Application Developers
-date: July 23, 2020 4:03 PM
+date: 2020-07-27 09:35:49
 description: Application developers are looking to build usable solutions to
   real world problems.
 ---

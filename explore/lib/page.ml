@@ -1,5 +1,3 @@
-open Tyxml
-
 type t = { title : string; updated : string; path : string; body : string }
 
 let v ~path ~content =
@@ -16,15 +14,12 @@ let v ~path ~content =
   { title; updated; path; body = Jekyll_format.body jkl }
 
 let to_html t =
-  let md = Omd.(to_html (of_string t.body)) in
-  let page =
-    [%html
-      {|<h1>|} [ Html.txt t.title ] {|</h1>
-    <p><em> Last updated: |}
-        [ Html.txt t.updated ] {| </em></p><hr> |}
-        [ Tyxml.Html.Unsafe.data md ]]
-  in
-  Components.wrap_body ~title:t.title ~body:page
+  let td = Components.make_omd_title_date ~title:t.title ~date:t.updated in
+  let omd = td @ Omd.of_string t.body in
+  let toc = Toc.(to_html (toc omd)) in
+  let md = Omd.(to_html (Toc.transform omd)) in
+  let page = [%html [ Tyxml.Html.Unsafe.data md ]] in
+  Components.wrap_body ~toc:(Some [ toc ]) ~title:t.title ~body:page
 
 let get_body t = t.body
 

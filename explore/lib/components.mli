@@ -1,4 +1,5 @@
 val wrap_body :
+  toc:[< Html_types.object__content_fun > `PCDATA ] Tyxml_html.elt list option ->
   title:string ->
   body:[< Html_types.object__content_fun > `PCDATA ] Tyxml_html.elt list ->
   Tyxml.Html.doc
@@ -14,6 +15,10 @@ val make_index_list :
 (** [make_index_list a b lst] will use the [(path, title, description)] of each
     element to form an a div of links to [path] with the text [title] and p tag
     of description. *)
+
+val make_omd_title_date : title:string -> date:string -> Omd.doc
+(** [make_omd_title_date title date] produces a heading 1 and italicized
+    paragraph for the title and date respectively *)
 
 val emit_page : string -> Tyxml.Html.doc -> unit
 (** [emit_page path doc] will ouput the HTML ([doc]) to [path] *)

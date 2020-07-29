@@ -10,9 +10,8 @@ let nav_bar () =
         <h2 style="text-align: center">Explore OCaml</h2>
       </a>
     </div>
-    <div class="pure-u-1-3">
-    </div>
-    <div class="pure-u-1-3 flex-col flex-vert">
+    <div class="pure-u-1-3"></div>
+    <div class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
       <div class="flex-row flex-center">
         <div class="nav-button">
           <a href="/platform">
@@ -26,17 +25,42 @@ let nav_bar () =
         </div>
         <div class="nav-button">
           <a href="/libraries">
-          Libraries
+            Libraries
           </a>
         </div>
       </div>
+    </div>
+    <div class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu pure-menu-horizontal flex-col flex-vert pure-u-1-3">
+      <ul class="pure-menu-list" style="text-align: center">
+        <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+        <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
+        <ul class="pure-menu-children mob-menu-list">
+            <li class="pure-menu-item mob-menu-item">
+              <a href="/platform">
+                Tools 
+              </a>
+            </li>
+            <li class="pure-menu-item mob-menu-item">
+              <a href="/users">
+                Users
+              </a>
+            </li>
+            <li class="pure-menu-item mob-menu-item">
+              <a href="/libraries">
+               Libraries
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
     </div>
   </div>
 |}]
 
 let make_title title = [%html "<h1>" [ Html.txt title ] "</h1>"]
 
-let wrap_body ~title ~body =
+let wrap_body ~toc ~title ~body =
+  let toc = match toc with None -> [] | Some t -> t in
   [%html
     {|
   <html>
@@ -49,6 +73,8 @@ let wrap_body ~title ~body =
       <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.0/build/grids-core.css" />
       <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.0/build/grids-units.css" />
       <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css" />
+      <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.0/build/menus-core.css" />
+      <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.0/build/menus-dropdown.css" />
       <link rel=stylesheet href="/css/main.css"/>
       <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css">
       <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
@@ -61,6 +87,9 @@ let wrap_body ~title ~body =
       {|
         <div class="pure-g">
           <div class="pure-u-1-12 pure-u-md-1-4">
+            <div class="pure-hidden-sm pure-hidden-md sticky">|}
+      toc
+      {|</div>
           </div>
           <div class="pure-u-5-6 pure-u-md-1-2">
         |}
@@ -70,6 +99,9 @@ let wrap_body ~title ~body =
     </body>
   </html>
 |}]
+
+let make_omd_title_date ~title ~date =
+  Omd.of_string ("# " ^ title ^ "\n*Last Updated: " ^ date ^ "*\n\n---\n")
 
 let make_link_list lst =
   let to_link (path, title) =
@@ -84,7 +116,8 @@ let make_link_list lst =
 let make_index_list lst =
   let to_elt (path, title, description) =
     [%html
-      "<a class='index-a' href=" path "><div class='index-div'><h3>"
+      "<a class='index-a' href=" path
+        "><div class='index-div'><h3 style='margin-top: revert'>"
         [ Html.txt title ] "</h3><p>" [ Html.txt description ] "</p></div></a>"]
   in
   [%html {|
