@@ -13,6 +13,10 @@
    href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
   <link rel="stylesheet"
    href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-dropdown.css"/>
   <link rel="stylesheet" href="/css/main.css"/>
   <link rel="stylesheet"
    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
@@ -41,12 +45,11 @@
             
    </div>
              
-   <div class="pure-u-1-3">
-                               </div>
-   
-       
-   <div class="pure-u-1-3 flex-col flex-vert">
-                                                    
+   <div class="pure-u-1-3"></div>
+                                     
+   <div class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
+    
+          
     <div class="flex-row flex-center">
                                               
      <div class="nav-button">
@@ -70,7 +73,7 @@
      <div class="nav-button">
                                        
       <a href="/libraries">
-                                     Libraries
+                                       Libraries
                                      </a>
       
               
@@ -79,20 +82,97 @@
     </div>
               
    </div>
+             
+   <div class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu
+    pure-menu-horizontal flex-col flex-vert pure-u-1-3">
+                                                              
+    <ul class="pure-menu-list" style="text-align: center">
+     <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+      
+              <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
+      
+              
+      <ul class="pure-menu-children mob-menu-list">
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/platform">
+                                            Tools 
+                                          </a>
+        
+                    
+       </li>
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/users">
+                                         Users
+                                       </a>
+        
+                    
+       </li>
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/libraries">
+                                            Libraries
+                                           </a>
+        
+                    
+       </li>
+      </ul>
+                   
+     </li>
+    </ul>
+             
+   </div>
            
   </div>
                 
   <div class="pure-g">
                                 
    <div class="pure-u-1-12 pure-u-md-1-4">
-                                                    </div>
-   
-             
+                                                      
+    <div class="pure-hidden-sm pure-hidden-md sticky">
+     <ul class="toc">
+      <li><a class="toc-item-0" href="#"></a>
+       <ul class="toc">
+        <li>
+         <a class="toc-item-1" href="#setting-up-continuous-integration">
+          Setting up Continuous Integration
+         </a>
+         <ul class="toc">
+          <li><a class="toc-item-2" href="#overview">Overview</a></li>
+         </ul>
+         <ul class="toc">
+          <li>
+           <a class="toc-item-2" href="#recommended-workflow">
+            Recommended Workflow
+           </a>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li><a class="toc-item-2" href="#alternatives">Alternatives</a>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li>
+           <a class="toc-item-2" href="#real-world-examples">
+            Real World Examples
+           </a>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </div>
+                    
+   </div>
+                   
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h2>Setting up Continuous Integration</h2>
-    <p><em> Last updated: 2020-07-27 09:35:49 +00:00 </em></p>
-    <h2>Overview</h2>
+    <h1 id="setting-up-continuous-integration">Setting up Continuous Integration</h1>
+<p><em>Last Updated: 2020-07-27 09:35:49 +00:00</em></p>
+<hr />
+<h2 id="overview">Overview</h2>
 <hr />
 <p>Continuous integration (CI) has become a basic necessity for managing projects, especially when there are multiple contributors. The idea is that for code to make it into production (or to get a &quot;seal of approval&quot; to move to the main branch) - code should pass a series of quality tests.</p>
 <p>These tests may include:</p>
@@ -105,7 +185,7 @@
 </li>
 </ol>
 <p>The point of CI is to automate most of this away. Wherever your project lives it should constantly be checking that new code meets the quality tests before allowing that code to make into &quot;production&quot;.</p>
-<h2>Recommended Workflow</h2>
+<h2 id="recommended-workflow">Recommended Workflow</h2>
 <hr />
 <p>Github offers a feature called Github Actions. It works on the principle of <em>workflows -</em> different things you might want to do on different &quot;actions&quot; within your Github repository. This can include releasing code, testing code etc. Here we're focusing on testing.</p>
 <p>To get started you will need to create a <code>.github</code> directory in your repostory and inside it a <code>workflows</code> repository. Now you can specify what you want to happen by creating a <code>config.yml</code> file.</p>
@@ -137,13 +217,13 @@ jobs:
       - name: Test
         run: opam exec -- dune runtest
 </code></pre>
-<h2>Alternatives</h2>
+<h2 id="alternatives">Alternatives</h2>
 <hr />
 <p>TravisCI is a continuous integration tool that is very flexible and also robust. There are two main ways you can use TravisCI.</p>
 <p><code>ocaml-ci-scripts</code> is a collection of useful scripts for building a complex CI testing platform. One of the main goals of CI is to make sure your code runs well <em>everywhere.</em> This implies forming a matrix of operating systems and OCaml compiler versions to make sure your code runs properly.</p>
 <p>There are quite few scripts such as <code>.travis.opam.sh</code> ,  <code>.travis.docker.sh</code> and even <code>.travis.mirage.sh</code></p>
 <p>Each is built around environment variables in order to execute different jobs with say different linux distributions, ocaml versions etc.</p>
-<h2>Real World Examples</h2>
+<h2 id="real-world-examples">Real World Examples</h2>
 <hr />
 <p><a href="https://github.com/avsm/ocaml-yaml/blob/master/.github/workflows/test.yml">avsm/ocaml-yaml</a></p>
 

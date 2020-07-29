@@ -9,6 +9,13 @@ users:
   - Application Developer
 tools:
   - Dune
+resources:
+  - url: https://github.com/ocaml-bench/notes/blob/master/profiling_notes.md
+    title: Profiling Notes 
+    description: Notes on profiling OCaml code in terms of memory and performance by Tom Kelly and Sadiq Jaffer
+  - url: https://blog.janestreet.com/a-brief-trip-through-spacetime/ 
+    title: A Brief Trip through Space Time 
+    description: A thorough explanation of how to use the OCaml Spactime compiler variant for memory profiling your OCaml code by Leo White
 ---
 
 ## Overview

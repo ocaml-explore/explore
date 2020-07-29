@@ -13,6 +13,10 @@
    href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
   <link rel="stylesheet"
    href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-dropdown.css"/>
   <link rel="stylesheet" href="/css/main.css"/>
   <link rel="stylesheet"
    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
@@ -41,12 +45,11 @@
             
    </div>
              
-   <div class="pure-u-1-3">
-                               </div>
-   
-       
-   <div class="pure-u-1-3 flex-col flex-vert">
-                                                    
+   <div class="pure-u-1-3"></div>
+                                     
+   <div class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
+    
+          
     <div class="flex-row flex-center">
                                               
      <div class="nav-button">
@@ -70,7 +73,7 @@
      <div class="nav-button">
                                        
       <a href="/libraries">
-                                     Libraries
+                                       Libraries
                                      </a>
       
               
@@ -79,21 +82,106 @@
     </div>
               
    </div>
+             
+   <div class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu
+    pure-menu-horizontal flex-col flex-vert pure-u-1-3">
+                                                              
+    <ul class="pure-menu-list" style="text-align: center">
+     <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+      
+              <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
+      
+              
+      <ul class="pure-menu-children mob-menu-list">
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/platform">
+                                            Tools 
+                                          </a>
+        
+                    
+       </li>
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/users">
+                                         Users
+                                       </a>
+        
+                    
+       </li>
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/libraries">
+                                            Libraries
+                                           </a>
+        
+                    
+       </li>
+      </ul>
+                   
+     </li>
+    </ul>
+             
+   </div>
            
   </div>
                 
   <div class="pure-g">
                                 
    <div class="pure-u-1-12 pure-u-md-1-4">
-                                                    </div>
-   
-             
+                                                      
+    <div class="pure-hidden-sm pure-hidden-md sticky">
+     <ul class="toc">
+      <li><a class="toc-item-0" href="#"></a>
+       <ul class="toc">
+        <li><a class="toc-item-1" href="#opam-client">Opam Client</a>
+         <ul class="toc">
+          <li><a class="toc-item-2" href="#overview">Overview</a></li>
+         </ul>
+         <ul class="toc">
+          <li><a class="toc-item-2" href="#key-concepts">Key Concepts</a>
+           <ul class="toc">
+            <li><a class="toc-item-3" href="#switches">Switches</a></li>
+           </ul>
+           <ul class="toc">
+            <li><a class="toc-item-3" href="#repositories">Repositories</a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li>
+             <a class="toc-item-3" href="#updating-&amp;-upgrading">
+              Updating &amp; Upgrading
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li><a class="toc-item-3" href="#pinning">Pinning</a></li>
+           </ul>
+           <ul class="toc">
+            <li>
+             <a class="toc-item-3" href="#source-and-show">Source and Show
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li><a class="toc-item-3" href="#plugins">Plugins</a></li>
+           </ul>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </div>
+                    
+   </div>
+                   
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h1>Opam Client</h1>
-                            
-    <p><em> Last updated: 2020-07-27 09:35:49 +00:00 </em></p><hr/> 
-    <h2>Overview</h2>
+    <h1 id="opam-client">Opam Client</h1>
+<p><em>Last Updated: 2020-07-27 09:35:49 +00:00</em></p>
+<hr />
+<h2 id="overview">Overview</h2>
 <hr />
 <p>opam is the OCaml Package Manager. It handles the sharing of libraries and code, dependency management and installation. In addition to this it also handles compiler installation. Opam handles what the following do for other languages:</p>
 <ul>
@@ -106,9 +194,9 @@
 </ul>
 <p><img src="/images/opam.v1.png" alt="opam client diagram" /></p>
 <p>A simplfied diagram of some of the key features in opam</p>
-<h2>Key Concepts</h2>
+<h2 id="key-concepts">Key Concepts</h2>
 <hr />
-<h3>Switches</h3>
+<h3 id="switches">Switches</h3>
 <p>In the official documentation switches are described as (<code>opam switch --help</code>):</p>
 <blockquote>
 <p>This command is used to manage &quot;switches&quot;, which are independent
@@ -117,23 +205,23 @@ pinned packages. This is typically useful to have different versions of
 the compiler available at once.</p>
 </blockquote>
 <p>Switches can either be local or system-wide. The former is usually installed alongside your code is an <code>_opam</code> directory whilst the latter exists in <code>~/.opam</code>. Local switches are similar to <em>node_modules</em> in the NodeJS ecosystem.</p>
-<h3>Repositories</h3>
+<h3 id="repositories">Repositories</h3>
 <p>Opam repositories are the source of truth for what <code>opam</code> can and cannot install. If the repostory doesn't have package <code>X</code> with an opam file, then it won't be installed. The default repository is where most people will begin and end their journey with repositories. This is where you can publish new releases of your libraries and others can update and upgrade to these versions.</p>
 <p>This is held on Github:</p>
 <p><a href="https://github.com/ocaml/opam-repository">ocaml/opam-repository</a></p>
 <p>Note in the diagram above, in the unselected switch, there are two repositories. There is no limit on the number you can have and when installing libraries <code>opam</code> will check each for a folder that matches what you are looking for. The above is an example of what you would have to do to start cross-compiling. If you are interested check:</p>
-<h3>Updating &amp; Upgrading</h3>
+<h3 id="updating-&amp;-upgrading">Updating &amp; Upgrading</h3>
 <p>Hopefully with the explanation of repositories it is a little clearer what updating and upgrading means. When you install and opam switch you get a local cloned copy of the opam repository. As you code this will remain unchanged even as library authors publish new releases.</p>
 <p>To get the newer (and hopefully better!) code you will essentially have to <code>git pull</code> the latest opam repostiory (<code>opam update</code>) and then tell opam to install the latests version of libraries (<code>opam upgrade</code>). By supplying a single package to these commands you won't update and upgrade everything.</p>
 <p>Within your library opam file you can specify constraints on version numbers to ensure your code works correctly. A major version change say <code>irmin.1.0.0</code> to <code>irmin.2.0.0</code> would likely break your code.</p>
-<h3>Pinning</h3>
+<h3 id="pinning">Pinning</h3>
 <p>Pinning is a method for overriding the opam repository. In the diagram our repository has a version of <code>alcotest</code> at <code>1.1.0</code> - under normal circumstances this is what will be installed and used to build libraries that depend on it.</p>
 <p>But say we want to add a new feature or fix some code in <code>alcotest</code> and then try building some libraries that use it, do we have to release a new version or manually change the opam repository? No. You can run <code>opam pin add alcotest . --kind=path</code> from within the <code>alcotest</code> library.</p>
 <p>It is important to know that opam is git-based when it comes to source code hence the need to specify <code>--kind=path</code> otherwise it will try and use the latest commit and you don't want to commit everytime you want to try to change something.</p>
-<h3>Source and Show</h3>
+<h3 id="source-and-show">Source and Show</h3>
 <p>Source and show are very useful commands for library authors. Source downloads the latest code attached to the version of a given library.</p>
 <p>Show allows you to see the metadata associated with a library. You can even print the opam file with: <code>opam show &lt;library&gt; --raw</code></p>
-<h3>Plugins</h3>
+<h3 id="plugins">Plugins</h3>
 <p>Plugins in opam are ways to extend opam's functionality in a more accessible way (anyone can write a plugin!). One of the most used is <code>depext</code> - you can tell it is a plugin from it's opam file:</p>
 <p><code>tags: &quot;flags:plugin&quot;</code></p>
 <p><a href="https://github.com/ocaml-opam/opam-depext">ocaml-opam/opam-depext</a></p>

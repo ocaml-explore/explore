@@ -13,6 +13,10 @@
    href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
   <link rel="stylesheet"
    href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-dropdown.css"/>
   <link rel="stylesheet" href="/css/main.css"/>
   <link rel="stylesheet"
    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
@@ -41,12 +45,11 @@
             
    </div>
              
-   <div class="pure-u-1-3">
-                               </div>
-   
-       
-   <div class="pure-u-1-3 flex-col flex-vert">
-                                                    
+   <div class="pure-u-1-3"></div>
+                                     
+   <div class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
+    
+          
     <div class="flex-row flex-center">
                                               
      <div class="nav-button">
@@ -70,7 +73,7 @@
      <div class="nav-button">
                                        
       <a href="/libraries">
-                                     Libraries
+                                       Libraries
                                      </a>
       
               
@@ -79,33 +82,114 @@
     </div>
               
    </div>
+             
+   <div class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu
+    pure-menu-horizontal flex-col flex-vert pure-u-1-3">
+                                                              
+    <ul class="pure-menu-list" style="text-align: center">
+     <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+      
+              <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
+      
+              
+      <ul class="pure-menu-children mob-menu-list">
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/platform">
+                                            Tools 
+                                          </a>
+        
+                    
+       </li>
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/users">
+                                         Users
+                                       </a>
+        
+                    
+       </li>
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/libraries">
+                                            Libraries
+                                           </a>
+        
+                    
+       </li>
+      </ul>
+                   
+     </li>
+    </ul>
+             
+   </div>
            
   </div>
                 
   <div class="pure-g">
                                 
    <div class="pure-u-1-12 pure-u-md-1-4">
-                                                    </div>
-   
-             
+                                                      
+    <div class="pure-hidden-sm pure-hidden-md sticky">
+     <ul class="toc">
+      <li><a class="toc-item-0" href="#"></a>
+       <ul class="toc">
+        <li><a class="toc-item-1" href="#getting-started">Getting Started</a>
+         <ul class="toc">
+          <li><a class="toc-item-2" href="#overview">Overview</a></li>
+         </ul>
+         <ul class="toc">
+          <li>
+           <a class="toc-item-2" href="#recommended-workflow">
+            Recommended Workflow
+           </a>
+           <ul class="toc">
+            <li>
+             <a class="toc-item-3" href="#ocamlpro's-try-ocaml">
+              OCamlPro's Try OCaml
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li>
+             <a class="toc-item-3" href="#ocaml-sf's-learn-ocaml">
+              OCaml-SF's Learn Ocaml
+             </a>
+            </li>
+           </ul>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li><a class="toc-item-2" href="#alternatives">Alternatives</a>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </div>
+                    
+   </div>
+                   
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h2>Getting Started</h2>
-    <p><em> Last updated: 2020-07-27 09:35:49 +00:00 </em></p>
-    <h2>Overview</h2>
+    <h1 id="getting-started">Getting Started</h1>
+<p><em>Last Updated: 2020-07-27 09:35:49 +00:00</em></p>
+<hr />
+<h2 id="overview">Overview</h2>
 <hr />
 <p>The &quot;Getting Started&quot; workflow is meant for somebody who just wants to try the OCaml language. The full extent to what they want to achieve is likely a few <code>.ml</code> files inside a directory using only tools from the standard library.</p>
 <p>The barrier to entry should be low, it should be intuitive to setup and get started quickly. This is deal for OCaml workshops or education settings (in the first instance) before introducing more compilicated tooling to support larger more ambitious projects in the language.</p>
-<h2>Recommended Workflow</h2>
+<h2 id="recommended-workflow">Recommended Workflow</h2>
 <hr />
 <p>For beginners how just want to try the language, the fastest and simplest solution is to use one of the tools that runs in the browser. Currently there are two options:</p>
-<h3>OCamlPro's Try OCaml</h3>
+<h3 id="ocamlpro's-try-ocaml">OCamlPro's Try OCaml</h3>
 <p>A simple web application that offers a text editor and console for running single file OCaml programs.</p>
 <p><a href="https://try.ocamlpro.com/">OCP Sandbox</a></p>
-<h3>OCaml-SF's Learn Ocaml</h3>
+<h3 id="ocaml-sf's-learn-ocaml">OCaml-SF's Learn Ocaml</h3>
 <p>Very similar to Try OCaml with a toplevel and additionally, a series of OCaml exercises designed to help new programmers learn the OCaml language. It also includes a token system to save your code to a workspace online</p>
 <p><a href="https://github.com/ocaml-sf/learn-ocaml">ocaml-sf/learn-ocaml</a></p>
-<h2>Alternatives</h2>
+<h2 id="alternatives">Alternatives</h2>
 <hr />
 <p><a href="https://ocsigen.org/home/intro.html">Ocsigen</a>, the creators and maintainers of <code>js_of_ocaml</code>, have an interactive toplevel with some nice examples. The related workflows link to more complex examples like interactiving with the DOM using OCaml.</p>
 <p><a href="https://ocsigen.org/js_of_ocaml/3.6.0/manual/files/toplevel/index.html">OCaml toplevel</a></p>

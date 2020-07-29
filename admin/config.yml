@@ -86,6 +86,11 @@ collections:
         required: false
         field: {label: "Library", name: "library", widget: "relation", collection: "libraries", searchFields: ["title"], valueField: "title", displayField: "title"}
       - {label: "Body", name: "body", widget: "markdown"}
+      - label: "Resources"
+        name: "resources"
+        widget: "list"
+        required: false
+        fields: [{label: "URL", name: "url", widget: "string"}, {label: "Title", name: "title", widget: "string"}, {label: "Short Description", name: "desciption", widget: "string"}]
   - label: "Pages"
     name: "pages"
     files:

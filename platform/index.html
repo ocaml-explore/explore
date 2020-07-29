@@ -13,6 +13,10 @@
    href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
   <link rel="stylesheet"
    href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-dropdown.css"/>
   <link rel="stylesheet" href="/css/main.css"/>
   <link rel="stylesheet"
    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
@@ -41,12 +45,11 @@
             
    </div>
              
-   <div class="pure-u-1-3">
-                               </div>
-   
-       
-   <div class="pure-u-1-3 flex-col flex-vert">
-                                                    
+   <div class="pure-u-1-3"></div>
+                                     
+   <div class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
+    
+          
     <div class="flex-row flex-center">
                                               
      <div class="nav-button">
@@ -70,7 +73,7 @@
      <div class="nav-button">
                                        
       <a href="/libraries">
-                                     Libraries
+                                       Libraries
                                      </a>
       
               
@@ -79,63 +82,108 @@
     </div>
               
    </div>
+             
+   <div class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu
+    pure-menu-horizontal flex-col flex-vert pure-u-1-3">
+                                                              
+    <ul class="pure-menu-list" style="text-align: center">
+     <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+      
+              <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
+      
+              
+      <ul class="pure-menu-children mob-menu-list">
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/platform">
+                                            Tools 
+                                          </a>
+        
+                    
+       </li>
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/users">
+                                         Users
+                                       </a>
+        
+                    
+       </li>
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/libraries">
+                                            Libraries
+                                           </a>
+        
+                    
+       </li>
+      </ul>
+                   
+     </li>
+    </ul>
+             
+   </div>
            
   </div>
                 
   <div class="pure-g">
                                 
    <div class="pure-u-1-12 pure-u-md-1-4">
-                                                    </div>
-   
-             
+                                                      
+    <div class="pure-hidden-sm pure-hidden-md sticky"></div>
+                                                                      
+   </div>
+                   
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
     <h1>Platform</h1>
     <div>
                
      <a class="index-a" href="/platform/mdx">
-      <div class="index-div"><h3>Mdx</h3>
+      <div class="index-div"><h3 style="margin-top: revert">Mdx</h3>
        <p>Excutable code blocks in your markdown</p>
       </div>
      </a>
      <a class="index-a" href="/platform/dune-release">
-      <div class="index-div"><h3>Dune-release</h3>
+      <div class="index-div"><h3 style="margin-top: revert">Dune-release</h3>
        <p>A CLI tool for easier packaging and publishing</p>
       </div>
      </a>
      <a class="index-a" href="/platform/merlin">
-      <div class="index-div"><h3>Merlin</h3>
+      <div class="index-div"><h3 style="margin-top: revert">Merlin</h3>
        <p>Brining IDE features to editors like Vim and Emacs</p>
       </div>
      </a>
      <a class="index-a" href="/platform/dune">
-      <div class="index-div"><h3>Dune</h3>
+      <div class="index-div"><h3 style="margin-top: revert">Dune</h3>
        <p>
         Dune is a build tool that has been widely adopted in the OCaml world
        </p>
       </div>
      </a>
      <a class="index-a" href="/platform/bun">
-      <div class="index-div"><h3>Bun</h3>
+      <div class="index-div"><h3 style="margin-top: revert">Bun</h3>
        <p>A CLI tool for helping fuzz testing commands</p>
       </div>
      </a>
      <a class="index-a" href="/platform/utop">
-      <div class="index-div"><h3>Utop</h3><p>OCaml's Universal Toplevel</p>
+      <div class="index-div"><h3 style="margin-top: revert">Utop</h3>
+       <p>OCaml's Universal Toplevel</p>
       </div>
      </a>
      <a class="index-a" href="/platform/ocamlformat">
-      <div class="index-div"><h3>OCamlformat</h3>
+      <div class="index-div"><h3 style="margin-top: revert">OCamlformat</h3>
        <p>Enforcing formatting styles to an OCaml project</p>
       </div>
      </a>
      <a class="index-a" href="/platform/ocp-indent">
-      <div class="index-div"><h3>Ocp-indent</h3>
+      <div class="index-div"><h3 style="margin-top: revert">Ocp-indent</h3>
        <p>An indentation tool for OCaml</p>
       </div>
      </a>
      <a class="index-a" href="/platform/visual-studio-code">
-      <div class="index-div"><h3>Visual Studio Code</h3>
+      <div class="index-div">
+       <h3 style="margin-top: revert">Visual Studio Code</h3>
        <p>The recommended OCaml editor with helpful plugins</p>
       </div>
      </a>

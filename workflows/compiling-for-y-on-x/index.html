@@ -13,6 +13,10 @@
    href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
   <link rel="stylesheet"
    href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-dropdown.css"/>
   <link rel="stylesheet" href="/css/main.css"/>
   <link rel="stylesheet"
    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
@@ -41,12 +45,11 @@
             
    </div>
              
-   <div class="pure-u-1-3">
-                               </div>
-   
-       
-   <div class="pure-u-1-3 flex-col flex-vert">
-                                                    
+   <div class="pure-u-1-3"></div>
+                                     
+   <div class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
+    
+          
     <div class="flex-row flex-center">
                                               
      <div class="nav-button">
@@ -70,7 +73,7 @@
      <div class="nav-button">
                                        
       <a href="/libraries">
-                                     Libraries
+                                       Libraries
                                      </a>
       
               
@@ -79,24 +82,104 @@
     </div>
               
    </div>
+             
+   <div class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu
+    pure-menu-horizontal flex-col flex-vert pure-u-1-3">
+                                                              
+    <ul class="pure-menu-list" style="text-align: center">
+     <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+      
+              <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
+      
+              
+      <ul class="pure-menu-children mob-menu-list">
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/platform">
+                                            Tools 
+                                          </a>
+        
+                    
+       </li>
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/users">
+                                         Users
+                                       </a>
+        
+                    
+       </li>
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/libraries">
+                                            Libraries
+                                           </a>
+        
+                    
+       </li>
+      </ul>
+                   
+     </li>
+    </ul>
+             
+   </div>
            
   </div>
                 
   <div class="pure-g">
                                 
    <div class="pure-u-1-12 pure-u-md-1-4">
-                                                    </div>
-   
-             
+                                                      
+    <div class="pure-hidden-sm pure-hidden-md sticky">
+     <ul class="toc">
+      <li><a class="toc-item-0" href="#"></a>
+       <ul class="toc">
+        <li>
+         <a class="toc-item-1" href="#compiling-for-y-on-x">
+          Compiling for Y on X
+         </a>
+         <ul class="toc">
+          <li><a class="toc-item-2" href="#overview">Overview</a></li>
+         </ul>
+         <ul class="toc">
+          <li>
+           <a class="toc-item-2" href="#recommended-workflow">
+            Recommended Workflow
+           </a>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li>
+           <a class="toc-item-2" href="#real-world-examples">
+            Real World Examples
+           </a>
+           <ul class="toc">
+            <li>
+             <a class="toc-item-3" href="#example-opam-repositories">
+              Example opam repositories
+             </a>
+            </li>
+           </ul>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </div>
+                    
+   </div>
+                   
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h2>Compiling for Y on X</h2>
-    <p><em> Last updated: 2020-07-27 09:35:49 +00:00 </em></p>
-    <h2>Overview</h2>
+    <h1 id="compiling-for-y-on-x">Compiling for Y on X</h1>
+<p><em>Last Updated: 2020-07-27 09:35:49 +00:00</em></p>
+<hr />
+<h2 id="overview">Overview</h2>
 <hr />
 <p>Cross-compiling in OCaml is still an experimental feature, but there are plans to make it a fully supported one in the future.</p>
 <p>Cross-compiling allows a programmer on an <em>x86</em> machine to compile OCaml code to run on a <em>RISC-V</em> device. **Usually the target architecture is the same as the architecture our machine is running on. This is particularly useful for embedded devices running architectures like <em>ARM-32, ESP-32 or RISC-V</em>.</p>
-<h2>Recommended Workflow</h2>
+<h2 id="recommended-workflow">Recommended Workflow</h2>
 <hr />
 <p>Dune has built-in support for cross-compilation thanks to toolchains in OCamlfind. To work with cross-compiling you will need the following:</p>
 <ol>
@@ -106,9 +189,9 @@
 </li>
 </ol>
 <p>Luckily, that is fairly easy. Below, in real world examples, there are some repositories you can use. Instructions for installing say the <em>RISC-V</em> cross-compiler can be found in <a href="https://github.com/patricoferris/ocaml-on-riscv/blob/trunk/opam/Dockerfile">this Dockerfile</a>. In the future the OCaml compiler will support cross-compilation out-of-the-box but for now you will have to use some modified versions of the compiler.</p>
-<h2>Real World Examples</h2>
+<h2 id="real-world-examples">Real World Examples</h2>
 <hr />
-<h3>Example opam repositories</h3>
+<h3 id="example-opam-repositories">Example opam repositories</h3>
 <p><a href="https://github.com/well-typed-lightbulbs">Well-typed lightbulbs</a></p>
 <p><a href="https://github.com/mirage-shakti-iitm">mirage-shakti-iitm</a></p>
 

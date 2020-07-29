@@ -13,6 +13,10 @@
    href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
   <link rel="stylesheet"
    href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-dropdown.css"/>
   <link rel="stylesheet" href="/css/main.css"/>
   <link rel="stylesheet"
    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
@@ -41,12 +45,11 @@
             
    </div>
              
-   <div class="pure-u-1-3">
-                               </div>
-   
-       
-   <div class="pure-u-1-3 flex-col flex-vert">
-                                                    
+   <div class="pure-u-1-3"></div>
+                                     
+   <div class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
+    
+          
     <div class="flex-row flex-center">
                                               
      <div class="nav-button">
@@ -70,7 +73,7 @@
      <div class="nav-button">
                                        
       <a href="/libraries">
-                                     Libraries
+                                       Libraries
                                      </a>
       
               
@@ -79,23 +82,102 @@
     </div>
               
    </div>
+             
+   <div class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu
+    pure-menu-horizontal flex-col flex-vert pure-u-1-3">
+                                                              
+    <ul class="pure-menu-list" style="text-align: center">
+     <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+      
+              <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
+      
+              
+      <ul class="pure-menu-children mob-menu-list">
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/platform">
+                                            Tools 
+                                          </a>
+        
+                    
+       </li>
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/users">
+                                         Users
+                                       </a>
+        
+                    
+       </li>
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/libraries">
+                                            Libraries
+                                           </a>
+        
+                    
+       </li>
+      </ul>
+                   
+     </li>
+    </ul>
+             
+   </div>
            
   </div>
                 
   <div class="pure-g">
                                 
    <div class="pure-u-1-12 pure-u-md-1-4">
-                                                    </div>
-   
-             
+                                                      
+    <div class="pure-hidden-sm pure-hidden-md sticky">
+     <ul class="toc">
+      <li><a class="toc-item-0" href="#"></a>
+       <ul class="toc">
+        <li>
+         <a class="toc-item-1"
+          href="#configuring-ocaml-tools-for-your-editor">
+          Configuring OCaml Tools for your Editor
+         </a>
+         <ul class="toc">
+          <li><a class="toc-item-2" href="#overview">Overview</a></li>
+         </ul>
+         <ul class="toc">
+          <li>
+           <a class="toc-item-2" href="#recommended-workflow">
+            Recommended Workflow
+           </a>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li><a class="toc-item-2" href="#alternatives">Alternatives</a>
+           <ul class="toc">
+            <li><a class="toc-item-3" href="#vs-code">VS Code</a></li>
+           </ul>
+           <ul class="toc"><li><a class="toc-item-3" href="#vim">Vim</a></li>
+           </ul>
+           <ul class="toc">
+            <li><a class="toc-item-3" href="#emacs">Emacs</a></li>
+           </ul>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </div>
+                    
+   </div>
+                   
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h2>Configuring OCaml Tools for your Editor</h2>
-    <p><em> Last updated: 2020-07-27 09:35:49 +00:00 </em></p>
-    <h2>Overview</h2>
+    <h1 id="configuring-ocaml-tools-for-your-editor">Configuring OCaml Tools for your Editor</h1>
+<p><em>Last Updated: 2020-07-27 09:35:49 +00:00</em></p>
+<hr />
+<h2 id="overview">Overview</h2>
 <hr />
 <p>Having a helpful development environment can boost productivity and help catch errors early. OCaml has a powerful type system which reduces runtime errors, with a good editor setup you'll be able to catch them before you run <code>dune build</code>.</p>
-<h2>Recommended Workflow</h2>
+<h2 id="recommended-workflow">Recommended Workflow</h2>
 <hr />
 <p>The recommended editor for OCaml is <strong>Visual Studio Code</strong> - an editor with a rich ecosystem of useful plugins, themes and developer tools.</p>
 <p>To get the best setup, there is a marketplace plugin and an opam package that must be installed.</p>
@@ -109,13 +191,13 @@ opam install ocaml-lsp-server
 <li>VS Code might complain about not being able to find <code>ocaml-lsp</code> - this is done on a per switch basis and clicking on the dialog box should let you pick the switch you installed it on.
 </li>
 </ul>
-<h2>Alternatives</h2>
+<h2 id="alternatives">Alternatives</h2>
 <hr />
-<h3>VS Code</h3>
+<h3 id="vs-code">VS Code</h3>
 <p>Other extensions exist which offer support for OCaml and Reason including:</p>
 <p><a href="https://github.com/hackwaly/vscode-ocaml">hackwaly/vscode-ocaml</a></p>
 <p><a href="https://github.com/reasonml-editor/vscode-reasonml">reasonml-editor/vscode-reasonml</a></p>
-<h3>Vim</h3>
+<h3 id="vim">Vim</h3>
 <p>The to use with vim is merlin. OCaml LSP is the next generation of merlin, but for vim you will need merlin installed. There is also a useful opam plugin for getting up and running with the merlin features:</p>
 <pre><code class="language-bash">opam install merlin ocp-indent 
 opam user-setup install 
@@ -135,7 +217,7 @@ set statusline+=%*
 let g:syntastic_ocaml_checkers = ['merlin']
 </code></pre>
 <p>For more features and information be sure to read the wiki on merlin linked in the resources.</p>
-<h3>Emacs</h3>
+<h3 id="emacs">Emacs</h3>
 <p>The workflow for emacs is very similar to vim.</p>
 <pre><code class="language-bash">opam install merlin ocp-indent 
 opam user-setup install 

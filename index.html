@@ -13,6 +13,10 @@
    href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
   <link rel="stylesheet"
    href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-dropdown.css"/>
   <link rel="stylesheet" href="/css/main.css"/>
   <link rel="stylesheet"
    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
@@ -41,12 +45,11 @@
             
    </div>
              
-   <div class="pure-u-1-3">
-                               </div>
-   
-       
-   <div class="pure-u-1-3 flex-col flex-vert">
-                                                    
+   <div class="pure-u-1-3"></div>
+                                     
+   <div class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
+    
+          
     <div class="flex-row flex-center">
                                               
      <div class="nav-button">
@@ -70,7 +73,7 @@
      <div class="nav-button">
                                        
       <a href="/libraries">
-                                     Libraries
+                                       Libraries
                                      </a>
       
               
@@ -79,21 +82,116 @@
     </div>
               
    </div>
+             
+   <div class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu
+    pure-menu-horizontal flex-col flex-vert pure-u-1-3">
+                                                              
+    <ul class="pure-menu-list" style="text-align: center">
+     <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+      
+              <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
+      
+              
+      <ul class="pure-menu-children mob-menu-list">
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/platform">
+                                            Tools 
+                                          </a>
+        
+                    
+       </li>
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/users">
+                                         Users
+                                       </a>
+        
+                    
+       </li>
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/libraries">
+                                            Libraries
+                                           </a>
+        
+                    
+       </li>
+      </ul>
+                   
+     </li>
+    </ul>
+             
+   </div>
            
   </div>
                 
   <div class="pure-g">
                                 
    <div class="pure-u-1-12 pure-u-md-1-4">
-                                                    </div>
-   
-             
+                                                      
+    <div class="pure-hidden-sm pure-hidden-md sticky">
+     <ul class="toc">
+      <li><a class="toc-item-0" href="#"></a>
+       <ul class="toc">
+        <li>
+         <a class="toc-item-1" href="#start-exploring-ocaml">
+          Start Exploring OCaml
+         </a>
+        </li>
+       </ul>
+       <ul class="toc"><li><a class="toc-item-1" href="#opam">Opam</a></li>
+       </ul>
+       <ul class="toc">
+        <li><a class="toc-item-1" href="#workflows">Workflows</a>
+         <ul class="toc">
+          <li>
+           <a class="toc-item-2" href="#learning-the-language-📚">
+            Learning the Language 📚
+           </a>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li>
+           <a class="toc-item-2" href="#developing-in-ocaml-🧠">
+            Developing in OCaml 🧠
+           </a>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li>
+           <a class="toc-item-2" href="#distributing-ocaml-code-🌏">
+            Distributing OCaml code 🌏
+           </a>
+          </li>
+         </ul>
+        </li>
+       </ul>
+       <ul class="toc">
+        <li>
+         <a class="toc-item-1" href="#the-ocaml-platform-🔨">
+          The OCaml Platform 🔨
+         </a>
+         <ul class="toc">
+          <li>
+           <a class="toc-item-2" href="#notes-&amp;-misc.">Notes &amp; Misc.
+           </a>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </div>
+                    
+   </div>
+                   
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h1>Start Exploring OCaml</h1>
-                                      
-    <p><em> Last updated: 2020-07-27 09:35:49 +00:00 </em></p><hr/> 
-    <p>One of the biggest problems programming languages face in a real world setting is that getting started with them isn't necessarily easy. OCaml is no exception. There tend to be lots of great resources explaining interesting aspects of the language like GADTs or the module system - but not as many centred around productivity workflows i.e. getting things done in OCaml.</p>
+    <h1 id="start-exploring-ocaml">Start Exploring OCaml</h1>
+<p><em>Last Updated: 2020-07-27 09:35:49 +00:00</em></p>
+<hr />
+<p>One of the biggest problems programming languages face in a real world setting is that getting started with them isn't necessarily easy. OCaml is no exception. There tend to be lots of great resources explaining interesting aspects of the language like GADTs or the module system - but not as many centred around productivity workflows i.e. getting things done in OCaml.</p>
 <p>Often these workflows are obvious... once you know them. Explore OCaml is a centralised source for workflows in OCaml categorised by user, tools and libraries with rich linking to external sources of information.</p>
 <p>Here are some of the common problems users face:</p>
 <ol>
@@ -114,28 +212,28 @@
 </ol>
 <p>*<em>workflow: this involves testing, publishing, formatting, building etc. all of the common tooling that needs to be in place to allow most programming languages to solve real world problems.</em></p>
 <p>This site aims to answer these questions for you, as well as let you discover more advanced workflows as your use of OCaml grows. First, we'll introduce the only essential tool you need — opam.</p>
-<h1>Opam</h1>
+<h1 id="opam">Opam</h1>
 <hr />
 <p><a href="https://opam.ocaml.org/">Opam</a> is the the OCaml package manager.  In order to join the OCaml open source community, all you need to do is to add an <a href="./pages/opam-files">opam file</a> to your project.  This <code>opam</code> file describes the build instructions for your project, as well as any dependencies it might need. An <code>opam</code> file is useful for a project of any size — from toy learning exercises to big theorem provers — since it allows someone else to easily rebuild and replicate your work, and even extend it if they choose to.</p>
 <p>Once you are comfortable with your code and want to share it more publicly, an opam file can be published to the central OCaml <a href="https://github.com/ocaml/opam-repository/">opam repository</a>.  This is a collection of tens of thousands of packages that have been contributed freely by the community since 2013.  The opam-repository does not contain the full source code to your project; instead, it tracks pointers to different versions of your code, and also the various compatibility constraints to automatically figure out which versions work with each other.  The usual mechanism to track your releases is to use a version control system such as git.  You can <a href="https://opam.ocaml.org">browse the packages</a> online to see what's available.</p>
 <p>How do you actually manipulate opam files?  There are several tools that can parse these files and repositories and install the software you want.  The primary reference implementation that runs on macOS and Linux is also the <a href="./pages/opam-client">opam client</a> , and is the first thing you will want to configure on your system to get started.  Read on below for more details about opam files and the client.  If you'd like to just get on with a particular task, skip to the next section to find out which archetype you best fit into.</p>
 <p><a href="./pages/opam-files">opam files</a></p>
 <p><a href="./pages/opam-client">opam client</a></p>
-<h1>Workflows</h1>
+<h1 id="workflows">Workflows</h1>
 <hr />
 <p>Below are three lists: archetypical users, meet the tools and community libraries. All workflows have one or more users in mind with most using a tool from the OCaml Platform. The community libraries are popular projects which have become standard for certain workflows.</p>
 <p>To get started with workflows, open the user that best describes you and start exploring!</p>
-<h2>Learning the Language 📚</h2>
+<h2 id="learning-the-language-📚">Learning the Language 📚</h2>
 <p><strong>Beginner:</strong> If you are just getting started on learning the OCaml language, there are several resources to get you going.  The <a href="./users/beginner">beginner</a> workflows will get you familiar with where you can find answers to common questions, find interactive playgrounds, and hook into possibly familiar learning mechanisms such as Jupyter notebooks.</p>
 <p><strong>Teachers:</strong> If you are teaching OCaml to a class, then you will need to support the installation of the tools on a variety of platforms, and hook into grading systems.  The <a href="./users/teacher">teaching</a> workflows will cover that, and also link to projects that exist to support your efforts.</p>
-<h2>Developing in OCaml 🧠</h2>
+<h2 id="developing-in-ocaml-🧠">Developing in OCaml 🧠</h2>
 <p><strong>Application Developer:</strong> If you have found an OCaml application that you want to work on and extend, then read on about the <a href="./users/application-developer">Application Developer</a> workflows.  This will get you started with a build environment and all the dependencies you need to build the application within a modern IDE.</p>
 <p><strong>Library Author:</strong> If you want to break up your application into reusable chunks, then you will create OCaml libraries.  As a <a href="./users/library-author">Library Author</a>, you will learn how to partition your source code into multiple libraries, to write unit tests and documentation, to apply auto-formatting, and eventually publish them publicly to the central opam repository.</p>
-<h2>Distributing OCaml code 🌏</h2>
+<h2 id="distributing-ocaml-code-🌏">Distributing OCaml code 🌏</h2>
 <p><strong>End User:</strong> If you are an <a href="./users/end-user">End User</a> that simply wants to install an OCaml application as fast as possible on your platform, read on about how to do that.  Beyond the standard opam client, there are also several domain-specific ones that may be more useful to you, such as the opam2nix binary distributor or the esy client that supports npm-like description files.</p>
 <p><strong>Distribution Manager:</strong> If you are maintaining OCaml on a particular operating system, you will be juggling the various quirks of OCaml applications and libraries with hundreds of other programming languages and build systems.  The <a href="./users/distribution-manager">Distribution Manager</a> workflows collect tools that operate over the opam repository metadata and provide mechanisms to programmatically translate them to your own distribution.</p>
 <!-- [Archetypical Users](Explore%20OCaml%20294d4a6975e84e509cdc53dc6cb1ba3b/Archetypical%20Users%20e3ac9b12886f4eb382d8d03da27ab6ff.csv) -->
-<h1>The OCaml Platform 🔨</h1>
+<h1 id="the-ocaml-platform-🔨">The OCaml Platform 🔨</h1>
 <hr />
 <p>The OCaml Platform is a collection of tools that allow programmers to be productive in the OCaml language. It has been an iterative process of refinement as new tools are added and older tools are updated. Different tools accomplish different workflows and are used at different points of a project's life. You can see how the platform progress in <a href="https://www.youtube.com/watch?v=y-1Zrzdd9KM">2017</a>, <a href="https://www.youtube.com/watch?v=oyeKLAYPmQQ">2018</a> and <a href="https://speakerdeck.com/avsm/workflows-in-the-ocaml-platform">2019</a>.</p>
 <p>There is no requirement to use all of the tools. You can mix and match different combinations to suit the needs of your project and the workflows you want to accomplish.</p>
@@ -155,7 +253,7 @@ Brief guides on getting started on the three most common operating systems. Ther
 [Unix](Explore%20OCaml%20294d4a6975e84e509cdc53dc6cb1ba3b/Unix%20f49e1429fc054ade997e8b3e29cf5189.md)
 
 [Windows](Explore%20OCaml%20294d4a6975e84e509cdc53dc6cb1ba3b/Windows%20e56df5482da84558981dfad34b6e591a.md) -->
-<h2>Notes &amp; Misc.</h2>
+<h2 id="notes-&amp;-misc.">Notes &amp; Misc.</h2>
 <hr />
 <p>Understanding how these tools came to be requires and understanding of how the OCaml Ecosystem has evolved. This includes tools like <code>ocamlbuild</code>, <code>ocamlfind</code> and <code>jbuild</code>. Many sources of documentation and tutorials still reference some of these out-dated tools and some of the modern platform tools directly use them.</p>
 <p><a href="./pages/ocaml-ecosystem-history">OCaml Ecosystem History</a></p>

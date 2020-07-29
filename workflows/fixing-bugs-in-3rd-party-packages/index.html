@@ -13,6 +13,10 @@
    href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
   <link rel="stylesheet"
    href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-dropdown.css"/>
   <link rel="stylesheet" href="/css/main.css"/>
   <link rel="stylesheet"
    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
@@ -41,12 +45,11 @@
             
    </div>
              
-   <div class="pure-u-1-3">
-                               </div>
-   
-       
-   <div class="pure-u-1-3 flex-col flex-vert">
-                                                    
+   <div class="pure-u-1-3"></div>
+                                     
+   <div class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
+    
+          
     <div class="flex-row flex-center">
                                               
      <div class="nav-button">
@@ -70,7 +73,7 @@
      <div class="nav-button">
                                        
       <a href="/libraries">
-                                     Libraries
+                                       Libraries
                                      </a>
       
               
@@ -79,20 +82,106 @@
     </div>
               
    </div>
+             
+   <div class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu
+    pure-menu-horizontal flex-col flex-vert pure-u-1-3">
+                                                              
+    <ul class="pure-menu-list" style="text-align: center">
+     <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+      
+              <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
+      
+              
+      <ul class="pure-menu-children mob-menu-list">
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/platform">
+                                            Tools 
+                                          </a>
+        
+                    
+       </li>
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/users">
+                                         Users
+                                       </a>
+        
+                    
+       </li>
+       <li class="pure-menu-item mob-menu-item">
+                                                              
+        <a href="/libraries">
+                                            Libraries
+                                           </a>
+        
+                    
+       </li>
+      </ul>
+                   
+     </li>
+    </ul>
+             
+   </div>
            
   </div>
                 
   <div class="pure-g">
                                 
    <div class="pure-u-1-12 pure-u-md-1-4">
-                                                    </div>
-   
-             
+                                                      
+    <div class="pure-hidden-sm pure-hidden-md sticky">
+     <ul class="toc">
+      <li><a class="toc-item-0" href="#"></a>
+       <ul class="toc">
+        <li>
+         <a class="toc-item-1" href="#fixing-bugs-in-3rd-party-packages">
+          Fixing Bugs in 3rd Party Packages
+         </a>
+         <ul class="toc">
+          <li><a class="toc-item-2" href="#overview">Overview</a></li>
+         </ul>
+         <ul class="toc">
+          <li>
+           <a class="toc-item-2" href="#recommended-workflow">
+            Recommended Workflow
+           </a>
+           <ul class="toc">
+            <li>
+             <a class="toc-item-3" href="#getting-the-source-code">
+              Getting the Source Code
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li>
+             <a class="toc-item-3" href="#locally-pinning">Locally pinning
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li>
+             <a class="toc-item-3" href="#subsequent-changes-&amp;-upgrading">
+              Subsequent Changes &amp; Upgrading
+             </a>
+            </li>
+           </ul>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </div>
+                    
+   </div>
+                   
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
-    <h2>Fixing Bugs in 3rd Party Packages</h2>
-    <p><em> Last updated: 2020-07-27 09:35:49 +00:00 </em></p>
-    <h2>Overview</h2>
+    <h1 id="fixing-bugs-in-3rd-party-packages">Fixing Bugs in 3rd Party Packages</h1>
+<p><em>Last Updated: 2020-07-27 09:35:49 +00:00</em></p>
+<hr />
+<h2 id="overview">Overview</h2>
 <hr />
 <p>Working with third-party packages means coming across areas for improvement or those that need fixing. Knowing how common codebases are structured and an appreciation for the tools allows you to more easily:</p>
 <ul>
@@ -115,9 +204,9 @@
 </ol>
 <p>Quite a lot of this workflow is made simpler by using the opam client.</p>
 <p><a href="../opam%20client%20af5eb8b02bdf4c17931004d79002243e.md">opam client</a></p>
-<h2>Recommended Workflow</h2>
+<h2 id="recommended-workflow">Recommended Workflow</h2>
 <hr />
-<h3>Getting the Source Code</h3>
+<h3 id="getting-the-source-code">Getting the Source Code</h3>
 <p>If the library is part of the <em>opam-repository</em> then the easiest way to get the source code is using the opam client: <code>opam source &lt;package&gt;</code> - this can also be given an optional version constraint.</p>
 <pre><code class="language-bash"># Downloads latest version of Irmin - at time of writing 2.2.0
 opam source irmin
@@ -130,14 +219,14 @@ opam source irmin.2.0.0
 cd irmin
 git checkout -b my-awesome-fix
 </code></pre>
-<h3>Locally pinning</h3>
+<h3 id="locally-pinning">Locally pinning</h3>
 <p>To tell opam that you want to use a modified version of a package you <strong>pin</strong> it. This is like pinning a note to the package in the opam-respository that points to the source code you are developing (rather than the locally clone released version from Github).</p>
 <pre><code class="language-bash"># In the clone irmin directory 
 opam pin add irmin . --kind=path 
 </code></pre>
 <p>Note: it is quite common to have multiple opam packages per repository. Irmin for example has <code>irmin</code>, <code>irmin-unix</code>, <code>irmin-graphql</code>... If your changes are only for a certain package it is best to only pin that one package. <code>--kind=path</code> means we don't have to commit the changes as by default opam tries to use git pins.</p>
 <p>Opam will rebuild dependent projects as well - depending on what package you change and how many dependent projects you have installed in your switch this can take a bit of time.</p>
-<h3>Subsequent Changes &amp; Upgrading</h3>
+<h3 id="subsequent-changes-&amp;-upgrading">Subsequent Changes &amp; Upgrading</h3>
 <p>Pinning a package tells opam where the source code is coming from but as you add new bits of code, opam doesn't see these. In order to add those you will have to run <code>opam upgrade</code> to get the latest changes of pinned packages.</p>
 <p>&quot;The Joy of Dune Vendoring&quot; linked in the resources discusses this process and the future of vendoring in OCaml.</p>
 

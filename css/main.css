@@ -127,3 +127,71 @@ img {
   background-color: rgba(255, 94, 0, 0.7);
   color: white;
 }
+
+.mob-menu-item {
+  width: 100%;
+  margin-top: 1em;
+}
+
+.mob-menu-list {
+  width: 100% !important;
+  background: white;
+}
+
+
+
+/* === TOC === */
+.toc {
+  list-style-type: none;
+}
+
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  padding: 1em;
+  top: 1em;
+}
+
+/* === HIDING ELEMENTS === */
+/* https://github.com/pure-css/pure/issues/326#issuecomment-44477601 */
+
+/* pure-hidden-xs */
+@media screen and (max-width:35.438em) {
+  .pure-visible-sm{display:none}
+  .pure-visible-md{display:none}
+  .pure-visible-lg{display:none}
+  .pure-visible-xl{display:none}
+  .pure-hidden-xs{display:none}
+}
+/* pure-hidden-sm */
+@media screen and (min-width:35.5em) and (max-width:47.938em) {
+  .pure-visible-xs{display:none}
+  .pure-visible-md{display:none}
+  .pure-visible-lg{display:none}
+  .pure-visible-xl{display:none}
+  .pure-hidden-sm{display:none}
+}
+/* pure-hidden-md */
+@media screen and (min-width:48em) and (max-width:63.938em) {
+  .pure-visible-xs{display:none}
+  .pure-visible-sm{display:none}
+  .pure-visible-lg{display:none}
+  .pure-visible-xl{display:none}
+  .pure-hidden-md{display:none}
+}
+/* pure-hidden-lg */
+@media screen and (min-width:64em) and (max-width:79.938em) {
+  .pure-visible-xs{display:none}
+  .pure-visible-sm{display:none}
+  .pure-visible-md{display:none}
+  .pure-visible-xl{display:none}
+  .pure-hidden-lg{display:none}
+}
+/* pure-hidden-xl */
+@media screen and (min-width:80em) {
+  .pure-visible-xs{display:none}
+  .pure-visible-sm{display:none}
+  .pure-visible-md{display:none}
+  .pure-visible-lg{display:none}
+  .pure-hidden-xl{display:none}
+}
