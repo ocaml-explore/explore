@@ -1,5 +1,6 @@
 ---
 title: "Start Exploring OCaml"
+description: Explore OCaml is a centralised source for workflows in OCaml categorised by user, tools and libraries with rich linking to external sources of information.
 date: 2020-07-27 09:35:49
 ---
 

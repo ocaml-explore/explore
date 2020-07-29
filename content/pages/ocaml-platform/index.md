@@ -1,5 +1,6 @@
 ---
 title: OCaml Platform
+description: The OCaml Platform is an ecosystem of tools that work well together along with the OCaml compiler to make it easy, fast and powerful to build projects in OCaml
 date: 2020-07-27 09:35:49
 ---
 

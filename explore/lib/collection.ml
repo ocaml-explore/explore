@@ -28,7 +28,7 @@ module type S = sig
 
   val to_html : t -> Tyxml.Html.doc
 
-  val build_index : string -> t list -> Tyxml.Html.doc
+  val build_index : string -> string -> t list -> Tyxml.Html.doc
 
   val get_relations :
     string -> t -> (Yaml.value list, [> `Msg of string ]) Result.t
@@ -93,9 +93,12 @@ module Basic : S = struct
   let get_description t =
     match get_prop ~coll:t ~ident:"description" with
     | Some (`String d) -> d
-    | _ -> failwith "Expected to find a description property, but got none."
+    | _ ->
+        failwith
+          ("Expected to find a description property, but got none: "
+          ^ get_title t)
 
-  let build_index title ts =
+  let build_index title description ts =
     let lst =
       List.map
         ~f:(fun t ->
@@ -106,7 +109,7 @@ module Basic : S = struct
             get_description t ))
         ts
     in
-    Components.wrap_body ~toc:None ~title
+    Components.wrap_body ~toc:None ~title ~description
       ~body:[ Components.make_title title; Components.make_index_list lst ]
 
   let get_relations relation t =
@@ -142,7 +145,7 @@ module Basic : S = struct
     let toc = Toc.(to_html (toc omd)) in
     Components.wrap_body
       ~toc:(Some [ toc ])
-      ~title:(get_title t)
+      ~title:(get_title t) ~description:(get_description t)
       ~body:([ Html.Unsafe.data (Omd.to_html (Toc.transform omd)) ] @ resources)
 end
 
@@ -189,7 +192,9 @@ module C = struct
           workflow_comp;
         ]
     in
-    Components.wrap_body ~toc:(Some [ toc ]) ~title:(get_title t) ~body:content
+    Components.wrap_body
+      ~toc:(Some [ toc ])
+      ~title:(get_title t) ~description:(get_description t) ~body:content
 
   let get_workflows t (workflows : Workflow.t list) =
     let user_title = get_title t in

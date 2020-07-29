@@ -59,15 +59,19 @@ let nav_bar () =
 
 let make_title title = [%html "<h1>" [ Html.txt title ] "</h1>"]
 
-let wrap_body ~toc ~title ~body =
+let wrap_body ~toc ~title ~description ~body =
   let toc = match toc with None -> [] | Some t -> t in
   [%html
     {|
-  <html>
+  <html lang="en">
     <head>
       <title>|} (Html.txt title)
       {|</title>
-      <meta name = "viewport" content = "width = device-width, initial-scale = 1">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta charset="utf-8">
+      <meta name="description" content="|}
+      description
+      {|">
       <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Ubuntu:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
       <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.0/build/base.css" />
       <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.0/build/grids-core.css" />
@@ -87,7 +91,7 @@ let wrap_body ~toc ~title ~body =
       {|
         <div class="pure-g">
           <div class="pure-u-1-12 pure-u-md-1-4">
-            <div class="pure-hidden-xs pure-hidden-sm pure-hidden-md sticky">|}
+            <div class="pure-hidden-xs pure-hidden-sm pure-hidden-md toc-container sticky">|}
       toc
       {|</div>
           </div>

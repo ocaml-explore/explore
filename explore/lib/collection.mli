@@ -29,7 +29,7 @@ module type S = sig
 
   val to_html : t -> Tyxml.Html.doc
 
-  val build_index : string -> t list -> Tyxml.Html.doc
+  val build_index : string -> string -> t list -> Tyxml.Html.doc
   (** [build_index ts] builds the index page for a list of collection items [ts] *)
 
   val get_relations :

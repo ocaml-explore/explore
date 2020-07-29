@@ -1,5 +1,6 @@
 ---
 title: OCaml Ecosystem History
+description: An explanation of how the OCaml ecosystem has evolved to include the rich diversity of tools it now has
 date: 2020-07-27 09:35:49
 ---
 

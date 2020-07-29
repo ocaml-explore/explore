@@ -1,10 +1,12 @@
 val wrap_body :
   toc:[< Html_types.object__content_fun > `PCDATA ] Tyxml_html.elt list option ->
   title:string ->
+  description:string ->
   body:[< Html_types.object__content_fun > `PCDATA ] Tyxml_html.elt list ->
   Tyxml.Html.doc
-(** [wrap_body title body] will take some body content and wrap it in a standard
-    HTML tag with a header *)
+(** [wrap_body toc title description body] will take some body content and wrap
+    it in a standard HTML tag with a header (with the title and description) and
+    also add the supplied table of contents *)
 
 val make_link_list : (string * string) list -> [> Html_types.ul ] Tyxml.Html.elt
 (** [make_link_list lst] will use the [(path, title)] of each element to form an

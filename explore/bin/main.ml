@@ -15,14 +15,15 @@ let build_phase () =
   Make.output_workflows workflows;
   Make.output_collection Lib.get_path Lib.to_html_with_workflows
     "content/libraries/index.html"
-    (Lib.build_index "Libraries")
+    (Lib.build_index "Libraries" "Useful OCaml community libraries")
     Lib.get_workflows workflows libraries;
   Make.output_collection User.get_path User.to_html_with_workflows
-    "content/users/index.html" (User.build_index "Users") User.get_workflows
-    workflows users;
+    "content/users/index.html"
+    (User.build_index "Users" "People using OCaml to get things done")
+    User.get_workflows workflows users;
   Make.output_collection Plat.get_path Plat.to_html_with_workflows
     "content/platform/index.html"
-    (Plat.build_index "Platform")
+    (Plat.build_index "Platform" "The OCaml Platform")
     Plat.get_workflows workflows platform
 
 let command =
