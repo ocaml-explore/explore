@@ -1,5 +1,6 @@
 ---
 title: Opam Client 
+description: The Opam client is a tool used to work with Opam, an OCaml Package Manager
 date: 2020-07-27 09:35:49
 ---
 
@@ -7,7 +8,7 @@ date: 2020-07-27 09:35:49
 
 ---
 
-opam is the OCaml Package Manager. It handles the sharing of libraries and code, dependency management and installation. In addition to this it also handles compiler installation. Opam handles what the following do for other languages: 
+opam is an OCaml Package Manager. It handles the sharing of libraries and code, dependency management and installation. In addition to this it also handles compiler installation. Opam handles what the following do for other languages: 
 
 - Rust: `rustup` & `cargo`
 - Node (Javascript): `nvm` & `npm` (or `yarn`)

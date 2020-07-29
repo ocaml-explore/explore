@@ -28,7 +28,7 @@ collections:
     path: "{{slug}}/index" 
     fields: 
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Updated", name: "date", format: "YYYY-MM-DD HH:mm:SS", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - {label: "Updated", name: "date", format: "YYYY-MM-DD hh:mm:ss", dateFormat: "YYYY-MM-DD", timeFormat: "hh:mm:ss", widget: "datetime"}
       - {label: "Short Description", name: "description", widget: "text"}
       - {label: "Body", name: "body", widget: "markdown"}
   - name: "platform" 
@@ -39,7 +39,7 @@ collections:
     path: "{{slug}}/index" 
     fields: 
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Updated", name: "date", format: "YYYY-MM-DD HH:mm:SS", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - {label: "Updated", name: "date", format: "YYYY-MM-DD hh:mm:ss", dateFormat: "YYYY-MM-DD", timeFormat: "hh:mm:ss", widget: "datetime"}
       - {label: "Short Description", name: "description", widget: "text"}
       - {label: "License", name: "license", widget: "string"}
       - {label: "Body", name: "body", widget: "markdown"}
@@ -51,7 +51,7 @@ collections:
     path: "{{slug}}/index"
     fields: 
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Updated", name: "date", format: "YYYY-MM-DD HH:mm:SS", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - {label: "Updated", name: "date", format: "YYYY-MM-DD hh:mm:ss", dateFormat: "YYYY-MM-DD", timeFormat: "hh:mm:ss", widget: "datetime"}
       - {label: "Short Description", name: "description", widget: "text"}
       - {label: "Body", name: "body", widget: "markdown"}
   - name: "workflows" 
@@ -68,7 +68,7 @@ collections:
         summary: '{{fields.name}}'
         field: {label: "Name", name: "name", widget: "string"}
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Updated", name: "date", format: "YYYY-MM-DD HH:mm:SS", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+      - {label: "Updated", name: "date", format: "YYYY-MM-DD hh:mm:ss", dateFormat: "YYYY-MM-DD", timeFormat: "hh:mm:ss", widget: "datetime"}
       - {label: "Description", name: "description", widget: "string"}
       - {label: "Repository", name: "repo", widget: "string", required: false}
       - label: "Users"
@@ -99,5 +99,6 @@ collections:
         file: "content/index.md"
         fields:
           - {label: "Title", name: "title", widget: "string"}
-          - {label: "Updated", name: "date", format: "YYYY-MM-DD HH:mm:SS", dateFormat: "YYYY-MM-DD", timeFormat: "HH:mm", widget: "datetime"}
+          - {label: "Description", name: "description", widget: "string"}
+          - {label: "Updated", name: "date", format: "YYYY-MM-DD hh:mm:ss", dateFormat: "YYYY-MM-DD", timeFormat: "hh:mm:ss", widget: "datetime"}
           - {label: "Body", name: "body", widget: "markdown"}

@@ -37,11 +37,12 @@ p, li {
 
 a {
   text-decoration: none;
-  color: orange;
+  color: inherit;
+  border-bottom: solid rgba(255, 165, 0, 0.4);
 }
 
 a:hover {
-  text-decoration: underline;
+  border-bottom: solid rgba(255, 165, 0, 1);
 }
 
 .title-link {
@@ -143,6 +144,10 @@ img {
 /* === TOC === */
 .toc {
   list-style-type: none;
+}
+
+.toc-container {
+  margin-left: -2em;
 }
 
 .sticky {
