@@ -15,7 +15,7 @@ jobs:
     - name: External Dependencies
       run: opam depext -yt explore
     - name: Dependencies
-      run: opam install .
+      run: opam install -t . --deps-only
     - name: Build
       run: opam exec -- dune build 
     - name: Install
