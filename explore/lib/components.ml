@@ -87,7 +87,7 @@ let wrap_body ~toc ~title ~body =
       {|
         <div class="pure-g">
           <div class="pure-u-1-12 pure-u-md-1-4">
-            <div class="pure-hidden-sm pure-hidden-md sticky">|}
+            <div class="pure-hidden-xs pure-hidden-sm pure-hidden-md sticky">|}
       toc
       {|</div>
           </div>
