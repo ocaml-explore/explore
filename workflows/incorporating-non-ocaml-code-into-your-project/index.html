@@ -152,22 +152,21 @@
            </a>
            <ul class="toc">
             <li>
-             <a class="toc-item-3" href="#interacting-with-c">
-              Interacting with C
+             <a class="toc-item-3" href="#ocaml-internals">OCaml Internals
              </a>
             </li>
            </ul>
            <ul class="toc">
             <li>
-             <a class="toc-item-3" href="#interfacing-with-c-structs">
-              Interfacing with C Structs
+             <a class="toc-item-3" href="#interacting-with-c-from-ocaml">
+              Interacting with C from OCaml
              </a>
             </li>
            </ul>
            <ul class="toc">
             <li>
-             <a class="toc-item-3" href="#interacting-with-rust">
-              Interacting with Rust
+             <a class="toc-item-3" href="#interacting-with-ocaml-from-c">
+              Interacting with OCaml from C
              </a>
             </li>
            </ul>
@@ -178,14 +177,6 @@
            <a class="toc-item-2" href="#real-world-examples">
             Real World Examples
            </a>
-           <ul class="toc">
-            <li><a class="toc-item-3" href="#using-c-code">Using C code</a>
-            </li>
-           </ul>
-           <ul class="toc">
-            <li><a class="toc-item-3" href="#using-cstruct">Using Cstruct</a>
-            </li>
-           </ul>
           </li>
          </ul>
         </li>
@@ -206,31 +197,89 @@
 <p>Sometimes OCaml just can't do what lower level languages can do or you want to use pre-existing code written in C or Rust from OCaml.</p>
 <h2 id="recommended-workflow">Recommended Workflow</h2>
 <hr />
-<h3 id="interacting-with-c">Interacting with C</h3>
+<h3 id="ocaml-internals">OCaml Internals</h3>
+<p>Programming languages have to have a way of reperesenting data at runtime, for example how should OCaml represent <code>type camel = Dromedary of int</code> in memory? When you interface between two languages much of the battle is converting in-and-out of each programming languages internal data represenation. A <a href="https://caml.inria.fr/pub/docs/manual-ocaml/intfc.html#s%3Ac-ocaml-datatype-repr">detailed introduction</a> is given in the OCaml manual.</p>
+<p>OCaml has a uniform memory representation where everything is a word-sized value. These can either be immediates (represented as unboxed integers) or non-immediates, pointers to a block stored in the OCaml or the C heap. Boxing is the process of wrapping additional meta-data around a value (like IP packets and their header).</p>
+<p><img src="/images/data-repr.jpg" alt="OCaml runtime data represenation" /></p>
+<p>To distinguish between immediates and non-immediates (pointers), OCaml uses a tag bit in the least significant bit as a flag. When it is set to 1 this indicates an immediate, otherwise it should be interpretted as a pointer. This means on a 32-bit machine OCaml integers can only be 31-bit. The runtime value of the number <code>7</code> in OCaml is actually <code>15</code>. The conversion function can be seen <a href="https://github.com/ocaml/ocaml/blob/trunk/runtime/caml/mlvalues.h#L75">here</a> in the OCaml compiler.</p>
+<p>Integers are not the only values represented as immediates.</p>
+<pre><code class="language-ocaml">(* Variants with Constant Constructors *)
+type vehicle = Car | Bike | Truck
+(* Car = 0, Bike = 3, Truck = 5 *)
+
+type poly = `String | `Int 
+(* Hash of the polymorphic variant name *)
+
+(* Built-in booleans *)
+true 
+false 
+</code></pre>
+<p>Variants with non-constant constructors are heap allocated as blocks (only the non-constant ones). Blocks in the heap start with a one-word header, either 32 or 64-bit depending on thearchitecture, which contains information about the length of the value (22 or 54 bits), 2 bits for a colour which is used in garbage collection and 8 bits for a multi-purpose tag byte to indicate what the block is. The type unsafe <code>Obj</code> module lets you inspect the runtime information of values.</p>
+<pre><code class="language-ocaml">type 'a lst = Nil | Cons of 'a * 'a lst 
+(* Nil = 0, Cons is heap allocated *)
+
+Obj.tag (Obj.repr (Cons(1, Nil)))
+(* 0 - Each field is a value *)
+
+Obj.tag (Obj.repr Nil) 
+(* 1000 - Int tag *)
+
+Obj.tag (Obj.repr (fun x -&gt; x)) 
+(* 247 - closure tag *)
+</code></pre>
+<h3 id="interacting-with-c-from-ocaml">Interacting with C from OCaml</h3>
 <p>To interact with C code you need to use the Foreign Function Interface (FFI) in OCaml and make some changes to your <code>dune</code> files to incorporate the extra code. To use a foreign C function in OCaml you need to add:</p>
 <pre><code class="language-ocaml">external &lt;ocaml-name&gt; : &lt;type-of-function&gt; = &quot;&lt;c-function-name&gt;&quot;
 </code></pre>
-<p>And then in your dune file you need to include the C code:</p>
+<p>The C function will take OCaml values as arguments (which will be encoded using the data representation previously described). For example if we want to have an external C <code>add</code> function the C file would be.</p>
+<pre><code class="language-c">// main.c
+#include &lt;caml/mlvalues.h&gt;
+
+value add_c(value a, value b)
+{
+  return Val_long(Long_val(a) + (Long_val(b)));
+}
+</code></pre>
+<p>To access the code in OCaml we define an external <code>add</code> function and give it proper OCaml types within our <code>main.ml</code> file.</p>
+<pre><code class="language-ocaml">external add : int -&gt; int -&gt; int = &quot;add_c&quot;
+
+let () = print_int (add 10 10)
+</code></pre>
+<p>Finally we compile everything using dune and the <em>foreign_stubs</em> optional field.</p>
 <pre><code>(executable
  (name main)
  (foreign_stubs
   (language c)
-  (names &lt;c-filename&gt;)))
+  (names main)))
 </code></pre>
-<p>Take care with the difference between how C represents runtime values and how OCaml represents them (covered in the linked resources page). See this dune documentation page for more options for the <code>foreign_stubs</code> and this OCaml manual page for a more formal introduction to the C FFI.</p>
-<h3 id="interfacing-with-c-structs">Interfacing with C Structs</h3>
-<p>There is a <code>cstruct</code> library linked in the libraries tag that allows you to read and write structs from the C programming language.</p>
-<h3 id="interacting-with-rust">Interacting with Rust</h3>
-<p>Coming soon...</p>
+<h3 id="interacting-with-ocaml-from-c">Interacting with OCaml from C</h3>
+<p>Sometimes you might want to do the inverse and access parts on an <a href="https://ocaml.org/releases/4.10/htmlman/intfc.html">OCaml program from a C program</a>. This still suffers from the data represenation shuffling that might need to take place. There are two main ways that you may want to call OCaml from C. Either as callbacks (OCaml calls C which calls OCaml) or just directly from a main C program. The latter requires you to initialise the OCaml code by calling <code>caml_main</code>.</p>
+<p>In order for C to find OCaml functions you need to register them as callbacks using <code>Callback.register</code>. This <a href="https://github.com/patricoferris/ocaml-c-example">small example</a> calls a fibonacci function written in OCaml from C. Note the additional C compiler parameters in the Makefile for linking in the standard library and only producing an object OCaml file.</p>
 <h2 id="real-world-examples">Real World Examples</h2>
 <hr />
-<h3 id="using-c-code">Using C code</h3>
-<p><a href="https://github.com/mirage/digestif/tree/master/src-c/native">mirage/digestif</a></p>
-<h3 id="using-cstruct">Using Cstruct</h3>
-<p><a href="https://github.com/mirage/ocaml-git">mirage/ocaml-git</a></p>
+<p><a href="https://github.com/mirage/digestif/tree/master/src-c/native">Digestif</a> implements many common hashing algorithms both in C and OCaml.</p>
+<p><a href="https://github.com/mirage/ocaml-cstruct">Cstruct</a>  is a library that allows you to read and write structures from the C programming language. It is used in many applications for handling things like packets, for example in the <a href="https://github.com/mirage/ocaml-git">Git</a> implementation in pure OCaml.</p>
 
-     
-              
+    <h3>Resources</h3>
+    <ol>
+     <li>
+      <a href="https://rwmj.wordpress.com/2009/08/04/ocaml-internals/">
+       A Beginners Guide to OCaml Internals
+      </a> - 
+      A series of great articles explaining the internal respresentation of
+      values in OCaml, useful for understanding things like memory profiling
+      and GC.
+     </li>
+     <li>
+      <a
+       href="https://caml.inria.fr/pub/docs/oreilly-book/html/book-ora114.html"
+       >Communication between C and Objective Caml
+      </a> - 
+      A chapter on how C and OCaml talk to each other with some useful
+      diagrams too
+     </li>
+    </ol> 
+                   
    </div>
                  
   </div>

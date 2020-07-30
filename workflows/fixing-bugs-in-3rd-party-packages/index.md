@@ -8,6 +8,10 @@ users:
   - Library Authors
 tools:
   - Dune
+resources: 
+  - url: http://www.dra27.uk/blog/platform/2018/08/15/dune-vendoring.html
+    title: The Joys of Dune Vendoring 
+    description: David Allsopp explains how using dune in the future will make the development process (changing dependencies and rebuilding projects) much simpler and quicker
 ---
 
 ## Overview
@@ -28,9 +32,7 @@ There are multiple aspects to unpack in this workflow including:
 2. Pinning packages locally. 
 3. Logging libraries 
 
-Quite a lot of this workflow is made simpler by using the opam client. 
-
-[opam client](../opam%20client%20af5eb8b02bdf4c17931004d79002243e.md)
+Quite a lot of this workflow is made simpler by using the [opam client](/pages/opam-client). 
 
 ## Recommended Workflow
 
@@ -58,7 +60,7 @@ git checkout -b my-awesome-fix
 
 ### Locally pinning
 
-To tell opam that you want to use a modified version of a package you **pin** it. This is like pinning a note to the package in the opam-respository that points to the source code you are developing (rather than the locally clone released version from Github). 
+To tell opam that you want to use a modified version of a package you **pin** it. This is like pinning a note to the package in the opam-respository that points to the source code you are developing (rather than the released version from Github). 
 
 ```bash
 # In the clone irmin directory 
@@ -67,10 +69,10 @@ opam pin add irmin . --kind=path
 
 Note: it is quite common to have multiple opam packages per repository. Irmin for example has `irmin`, `irmin-unix`, `irmin-graphql`... If your changes are only for a certain package it is best to only pin that one package. `--kind=path` means we don't have to commit the changes as by default opam tries to use git pins. 
 
-Opam will rebuild dependent projects as well - depending on what package you change and how many dependent projects you have installed in your switch this can take a bit of time.
+Opam will rebuild dependent projects as well - depending on what package you change and how many dependent projects you have installed in your switch this can take a bit of time. 
+
+Keeping track of what packages you have pinned and which ones you haven't can be done with `opam pin list` - this will helpfully tell you where the package is pinned to (`git+file...`, `git+https...` etc.) and whether or not it is installed.
 
 ### Subsequent Changes & Upgrading
 
 Pinning a package tells opam where the source code is coming from but as you add new bits of code, opam doesn't see these. In order to add those you will have to run `opam upgrade` to get the latest changes of pinned packages. 
-
-"The Joy of Dune Vendoring" linked in the resources discusses this process and the future of vendoring in OCaml.

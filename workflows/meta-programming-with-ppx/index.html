@@ -191,6 +191,8 @@
 <p>Ppx allows programmers to meta-program directly on the abstract syntax tree of OCaml code. This means simple tasks like writing comparison functions or hashing functions can be automated through clever inference on types.</p>
 <h2 id="recommended-workflow">Recommended Workflow</h2>
 <hr />
+<p>### What is Meta-programming?</p>
+<p>Meta-programming is programming for programming.</p>
 <h3 id="using-ppx-libraries">Using PPX libraries</h3>
 <p>Dune comes with ppx support which makes it very easy to start using different ppx libraries to meta-program in OCaml. In this example we will add <code>ppx_hash</code> to a small example.</p>
 <p>Suppose we have type of person - to generate a hashing function we label it with a type attribute:</p>
@@ -222,8 +224,18 @@ let () =
 <p><a href="https://github.com/ocaml-ppx/ppx_deriving_yojson">ocaml-ppx/ppx_deriving_yojson</a></p>
 <p><a href="https://github.com/ocaml-ppx/ppx_deriving_protobuf">ocaml-ppx/ppx_deriving_protobuf</a></p>
 
-     
-              
+    <h3>Resources</h3>
+    <ol>
+     <li>
+      <a
+       href="https://tarides.com/blog/2019-05-09-an-introduction-to-ocaml-ppx-ecosystem"
+       >An Introduction to OCaml PPX Ecosystem
+      </a> - 
+      Nathan Rebours gives a very detailed and excellently explained guide to
+      writing your own ppx using ppxlib
+     </li>
+    </ol> 
+                   
    </div>
                  
   </div>
