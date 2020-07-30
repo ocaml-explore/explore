@@ -168,23 +168,23 @@
           </li>
          </ul>
          <ul class="toc">
-          <li>
-           <a class="toc-item-2" href="#should-print-that-11">
-            Should print that 11
-           </a>
+          <li><a class="toc-item-2" href="#alternatives">Alternatives</a>
+           <ul class="toc">
+            <li><a class="toc-item-3" href="#qcheck">QCheck</a></li>
+           </ul>
+           <ul class="toc">
+            <li>
+             <a class="toc-item-3" href="#dune-expect-tests">
+              Dune Expect Tests
+             </a>
+            </li>
+           </ul>
           </li>
          </ul>
          <ul class="toc">
           <li>
-           <a class="toc-item-2" href="#should-print-that-11">
-            Should print that 11
-           </a>
-          </li>
-         </ul>
-         <ul class="toc">
-          <li>
-           <a class="toc-item-2" href="#should-print-that-0">
-            Should print that 0
+           <a class="toc-item-2" href="#real-world-examples">
+            Real World Examples
            </a>
           </li>
          </ul>
@@ -199,7 +199,7 @@
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                  
     <h1 id="adding-unit-tests-to-your-project">Adding Unit Tests to your Project</h1>
-<p><em>Last Updated: 2020-07-27 09:35:49 +00:00</em></p>
+<p><em>Last Updated: 2020-07-30 10:43:50 +00:00</em></p>
 <hr />
 <h2 id="overview">Overview</h2>
 <hr />
@@ -210,8 +210,7 @@
 <h3 id="testing-a-library-with-alcotest">Testing a library with Alcotest</h3>
 <p>Alcotest (linked in the libraries) is a unit testing framework. It has a very good example in the repository README.</p>
 <p>To add unit testing to your library you'll want to create a test directory with the following <code>dune</code> file.</p>
-<pre><code>; located in tests/dune
-(test
+<pre><code class="language-text">(test
   (name test)
   (libraries &lt;library-public-name&gt; alcotest))
 </code></pre>
@@ -264,56 +263,51 @@ let () =
 ## Should print that a number should be supplied 
 ```sh
 $ main
-</code></pre>
-<h2 id="should-print-that-11">Should print that 11</h2>
-<pre><code class="language-sh">$ main 10
-</code></pre>
-<p>## Should print that 0</p>
-<pre><code class="language-sh">$ main -1
-</code></pre>
-<pre><code>
-And add a dune file: 
+```
 
-</code></pre>
-<p>(mdx
-(files test.md)
-(packages main))</p>
-<pre><code>
-Now when we run `dune runtest` we'll be greeted with a diff of our markdown file with the proposed outputs of our small shell scripts. We can add these to the file by promoting them with `dune promote` then commit them to the repository. If tests fail in the future we will get the diff and can decided whether to promote them or not. 
+## Should print that 11 
+```sh
+$ main 10
+```
 
-```diff
-## Should print that a number should be supplied 
+## Should print that 0 
+```sh
+$ main -1
+```
+</code></pre>
+<p>And add a dune file:</p>
+<pre><code>(mdx
+ (files test.md)
+ (packages main))
+</code></pre>
+<p>Now when we run <code>dune runtest</code> we'll be greeted with a diff of our markdown file with the proposed outputs of our small shell scripts. We can add these to the file by promoting them with <code>dune promote</code> then commit them to the repository. If tests fail in the future we will get the diff and can decided whether to promote them or not.</p>
+<pre><code class="language-diff">## Should print that a number should be supplied 
  ```sh
  $ main
 +Need to supply a number
-</code></pre>
-<h2 id="should-print-that-11">Should print that 11</h2>
-<pre><code class="language-sh">$ main 10
+ ```
+ 
+ ## Should print that 11 
+ ```sh
+ $ main 10
 +11
-</code></pre>
-<h2 id="should-print-that-0">Should print that 0</h2>
-<pre><code class="language-sh">$ main -1
+ ```
+ 
+ ## Should print that 0 
+ ```sh
+ $ main -1
 +0
+ ```
 </code></pre>
-<pre><code>
-## Alternatives
-
----
-
-### QCheck
-
-[QCheck](https://github.com/c-cube/qcheck) is based on Haskell's [QuickCheck](https://hackage.haskell.org/package/QuickCheck) library for property-based testing. It also offers a sub-library that can integrate directly with Alcotest.  
-
-### Dune Expect Tests
-
-These tests tend to be written inline with your source OCaml code using `ppx_inline_test`. To get expect tests you can use `ppx_expect` to write assertions about parts of your program. The [documentation](https://dune.readthedocs.io/en/stable/tests.html) covers all of this in much more detail. 
-
-## Real World Examples
-
----
-
-[Yojson](https://github.com/ocaml-community/yojson/tree/master/test) is good example of using Alcotest to unit test the different aspects of the library. [Dune-release](https://github.com/ocamllabs/dune-release/tree/master/tests/bin), part of the OCaml Platform, uses Mdx to ensure the CLI tool is properly tested.
-</code></pre>
+<h2 id="alternatives">Alternatives</h2>
+<hr />
+<h3 id="qcheck">QCheck</h3>
+<p><a href="https://github.com/c-cube/qcheck">QCheck</a> is based on Haskell's <a href="https://hackage.haskell.org/package/QuickCheck">QuickCheck</a> library for property-based testing. It also offers a sub-library that can integrate directly with Alcotest.</p>
+<h3 id="dune-expect-tests">Dune Expect Tests</h3>
+<p>These tests tend to be written inline with your source OCaml code using <code>ppx_inline_test</code>. To get expect tests you can use <code>ppx_expect</code> to write assertions about parts of your program. The <a href="https://dune.readthedocs.io/en/stable/tests.html">documentation</a> covers all of this in much more detail.</p>
+<h2 id="real-world-examples">Real World Examples</h2>
+<hr />
+<p><a href="https://github.com/ocaml-community/yojson/tree/master/test">Yojson</a> is good example of using Alcotest to unit test the different aspects of the library. <a href="https://github.com/ocamllabs/dune-release/tree/master/tests/bin">Dune-release</a>, part of the OCaml Platform, uses Mdx to ensure the CLI tool is properly tested.</p>
 
      
               
