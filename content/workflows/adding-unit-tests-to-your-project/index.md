@@ -2,8 +2,8 @@
 authors:
   - Patrick Ferris
 title: Adding Unit Tests to your Project
-date: 2020-07-27 09:35:49
-description: Write tests to check the functionality of your code using Alcotest 
+date: 2020-07-30 10:43:50
+description: Write tests to check the functionality of your code using Alcotest
 users:
   - Library Authors
   - Application Developers
@@ -30,8 +30,7 @@ Alcotest (linked in the libraries) is a unit testing framework. It has a very go
 
 To add unit testing to your library you'll want to create a test directory with the following `dune` file. 
 
-```
-; located in tests/dune
+```text
 (test
   (name test)
   (libraries <library-public-name> alcotest))
@@ -102,7 +101,7 @@ Which with an appropriate opam file can be built with the following dune file. I
 
 Now we can build a simple test of the CLI tool using mdx. In a `tests/bin` folder we writes a `test.md` file and pass it some tests in markdown code blocks. 
 
-```markdown
+~~~markdown
 # Testing the command line 
 
 ## Should print that a number should be supplied 
@@ -119,7 +118,7 @@ $ main 10
 ```sh
 $ main -1
 ```
-```
+~~~
 
 And add a dune file: 
 
@@ -131,7 +130,7 @@ And add a dune file:
 
 Now when we run `dune runtest` we'll be greeted with a diff of our markdown file with the proposed outputs of our small shell scripts. We can add these to the file by promoting them with `dune promote` then commit them to the repository. If tests fail in the future we will get the diff and can decided whether to promote them or not. 
 
-```diff
+~~~diff
 ## Should print that a number should be supplied 
  ```sh
  $ main
@@ -149,7 +148,7 @@ Now when we run `dune runtest` we'll be greeted with a diff of our markdown file
  $ main -1
 +0
  ```
-```
+~~~
 
 ## Alternatives
 
