@@ -11,6 +11,14 @@ users:
   - Application Developers
 tools:
   - Merlin
+resources: 
+  - url: https://github.com/ocaml/merlin/wiki/vim-from-scratch
+    title: Vim from Scratch
+    description: Wiki explaining how to get started with an OCaml setup for Vim users 
+resources: 
+  - url: https://github.com/ocaml/merlin/wiki/vim-from-emacs
+    title: Emacs from Scratch 
+    description: Wiki explaining how to get started with an OCaml setup for Emacs users 
 ---
 
 ## Overview

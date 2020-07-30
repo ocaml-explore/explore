@@ -11,6 +11,10 @@ tools:
   - Dune
 libraries: 
   - Ppxlib
+resources: 
+  - url: https://tarides.com/blog/2019-05-09-an-introduction-to-ocaml-ppx-ecosystem
+    title: An Introduction to OCaml PPX Ecosystem
+    description: Nathan Rebours gives a very detailed and excellently explained guide to writing your own ppx using ppxlib
 ---
 
 ## Overview
@@ -22,6 +26,10 @@ Ppx allows programmers to meta-program directly on the abstract syntax tree of O
 ## Recommended Workflow
 
 ---
+
+### What is Meta-programming?
+
+Meta-programming is programming for programming. 
 
 ### Using PPX libraries
 
