@@ -93,6 +93,17 @@ collections:
         fields: [{label: "URL", name: "url", widget: "string"}, {label: "Title", name: "title", widget: "string"}, {label: "Short Description", name: "desciption", widget: "string"}]
   - label: "Pages"
     name: "pages"
+    folder: "content/pages"
+    create: true
+    slug: "{{slug}}"
+    path: "{{slug}}/index"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Description", name: "description", widget: "string"}
+      - {label: "Updated", name: "date", format: "YYYY-MM-DD hh:mm:ss", dateFormat: "YYYY-MM-DD", timeFormat: "hh:mm:ss", widget: "datetime"}
+      - {label: "Body", name: "body", widget: "markdown"}
+  - label: "Homepage"
+    name: "home"
     files:
       - label: "Explore Homepage"
         name: "index"
