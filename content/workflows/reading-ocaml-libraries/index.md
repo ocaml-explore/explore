@@ -1,7 +1,7 @@
 ---
 authors:
   - Patrick Ferris
-title: "Reading OCaml Libraries "
+title: Navigating OCaml Projects
 date: 2020-07-31 03:05:13
 description: Learn how to navigate and read OCaml projects to help you use and
   understand other projects
@@ -45,7 +45,6 @@ Here is what a typical structure may look like.
 .
 |-- bin
 |   |-- cli.ml
-|   |-- cli.mli
 |   `-- dune
 |-- dune-project
 |-- explore-unix.opam
