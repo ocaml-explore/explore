@@ -1,5 +1,6 @@
 open Core
 open Tyxml
+module Cal = CalendarLib
 
 module type S = sig
   type t
@@ -14,7 +15,7 @@ module type S = sig
 
   val get_title : t -> string
 
-  val get_date : t -> string
+  val get_date : textual:bool -> t -> string
 
   val get_md : t -> string
 
@@ -50,13 +51,18 @@ module Basic : S = struct
 
   let get_md t = Jekyll_format.body t.data
 
-  let get_date t =
+  let get_date ~textual t =
     let date_to_string p =
       Ptime.pp Format.str_formatter p;
       Format.flush_str_formatter ()
     in
     match Jekyll_format.(date (fields t.data)) with
-    | Ok date -> date_to_string date
+    | Ok date ->
+        if textual then
+          let d = date_to_string date in
+          Cal.Printer.Fcalendar.sprint "%d, %B %Y at %T"
+            (CalendarLib.Printer.Fcalendar.from_fstring "%i %T %:z" d)
+        else date_to_string date
     | Error _ -> failwith "Failed to get date for: " ^ get_md t
 
   let v ~path ~content =
@@ -139,7 +145,8 @@ module Basic : S = struct
       else [ res_title; make_resources resources ]
     in
     let td =
-      Components.make_omd_title_date ~title:(get_title t) ~date:(get_date t)
+      Components.make_omd_title_date ~title:(get_title t)
+        ~date:(get_date ~textual:true t)
     in
     let omd = td @ Omd.of_string (get_md t) in
     let toc = Toc.(to_html (toc omd)) in
@@ -158,7 +165,7 @@ module type Collection = sig
 
   val to_html_with_workflows : Workflow.t list -> t -> Tyxml.Html.doc
 
-  val get_workflows : t -> Workflow.t list -> Workflow.t list
+  val get_workflows : string -> t -> Workflow.t list -> Workflow.t list
 end
 
 module C = struct
@@ -177,7 +184,8 @@ module C = struct
     in
     let workflow_comp = Components.make_index_list path_and_title in
     let td =
-      Components.make_omd_title_date ~title:(get_title t) ~date:(get_date t)
+      Components.make_omd_title_date ~title:(get_title t)
+        ~date:(get_date ~textual:true t)
     in
     let omd = td @ Omd.of_string (get_md t) in
     let toc = Toc.(to_html (toc omd)) in
@@ -196,10 +204,10 @@ module C = struct
       ~toc:(Some [ toc ])
       ~title:(get_title t) ~description:(get_description t) ~body:content
 
-  let get_workflows t (workflows : Workflow.t list) =
+  let get_workflows relation_name t (workflows : Workflow.t list) =
     let user_title = get_title t in
     let related w =
-      match get_relations "users" w with Ok lst -> lst | Error _ -> []
+      match get_relations relation_name w with Ok lst -> lst | Error _ -> []
     in
     let extract_strings = function
       | `String str -> str

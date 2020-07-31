@@ -1,3 +1,5 @@
+module Cal = CalendarLib
+
 type t = {
   title : string;
   description : string;
@@ -20,7 +22,9 @@ let v ~path ~content =
   in
   let updated =
     Ptime.pp Format.str_formatter Jekyll_format.(date_exn (fields jkl));
-    Format.flush_str_formatter ()
+    let s = Format.flush_str_formatter () in
+    Cal.Printer.Fcalendar.sprint "%d, %B %Y at %T"
+      (Cal.Printer.Fcalendar.from_fstring "%i %T %:z" s)
   in
   { title; description; updated; path; body = Jekyll_format.body jkl }
 

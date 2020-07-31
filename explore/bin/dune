@@ -1,6 +1,6 @@
 (executable
  (name main)
  (public_name explore)
- (libraries explore omd core)
+ (libraries explore ptime omd core)
  (preprocess
   (pps ppx_jane)))

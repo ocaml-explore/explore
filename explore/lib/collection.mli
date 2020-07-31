@@ -15,7 +15,7 @@ module type S = sig
 
   val get_title : t -> string
 
-  val get_date : t -> string
+  val get_date : textual:bool -> t -> string
 
   val get_md : t -> string
 
@@ -45,7 +45,7 @@ module type Collection = sig
 
   val to_html_with_workflows : Workflow.t list -> t -> Tyxml.Html.doc
 
-  val get_workflows : t -> Workflow.t list -> Workflow.t list
+  val get_workflows : string -> t -> Workflow.t list -> Workflow.t list
 end
 
 module User : Collection

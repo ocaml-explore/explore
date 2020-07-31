@@ -31,6 +31,8 @@
   tyxml
   omd
   yaml
+  ptime
+  calendar
   tyxml-ppx
   ppx_jane
   ezjsonm

@@ -2,60 +2,59 @@ open Tyxml
 open Core
 
 let nav_bar () =
-  [%html
-    {|
-  <div class="pure-g">
-    <div class="pure-u-1-3">
-      <a class="title-link" href="/">
-        <h2 style="text-align: center">Explore OCaml</h2>
-      </a>
-    </div>
-    <div class="pure-u-1-3"></div>
-    <div class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
-      <div class="flex-row flex-center">
-        <div class="nav-button">
-          <a href="/platform">
-            Tools 
-          </a>
-        </div>
-        <div class="nav-button">
-          <a href="/users">
-            Users
-          </a>
-        </div>
-        <div class="nav-button">
-          <a href="/libraries">
-            Libraries
-          </a>
-        </div>
+  [%html {|
+    <div class="pure-g">
+      <div class="pure-u-1-3">
+        <a class="title-link" href="/">
+          <h2 style="text-align: center">Explore OCaml</h2>
+        </a>
       </div>
-    </div>
-    <div class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu pure-menu-horizontal flex-col flex-vert pure-u-1-3">
-      <ul class="pure-menu-list" style="text-align: center">
-        <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-        <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
-        <ul class="pure-menu-children mob-menu-list">
-            <li class="pure-menu-item mob-menu-item">
+      <div class="pure-u-1-3"></div>
+        <nav class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
+          <ul class="flex-row flex-center nav-ul">
+            <li class="nav-button">
               <a href="/platform">
                 Tools 
               </a>
             </li>
-            <li class="pure-menu-item mob-menu-item">
+            <li class="nav-button">
               <a href="/users">
                 Users
               </a>
             </li>
-            <li class="pure-menu-item mob-menu-item">
+            <li class="nav-button">
               <a href="/libraries">
-               Libraries
+                Libraries
               </a>
             </li>
           </ul>
-        </li>
-      </ul>
+        </nav>
+        <nav class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu pure-menu-horizontal flex-col flex-vert pure-u-1-3">
+          <ul class="pure-menu-list" style="text-align: center">
+            <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+            <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
+            <ul class="pure-menu-children mob-menu-list">
+                <li class="pure-menu-item mob-menu-item">
+                  <a href="/platform">
+                    Tools 
+                  </a>
+                </li>
+                <li class="pure-menu-item mob-menu-item">
+                  <a href="/users">
+                    Users
+                  </a>
+                </li>
+                <li class="pure-menu-item mob-menu-item">
+                  <a href="/libraries">
+                  Libraries
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
     </div>
-  </div>
-|}]
+  |}] [@@ocamlformat "disable"]
 
 let make_title title = [%html "<h1>" [ Html.txt title ] "</h1>"]
 
@@ -86,23 +85,27 @@ let wrap_body ~toc ~title ~description ~body =
       <script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/ocaml.min.js"></script>
       <script>hljs.initHighlightingOnLoad();</script>
     </head>
-    <body>|}
-      [ nav_bar () ]
-      {|
+    <body>
+      <header>
+        <a class="skip-to-content" href="#main"> Skip to main content </a>|}
+        [ nav_bar () ]
+        {|
+      </header>
         <div class="pure-g">
           <div class="pure-u-1-12 pure-u-md-1-4">
             <div class="pure-hidden-xs pure-hidden-sm pure-hidden-md toc-container sticky">|}
-      toc
-      {|</div>
+              toc
+          {|</div>
           </div>
           <div class="pure-u-5-6 pure-u-md-1-2">
-        |}
-      body {| 
+            <main id="main"> |}
+              body
+          {|</main>
           </div>
         </div>
     </body>
   </html>
-|}]
+|}] [@@ocamlformat "disable"]
 
 let make_omd_title_date ~title ~date =
   Omd.of_string ("# " ^ title ^ "\n*Last Updated: " ^ date ^ "*\n\n---\n")

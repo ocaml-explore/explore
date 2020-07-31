@@ -17,7 +17,7 @@ license: 3-Clause BSD
 
 Utop is much more than just a learning tool - it can help any OCaml programmer discover type signatures and prototype new ideas quickly without having to build a full program. Some of the most useful directives are: 
 
-```
+```ocaml
 (* load external packages *)
 utop # #require "omd" 
 
@@ -27,7 +27,7 @@ utop # #use "src/utils.ml"
 
 With packages loaded into the toplevel we can explore them to help speed up are development process when using them, for example if we wished to know what all of the exposed functions and types are for the `Omd` module we can run `#show omd` . For specific functions we can just print them.
 
-```
+```ocaml
 (* load omd *)
 utop # #require "omd"
 
@@ -42,7 +42,7 @@ utop # #show Omd.doc;;
 
 This process is much faster and smoother than checking the online documentation or the source code. It also prints the return types of functions which is especially useful when you move beyond the primitive types like `float` and `int`.
 
-```
+```ocaml
 (* see what the doc type aliases *)
 utop # Omd.of_string "[OCaml](https://ocaml.org/)"
 - : Omd.doc =

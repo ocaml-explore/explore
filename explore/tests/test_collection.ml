@@ -28,7 +28,12 @@ let test_getters () =
   let v = Collection.Workflow.v ~path ~content:s in
   Alcotest.(check string)
     "get title" "Adding Unit Tests to your Project" (W.get_title v);
-  Alcotest.(check string) "get date" "2020-07-27 09:35:49 +00:00" (W.get_date v);
+  Alcotest.(check string)
+    "get date non textual" "2020-07-27 09:35:49 +00:00"
+    (W.get_date ~textual:false v);
+  Alcotest.(check string)
+    "get date non textual" "27, July 2020 at 09:35:49"
+    (W.get_date ~textual:true v);
   Alcotest.(check string)
     "get description" "Add unit tests" (W.get_description v);
   Alcotest.(check (result (list yaml) relation))

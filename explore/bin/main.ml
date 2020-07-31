@@ -16,22 +16,25 @@ let build_phase () =
   Make.output_collection Lib.get_path Lib.to_html_with_workflows
     "content/libraries/index.html"
     (Lib.build_index "Libraries" "Useful OCaml community libraries")
-    Lib.get_workflows workflows libraries;
+    (Lib.get_workflows "libraries")
+    workflows libraries;
   Make.output_collection User.get_path User.to_html_with_workflows
     "content/users/index.html"
     (User.build_index "Users" "People using OCaml to get things done")
-    User.get_workflows workflows users;
+    (User.get_workflows "users")
+    workflows users;
   Make.output_collection Plat.get_path Plat.to_html_with_workflows
     "content/platform/index.html"
     (Plat.build_index "Platform" "The OCaml Platform")
-    Plat.get_workflows workflows platform
+    (Plat.get_workflows "tools")
+    workflows platform
 
 let command =
   Core.Command.basic
     ~summary:
       "🐫🐫🐫  Explore - a tool for building OCaml Explore  🐫🐫🐫"
     Core.Command.Let_syntax.(
-      let%map_open mode = anon (maybe ("mode - <build>" %: string))
+      let%map_open mode = anon (maybe ("mode - <build|time>" %: string))
       and _output =
         flag "-o"
           (optional_with_default "notion" string)
@@ -40,6 +43,10 @@ let command =
       fun () ->
         match mode with
         | Some "build" -> build_phase ()
-        | _ -> print_endline "Please specify either to export or build")
+        | Some "time" -> (
+            Ptime.of_float_s (Unix.gettimeofday ()) |> function
+            | Some t -> Ptime.pp Format.std_formatter t
+            | None -> print_endline "Could not get the time")
+        | _ -> print_endline "Please specify either to build or time")
 
 let () = Core.Command.run command
