@@ -193,7 +193,7 @@
                                                      
     <main id="main"> 
      <h1 id="incorporating-non-ocaml-code-into-your-project">Incorporating non-OCaml Code into your Project</h1>
-<p><em>Last Updated: 27, July 2020 at 09:35:49</em></p>
+<p><em>Last Updated: 31, July 2020 at 12:11:22</em></p>
 <hr />
 <h2 id="overview">Overview</h2>
 <hr />
@@ -201,8 +201,8 @@
 <h2 id="recommended-workflow">Recommended Workflow</h2>
 <hr />
 <h3 id="ocaml-internals">OCaml Internals</h3>
-<p>Programming languages have to have a way of reperesenting data at runtime, for example how should OCaml represent <code>type camel = Dromedary of int</code> in memory? When you interface between two languages much of the battle is converting in-and-out of each programming languages internal data represenation. A <a href="https://caml.inria.fr/pub/docs/manual-ocaml/intfc.html#s%3Ac-ocaml-datatype-repr">detailed introduction</a> is given in the OCaml manual.</p>
-<p>OCaml has a uniform memory representation where everything is a word-sized value. These can either be immediates (represented as unboxed integers) or non-immediates, pointers to a block stored in the OCaml or the C heap. Boxing is the process of wrapping additional meta-data around a value (like IP packets and their header).</p>
+<p>Programming languages must have a representation of data at runtime, for example how should OCaml represent <code>type camel = Dromedary of int</code> in memory? When you interface between two languages much of the battle is converting in-and-out of each programming language's internal data represenation. A <a href="https://caml.inria.fr/pub/docs/manual-ocaml/intfc.html#s%3Ac-ocaml-datatype-repr">detailed introduction</a> of OCaml's internal data representation is given in the manual, what follows is a brief summary.</p>
+<p>OCaml has a uniform memory representation where everything is a word-sized value. These can either be immediates (represented as unboxed integers) or non-immediates (pointers to a block stored in the OCaml or the C heap). Boxing is the process of wrapping additional meta-data around a value much like IP packets and their header.</p>
 <p><img src="/images/data-repr.jpg" alt="OCaml runtime data represenation" /></p>
 <p>To distinguish between immediates and non-immediates (pointers), OCaml uses a tag bit in the least significant bit as a flag. When it is set to 1 this indicates an immediate, otherwise it should be interpretted as a pointer. This means on a 32-bit machine OCaml integers can only be 31-bit. The runtime value of the number <code>7</code> in OCaml is actually <code>15</code>. The conversion function can be seen <a href="https://github.com/ocaml/ocaml/blob/trunk/runtime/caml/mlvalues.h#L75">here</a> in the OCaml compiler.</p>
 <p>Integers are not the only values represented as immediates.</p>

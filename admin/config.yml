@@ -30,6 +30,7 @@ collections:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Updated", name: "date", format: "YYYY-MM-DD hh:mm:ss", dateFormat: "YYYY-MM-DD", timeFormat: "hh:mm:ss", widget: "datetime"}
       - {label: "Short Description", name: "description", widget: "text"}
+      - {label: "Workflows", name: "workflows", multiple: true, widget: "relation", collection: "workflows", searchFields: ["title"], valueField: "title", displayField: "title"}
       - {label: "Body", name: "body", widget: "markdown"}
   - name: "platform" 
     label: "Platform" 
@@ -71,10 +72,6 @@ collections:
       - {label: "Updated", name: "date", format: "YYYY-MM-DD hh:mm:ss", dateFormat: "YYYY-MM-DD", timeFormat: "hh:mm:ss", widget: "datetime"}
       - {label: "Description", name: "description", widget: "string"}
       - {label: "Repository", name: "repo", widget: "string", required: false}
-      - label: "Users"
-        name: "users"
-        widget: "list"
-        field: {label: "User", name: "user", widget: "relation", collection: "users", searchFields: ["title"], valueField: "title", displayField: "title"}
       - label: "Platform Tools"
         name: "tools"
         required: false 

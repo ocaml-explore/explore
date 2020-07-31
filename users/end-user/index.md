@@ -1,6 +1,9 @@
 ---
 title: End User
 date: 2020-07-27 09:35:49
+workflows: 
+  - Finding Answers to your Questions
+  - Using Tools Written in OCaml
 description: Solve problems with tools built in OCaml.
 ---
 
