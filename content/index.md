@@ -52,7 +52,7 @@ To get started with workflows, open the user that best describes you and start e
 
 ## Developing in OCaml 🧠
 
-**Application Developer:** If you have found an OCaml application that you want to work on and extend, then read on about the [Application Developer](./users/application-developer) workflows.  This will get you started with a build environment and all the dependencies you need to build the application within a modern IDE.
+**Application Developer:** If you have found an OCaml application that you want to work on and extend, then read on about the [Application Developer](./users/application-developers) workflows.  This will get you started with a build environment and all the dependencies you need to build the application within a modern IDE.
 
 **Library Author:** If you want to break up your application into reusable chunks, then you will create OCaml libraries.  As a [Library Author](./users/library-author), you will learn how to partition your source code into multiple libraries, to write unit tests and documentation, to apply auto-formatting, and eventually publish them publicly to the central opam repository.
 
@@ -61,8 +61,6 @@ To get started with workflows, open the user that best describes you and start e
 **End User:** If you are an [End User](./users/end-user) that simply wants to install an OCaml application as fast as possible on your platform, read on about how to do that.  Beyond the standard opam client, there are also several domain-specific ones that may be more useful to you, such as the opam2nix binary distributor or the esy client that supports npm-like description files.
 
 **Distribution Manager:** If you are maintaining OCaml on a particular operating system, you will be juggling the various quirks of OCaml applications and libraries with hundreds of other programming languages and build systems.  The [Distribution Manager](./users/distribution-manager) workflows collect tools that operate over the opam repository metadata and provide mechanisms to programmatically translate them to your own distribution.
-
-<!-- [Archetypical Users](Explore%20OCaml%20294d4a6975e84e509cdc53dc6cb1ba3b/Archetypical%20Users%20e3ac9b12886f4eb382d8d03da27ab6ff.csv) -->
 
 # The OCaml Platform 🔨
 

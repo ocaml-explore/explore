@@ -2,7 +2,7 @@
 authors:
   - Patrick Ferris
 title: Incorporating non-OCaml Code into your Project
-date: 2020-07-27 09:35:49
+date: 2020-07-31 12:11:22
 description: Add C code to your OCaml project
 users:
   - Library Authors
@@ -32,9 +32,9 @@ Sometimes OCaml just can't do what lower level languages can do or you want to u
 
 ### OCaml Internals 
 
-Programming languages have to have a way of reperesenting data at runtime, for example how should OCaml represent `type camel = Dromedary of int` in memory? When you interface between two languages much of the battle is converting in-and-out of each programming languages internal data represenation. A [detailed introduction](https://caml.inria.fr/pub/docs/manual-ocaml/intfc.html#s%3Ac-ocaml-datatype-repr) is given in the OCaml manual.
+Programming languages must have a representation of data at runtime, for example how should OCaml represent `type camel = Dromedary of int` in memory? When you interface between two languages much of the battle is converting in-and-out of each programming language's internal data represenation. A [detailed introduction](https://caml.inria.fr/pub/docs/manual-ocaml/intfc.html#s%3Ac-ocaml-datatype-repr) of OCaml's internal data representation is given in the manual, what follows is a brief summary.
 
-OCaml has a uniform memory representation where everything is a word-sized value. These can either be immediates (represented as unboxed integers) or non-immediates, pointers to a block stored in the OCaml or the C heap. Boxing is the process of wrapping additional meta-data around a value (like IP packets and their header). 
+OCaml has a uniform memory representation where everything is a word-sized value. These can either be immediates (represented as unboxed integers) or non-immediates (pointers to a block stored in the OCaml or the C heap). Boxing is the process of wrapping additional meta-data around a value much like IP packets and their header. 
 
 ![OCaml runtime data represenation](/images/data-repr.jpg)
 

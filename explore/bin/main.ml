@@ -21,7 +21,7 @@ let build_phase () =
   Make.output_collection User.get_path User.to_html_with_workflows
     "content/users/index.html"
     (User.build_index "Users" "People using OCaml to get things done")
-    (User.get_workflows "users")
+    (User.get_workflows "workflows")
     workflows users;
   Make.output_collection Plat.get_path Plat.to_html_with_workflows
     "content/platform/index.html"

@@ -222,6 +222,24 @@ end
 
 module User = struct
   include C
+
+  (* Unlike other collections, user workflows are ordered and stored with the user *)
+  let get_workflows _r t (ws : Workflow.t list) =
+    let workflows =
+      match get_relations "workflows" t with Ok lst -> lst | Error _ -> []
+    in
+    let extract_strings = function
+      | `String str -> str
+      | _ -> failwith "Workflows should only be a list of strings"
+    in
+    List.map
+      ~f:(fun w ->
+        match List.find ~f:(fun f -> String.equal w (get_title f)) ws with
+        | Some wf -> wf
+        | None ->
+            failwith
+              ("User " ^ get_title t ^ " contains workflows that don't exist..."))
+      (List.map ~f:extract_strings workflows)
 end
 
 module Library = struct
