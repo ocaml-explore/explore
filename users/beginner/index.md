@@ -4,6 +4,7 @@ date: 2020-07-27 09:35:49
 workflows:
   - Finding Answers to your Questions
   - Getting Started
+  - Navigating OCaml Projects
   - Teaching and Data Science
   - Configuring OCaml Tools for your Editor
 description: Learn the syntax and language features.

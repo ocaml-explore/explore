@@ -87,7 +87,7 @@ collections:
         name: "resources"
         widget: "list"
         required: false
-        fields: [{label: "URL", name: "url", widget: "string"}, {label: "Title", name: "title", widget: "string"}, {label: "Short Description", name: "desciption", widget: "string"}]
+        fields: [{label: "URL", name: "url", widget: "string"}, {label: "Title", name: "title", widget: "string"}, {label: "Short Description", name: "description", widget: "string"}]
   - label: "Pages"
     name: "pages"
     folder: "content/pages"

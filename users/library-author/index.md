@@ -5,6 +5,7 @@ workflows:
   - Finding Answers to your Questions
   - Configuring OCaml Tools for your Editor
   - Initialising a New Library
+  - Navigating OCaml Projects
   - Adding Unit Tests to your Project
   - Keeping your Code Clean
   - Setting up Continuous Integration
