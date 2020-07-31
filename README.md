@@ -10,7 +10,7 @@ Explore OCaml is a centralised source for workflows in OCaml categorised by user
  - Generating and deploying documentation for your project
  - Installing a tool built in OCaml
 
-## Building Locally
+## Building Locally
 
 If you want to run the code locally you will need to clone this repository, install the dependencies and finally install `explore` - from here you can run `explore build` from the root and copy the static folder into the content folder (`cp -r ./static/* ./content`). Next run a [http server](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server#Running_a_simple_local_HTTP_server) from the content folder. 
 

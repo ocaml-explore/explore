@@ -9,16 +9,13 @@ tools:
   - Utop
 resources:
   - url: https://www.craigfe.io/posts/the-intf-trick
-    title: "The _intf trick "
-    desciption: Craig Ferguson explains a different way of laying out OCaml
-      compilation units to reduce duplication of type information and the
-      tradeoffs associated with it. This is a technique used a lot by Jane
-      Street in their OSS.
+    title: The intf trick
+    description: Craig Ferguson explains a different way of laying out OCaml compilation units to reduce duplication of type information and the tradeoffs associated with it. This is a technique commonly used by Jane Street in their OSS.
 ---
 ## Overview 
 ----
 
-Looking at the root of a project can be intimidating - there can be many files and many directories. There are, however, some common standards and best practices that many OCaml libraries use. 
+Looking at the root of an OCaml project can be intimidating - there can be many files and many directories. There are, however, some common standards and best practices that many OCaml libraries use. This workflow aims to help you navigate most OCaml projects.
 
 ## Structure 
 ----
