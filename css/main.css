@@ -78,7 +78,13 @@ code {
   padding: 0% 5%;
 }
 
+.nav-ul {
+  padding-left: 0;
+}
+
 .nav-button {
+  list-style-type: none;
+  padding-left: 0;
   height: 100%;
 }
 
@@ -107,6 +113,19 @@ img {
 }
 
 /* === EXPLORE SPECIFIC RULES === */
+
+.skip-to-content { 
+  left: 50%;
+  position: absolute;
+  transform: translateY(-100%);
+  transition: transform 0.3s;
+}
+
+.skip-to-content:focus {
+  transform: translateY(0%);
+}
+
+
 .index-a {
   text-decoration: none;
   color: inherit;

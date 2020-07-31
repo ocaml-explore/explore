@@ -36,99 +36,101 @@
   </script><script>hljs.initHighlightingOnLoad();</script>
  </head>
  <body>
-  <div class="pure-g">
-                          
-   <div class="pure-u-1-3">
-                                 
-    <a class="title-link" href="/">
-                                           
-     <h2 style="text-align: center">Explore OCaml</h2>
-                                                            
-    </a>
-            
-   </div>
              
-   <div class="pure-u-1-3"></div>
-                                     
-   <div class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
-    
-          
-    <div class="flex-row flex-center">
+  <header>
+                  
+   <a class="skip-to-content" href="#main"> Skip to main content </a>
+   <div class="pure-g">
+                             
+    <div class="pure-u-1-3">
+                                    
+     <a class="title-link" href="/">
                                               
-     <div class="nav-button">
-                                       
-      <a href="/platform">
-                                      Tools 
-                                    </a>
-      
-              
-     </div>
-                   
-     <div class="nav-button">
-                                       
-      <a href="/users">
-                                   Users
-                                 </a>
-      
-              
-     </div>
-                   
-     <div class="nav-button">
-                                       
-      <a href="/libraries">
-                                       Libraries
-                                     </a>
-      
-              
-     </div>
-                 
+      <h2 style="text-align: center">Explore OCaml</h2>
+                                                               
+     </a>
+               
     </div>
-              
-   </div>
-             
-   <div class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu
-    pure-menu-horizontal flex-col flex-vert pure-u-1-3">
-                                                              
-    <ul class="pure-menu-list" style="text-align: center">
-     <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-      
-              <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
-      
-              
-      <ul class="pure-menu-children mob-menu-list">
-       <li class="pure-menu-item mob-menu-item">
-                                                              
-        <a href="/platform">
-                                            Tools 
-                                          </a>
-        
-                    
-       </li>
-       <li class="pure-menu-item mob-menu-item">
-                                                              
-        <a href="/users">
-                                         Users
-                                       </a>
-        
-                    
-       </li>
-       <li class="pure-menu-item mob-menu-item">
-                                                              
-        <a href="/libraries">
-                                            Libraries
-                                           </a>
-        
-                    
-       </li>
-      </ul>
-                   
-     </li>
-    </ul>
-             
-   </div>
-           
-  </div>
                 
+    <div class="pure-u-1-3"></div>
+                                          
+    <nav class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
+     
+               
+     <ul class="flex-row flex-center nav-ul">
+      <li class="nav-button">
+                                           
+       <a href="/platform">
+                                           Tools 
+                                         </a>
+       
+                   
+      </li>
+      <li class="nav-button">
+                                           
+       <a href="/users">
+                                        Users
+                                      </a>
+       
+                   
+      </li>
+      <li class="nav-button">
+                                           
+       <a href="/libraries">
+                                            Libraries
+                                          </a>
+       
+                   
+      </li>
+     </ul>
+                  
+    </nav>
+                  
+    <nav class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu
+     pure-menu-horizontal flex-col flex-vert pure-u-1-3">
+                                                                   
+     <ul class="pure-menu-list" style="text-align: center">
+      <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+       
+                   <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
+       
+                   
+       <ul class="pure-menu-children mob-menu-list">
+        <li class="pure-menu-item mob-menu-item">
+                                                                   
+         <a href="/platform">
+                                                 Tools 
+                                               </a>
+         
+                         
+        </li>
+        <li class="pure-menu-item mob-menu-item">
+                                                                   
+         <a href="/users">
+                                              Users
+                                            </a>
+         
+                         
+        </li>
+        <li class="pure-menu-item mob-menu-item">
+                                                                   
+         <a href="/libraries">
+                                                Libraries
+                                                
+         </a>
+                             
+        </li>
+       </ul>
+                        
+      </li>
+     </ul>
+                  
+    </nav>
+              
+   </div>
+               
+  </header>
+                   
   <div class="pure-g">
                                 
    <div class="pure-u-1-12 pure-u-md-1-4">
@@ -181,9 +183,10 @@
    </div>
                    
    <div class="pure-u-5-6 pure-u-md-1-2">
-                                                 
-    <h1 id="fixing-bugs-in-3rd-party-packages">Fixing Bugs in 3rd Party Packages</h1>
-<p><em>Last Updated: 2020-07-27 09:35:49 +00:00</em></p>
+                                                     
+    <main id="main"> 
+     <h1 id="fixing-bugs-in-3rd-party-packages">Fixing Bugs in 3rd Party Packages</h1>
+<p><em>Last Updated: 27, July 2020 at 09:35:49</em></p>
 <hr />
 <h2 id="overview">Overview</h2>
 <hr />
@@ -233,19 +236,20 @@ opam pin add irmin . --kind=path
 <h3 id="subsequent-changes-&amp;-upgrading">Subsequent Changes &amp; Upgrading</h3>
 <p>Pinning a package tells opam where the source code is coming from but as you add new bits of code, opam doesn't see these. In order to add those you will have to run <code>opam upgrade</code> to get the latest changes of pinned packages.</p>
 
-    <h3>Resources</h3>
-    <ol>
-     <li>
-      <a
-       href="http://www.dra27.uk/blog/platform/2018/08/15/dune-vendoring.html">
-       The Joys of Dune Vendoring
-      </a> - 
-      David Allsopp explains how using dune in the future will make the
-      development process (changing dependencies and rebuilding projects)
-      much simpler and quicker
-     </li>
-    </ol> 
-                   
+     <h3>Resources</h3>
+     <ol>
+      <li>
+       <a
+        href="http://www.dra27.uk/blog/platform/2018/08/15/dune-vendoring.html"
+        >The Joys of Dune Vendoring
+       </a> - 
+       David Allsopp explains how using dune in the future will make the
+       development process (changing dependencies and rebuilding projects)
+       much simpler and quicker
+      </li>
+     </ol>
+    </main>
+                     
    </div>
                  
   </div>

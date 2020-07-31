@@ -21,15 +21,11 @@ resources:
 
 ---
 
-Ppx allows programmers to meta-program directly on the abstract syntax tree of OCaml code. This means simple tasks like writing comparison functions or hashing functions can be automated through clever inference on types.  
+Meta-programming is programming for programming. You can think of it as a program which works with another program as data. Ppx is the OCaml syntax extension allowing programmers to meta-program directly on the abstract syntax tree of OCaml code. This means simple tasks like writing comparison functions or hashing functions can be automated through clever inference on types. 
 
 ## Recommended Workflow
 
----
-
-### What is Meta-programming?
-
-Meta-programming is programming for programming. 
+--- 
 
 ### Using PPX libraries
 
