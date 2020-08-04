@@ -1,10 +1,8 @@
 (lang dune 2.6)
 
-(name explore)
+(name main)
 
 (using mdx 0.1)
-
-(formatting disabled)
 
 (generate_opam_files true)
 
@@ -18,24 +16,13 @@
 (maintainers "pf341@patricoferris.com")
 
 (package
- (name explore)
- (synopsis "Explore OCaml Sources")
- (description "Build tool, scripts and content for the Explore OCaml site")
+ (name main)
+ (synopsis "Explore OCaml Sources - Mdx Example")
+ (description "Using mdx to test a CLI tool")
  (depends
   (alcotest :with-test)
   (ocaml
    (and
     (>= 4.10.0)
     (< 4.11.0)))
-  core
-  tyxml
-  omd
-  yaml
-  ptime
-  calendar
-  tyxml-ppx
-  mdx
-  ppx_jane
-  ezjsonm
-  jekyll-format
-  re))
+  mdx))

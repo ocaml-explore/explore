@@ -26,4 +26,4 @@ val emit_page : string -> Tyxml.Html.doc -> unit
 (** [emit_page path doc] will ouput the HTML ([doc]) to [path] *)
 
 val make_title : string -> [> Html_types.h1 ] Tyxml.Html.elt
-(** [make_title title] will produce <h1>{title}</h1> *)
+(** [make_title title] will produce <h1>\{title\}</h1> *)
