@@ -1,7 +1,7 @@
 ---
 title: Opam Client 
 description: The Opam client is a tool used to work with Opam, an OCaml Package Manager
-date: 2020-07-27 09:35:49
+date: 2020-08-03 13:20:39
 ---
 
 ## Overview
@@ -67,10 +67,6 @@ Show allows you to see the metadata associated with a library. You can even prin
 
 ### Plugins
 
-Plugins in opam are ways to extend opam's functionality in a more accessible way (anyone can write a plugin!). One of the most used is `depext` - you can tell it is a plugin from it's opam file:
+Plugins in opam are ways to extend opam's functionality in a more accessible way (anyone can write a plugin!). One of the most used is [depext](https://github.com/ocaml-opam/opam-depext) - you can tell it is a plugin from it's opam file which has `tags: "flags:plugin"`. Depext tries to install external dependencies for you. Other plugins include `opam-user-setup` which can be used to setup common tooling for supported editors like *emacs* or *vim.*
 
-`tags: "flags:plugin"`
-
-[ocaml-opam/opam-depext](https://github.com/ocaml-opam/opam-depext)
-
-Depext tries to install external dependencies for you. Other plugins include `opam-user-setup` which can be used to setup common tooling for supported editors like *emacs* or *vim.*
+Another plugin is [opam-tools](https://github.com/avsm/opam-tools) which initialises a local development environment (i.e. using a local switch). The goal is that you could clone a repository and run `opam tools` which should do a lot of the manual setup to start developing for you. 

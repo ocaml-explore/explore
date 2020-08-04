@@ -31,36 +31,36 @@ The goal of the  workflow is to make your documentation:
 
 ---
 
+### Writing Documentation using Odoc 
+
+OCaml has a tool, [odoc](/libraries/odoc), for generating documentation from comments in the code that start with a double asterisk `(** my nice comment *)`.
+
+The full documentation for the syntax of documentation comments can be found [here](https://caml.inria.fr/pub/docs/manual-ocaml/ocamldoc.html#s%3Aocamldoc-comments). The recommended place for documentation strings are in the interface (`.mli`) files. Here is a small example for a library which offers a, very limited, selection of functions on numbers. 
+
+<!-- $MDX file=examples/doc/src/numbers.mli -->
+```ocaml
+(** {1 Types} *)
+
+type err = [ `Undefined of string ]
+(** The type of number errors *)
+
+(** {1 Number Functions} *)
+
+val fact : int -> (int, err) Result.t
+(** [fact n] computes n! ({{:https://en.wikipedia.org/wiki/Factorial}
+    factorial}). If [n] is less than [0] then it returns an [Error err] where
+    the errors are {!err} *)
+```
+
+The parts of the documentation strings in square brackets like `[fact n]` will be formatted as code in the documentation site. Another useful feature is the `{{: <link>} <text>}` constructor for making links to external resources. The comments with `{1 <header>}` indicate level one headers.
+
+You can cross reference other types, functions and modules using the `{! <value>}` syntax. This is being used to link back to the `err` type. For large projects this can help moving around the interface that is exposed to your users.
+
 ### Generating Documentation
-
-OCaml has a tool, odoc, for generating documentation from comments in the code that start with a double asterisk `(** my nice comment *)`.
-
-The full documentation for the syntax of documentation comments can be found [here](https://caml.inria.fr/pub/docs/manual-ocaml/ocamldoc.html#s%3Aocamldoc-comments). Some of the most used features of the syntax include, source code styling with `[...]`:
-
-```ocaml
-val add : int -> int -> int 
-(** [add a b] takes the two integers [a] and [b] and produces their sum *) 
-```
-
-Inserting links to external sources `{{: link} text}`: 
-
-```ocaml
-val gcd : int -> int -> int 
-(** [gcd a b] computes the 
-	{{: https://en.wikipedia.org/wiki/Greatest_common_divisor} gcd} 
-	of two integers [a] and [b] *)
-```
-
-Cross referencing other types, modules or functions:
-
-```ocaml
-val mult : int -> int -> int 
-(** [mult a b] returns the product of [a] and [b] using {! Arith.add} to do so *)
-```
 
 If you are already using opam and dune then the hardest part to generating documentation is actually writing it. From the root of your project it is as simple as: 
 
-```bash
+```
 opam install odoc 
 dune build @doc 
 ```
@@ -73,7 +73,7 @@ If you are hosting your code on Github then you can also go one step further and
 
 Dune-release will build the documentation from the *distribution archive* - this means you need to build that first in order to get your documentation. 
 
-```bash
+```
 $ dune-release distrib # build the distribution archive
 $ dune-release publish doc # build and push docs to gh-pages
 ```

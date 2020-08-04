@@ -145,7 +145,15 @@
           Meta-programming with PPX
          </a>
          <ul class="toc">
-          <li><a class="toc-item-2" href="#overview">Overview</a></li>
+          <li><a class="toc-item-2" href="#overview">Overview</a>
+           <ul class="toc">
+            <li>
+             <a class="toc-item-3" href="#the-abstract-syntax-tree">
+              The Abstract Syntax Tree
+             </a>
+            </li>
+           </ul>
+          </li>
          </ul>
          <ul class="toc">
           <li>
@@ -187,39 +195,116 @@
                                                      
     <main id="main"> 
      <h1 id="meta-programming-with-ppx">Meta-programming with PPX</h1>
-<p><em>Last Updated: 27, July 2020 at 09:35:49</em></p>
+<p><em>Last Updated: 04, August 2020 at 11:22:34</em></p>
 <hr />
 <h2 id="overview">Overview</h2>
 <hr />
-<p>Meta-programming is programming for programming. You can think of it as a program which works with another program as data. Ppx is the OCaml syntax extension allowing programmers to meta-program directly on the abstract syntax tree of OCaml code. This means simple tasks like writing comparison functions or hashing functions can be automated through clever inference on types.</p>
+<p>Meta-programming is programming for programming. You can think of it as a program which works with another program as data. Ppx is the OCaml syntax extension allowing programmers to meta-program directly on the abstract syntax tree (AST) of OCaml code. This means simple tasks like writing comparison functions or hashing functions can be automated through clever inference on types.</p>
+<h3 id="the-abstract-syntax-tree">The Abstract Syntax Tree</h3>
+<p>Before diving into using a ppx or writing your own, it is important to understand the OCaml AST. Your program starts its life in OCaml's concrete syntax. This is the predefined set of strings which are given some semantic meaning in the OCaml world like <code>let ... in ...</code>. The first important job of the compiler is to render this as abstract syntax, a simpler internal represenation of your program often structured as a labelled tree.</p>
+<p>As a tree data-structure, transformations become much easier. The purpose of a ppx is to move from one AST to another. The OCaml AST is called the <a href="https://github.com/ocaml/ocaml/blob/trunk/parsing/parsetree.mli">Parsetree</a>. Using this definition, let's find the AST for:</p>
+<pre><code class="language-ocaml"># let add_one a = a + 1 
+val add_one : int -&gt; int = &lt;fun&gt;
+</code></pre>
+<p>We can actually print the Parsetree using the OCaml compiler from the command line: <code>ocamlopt -dparsetree file.ml</code>. What follows is the Parsetree component for the <code>add_one</code> function. The <code>pexp</code> function takes a <code>Parsetree.expression_desc</code> and creates a <code>Parsetree.expression</code> by filling in details like attributes and location with dummy information to make the example more readable. <code>ppat</code> and <code>pvb</code> are similar functions for those types.</p>
+<!-- $MDX file=examples/parsetree/main.ml,part=1 -->
+<pre><code class="language-ocaml">let (p : structure) =
+  [
+    {
+      pstr_desc =
+        Pstr_value
+          ( Nonrecursive,
+            [
+              pvb
+                (ppat (Ppat_var { txt = &quot;f&quot;; loc = fake_position }))
+                (pexp
+                   (Pexp_fun
+                      ( Nolabel,
+                        None,
+                        ppat (Ppat_var { txt = &quot;a&quot;; loc = fake_position }),
+                        pexp
+                          (Pexp_apply
+                             ( pexp
+                                 (Pexp_ident
+                                    {
+                                      txt = Longident.Lident &quot;+&quot;;
+                                      loc = fake_position;
+                                    }),
+                               [
+                                 ( Nolabel,
+                                   pexp
+                                     (Pexp_ident
+                                        {
+                                          txt = Longident.Lident &quot;a&quot;;
+                                          loc = fake_position;
+                                        }) );
+                                 ( Nolabel,
+                                   pexp
+                                     (Pexp_constant (Pconst_integer (&quot;1&quot;, None)))
+                                 );
+                               ] )) )));
+            ] );
+      pstr_loc = fake_position;
+    };
+  ]
+</code></pre>
+<p>If the tree structure does not reveal itself from the code, this greatly simplified diagram should help.</p>
+<p><img src="/images/parsetree.png" alt="The OCaml AST for let add_one x = x + 1" /></p>
+<p>Manipulating the tree structure is much simpler than working with text. A ppx works on these structures allowing you to access the information and perform transformations from one tree to another.</p>
 <h2 id="recommended-workflow">Recommended Workflow</h2>
 <hr />
 <h3 id="using-ppx-libraries">Using PPX libraries</h3>
-<p>Dune comes with ppx support which makes it very easy to start using different ppx libraries to meta-program in OCaml. In this example we will add <code>ppx_hash</code> to a small example.</p>
-<p>Suppose we have type of person - to generate a hashing function we label it with a type attribute:</p>
-<pre><code class="language-ocaml">(* person.ml file *)
-open Core
+<p>Dune comes with ppx support which makes it very easy to start using different ppx libraries to meta-program in OCaml. In this example we will define a new type of person and try to use it with the <code>Core.Hashtbl</code> module.</p>
+<p>The Core implementation of a <a href="https://github.com/janestreet/base/blob/master/src/hashtbl_intf.ml#L425">hashtable expects</a> an <code>'a Key.t</code> which should be a first-class module with hash, compare and s-expression functions. This is very common for Jane Street modules so they made ppxes to auto-generate such functions from type signatures.</p>
+<p>To generate these functions we label it with a type deriving attribute.</p>
+<!-- $MDX file=examples/ppx_jane/main.ml -->
+<pre><code class="language-ocaml">open Core
 
-type person = {
-	name: string;
-	age: int;
-} [@@deriving hash]
+module Person = struct 
+  type t = {
+    name: string;
+    age: int;
+  } [@@deriving hash, sexp, compare]
+end 
 
 let () = 
-	let p = { name = &quot;Alice&quot;; age = 42 } in 
-		Printf.fprintf stdout &quot;%i\n&quot; (hash_person p)
+  let tbl = Hashtbl.create (module Person) in 
+  let alice : Person.t = { name = &quot;Alice&quot;; age = 42 } in 
+    Hashtbl.add_exn tbl ~key:alice ~data:&quot;1234&quot;; 
+    print_string (Hashtbl.find_exn tbl alice)
 </code></pre>
-<p>This example illustrates that ppx libraries can make assumptions - <code>ppx_hash</code> expects the Jane Street Core standard library to be open in order to use some of the functions that are there that aren't in the standard library packaged by OCaml.</p>
 <p>The dune file will be:</p>
+<!-- $MDX file=examples/ppx_jane/dune -->
 <pre><code>(executable
-  (name person)
-	(libraries core)
-	(preprocess (pps ppx_hash)))
+ (name main)
+ (libraries core)
+ (preprocess
+  (pps ppx_jane)))
 </code></pre>
+<p>The <code>[@@deriving...]</code> attribute tells the compiler to insert new nodes derived from the type. For example, consider deriving the compare function.</p>
+<pre><code class="language-ocaml">type t = { id : int } [@@deriving compare]
+</code></pre>
+<p>To see what the compiler is actually compiling we can add <code>(ocamlopt_flags (:standard -dsource))</code> to our dune file's executable stanza to print the actual compiled source code. With this, a simplified version of what we get is:</p>
+<pre><code class="language-ocaml">open Core
+type t = {
+  age: int }[@@deriving compare]
+include
+  struct
+    let _ = fun (_ : t) -&gt; ()
+    let compare =
+      (fun a__001_ -&gt;
+         fun b__002_ -&gt;
+           if Ppx_compare_lib.phys_equal a__001_ b__002_
+           then 0
+           else compare_int a__001_.age b__002_.age : t -&gt; t -&gt; int)
+    let _ = compare
+  end[@@ocaml.doc &quot;@inline&quot;][@@merlin.hide ]
+</code></pre>
+<p>The main part being the new compare function which first uses physical equality before using integer equality on the integer record field of our type.</p>
 <h3 id="writing-ppx-libraries">Writing PPX libraries</h3>
 <p>To write your own ppx library you are strongly encourage to use <code>ppxlib</code> (linked in the libraries section). It provides a wrapper around the compiler hooks that ppx uses to modify the AST. The user documentation does a very good job at getting you started writing your own ppx libraries.</p>
 <p><a href="https://ppxlib.readthedocs.io/en/latest/">ppxlib's user manual - ppxlib documentation</a></p>
-<p>In addition to that, the article in the resources tag does a very thorough job of explaining how to use ppxlib.</p>
+<p>The best way to learn is by example. Let's continue with some of Jane Street's ppxes and look at how <code>ppx_compare</code> works.</p>
 <h2 id="real-world-examples">Real World Examples</h2>
 <hr />
 <p><a href="https://github.com/ocaml-ppx/ppx_deriving_yojson">ocaml-ppx/ppx_deriving_yojson</a></p>

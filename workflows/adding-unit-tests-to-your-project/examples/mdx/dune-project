@@ -1,0 +1,28 @@
+(lang dune 2.6)
+
+(name main)
+
+(using mdx 0.1)
+
+(generate_opam_files true)
+
+(source
+ (github patricoferris/explore))
+
+(license ISC)
+
+(authors "Patrick Ferris")
+
+(maintainers "pf341@patricoferris.com")
+
+(package
+ (name main)
+ (synopsis "Explore OCaml Sources - Mdx Example")
+ (description "Using mdx to test a CLI tool")
+ (depends
+  (alcotest :with-test)
+  (ocaml
+   (and
+    (>= 4.10.0)
+    (< 4.11.0)))
+  mdx))

@@ -154,6 +154,13 @@
            </a>
            <ul class="toc">
             <li>
+             <a class="toc-item-3" href="#writing-documentation-using-odoc">
+              Writing Documentation using Odoc
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li>
              <a class="toc-item-3" href="#generating-documentation">
               Generating Documentation
              </a>
@@ -203,31 +210,34 @@
 </ul>
 <h2 id="recommended-workflow">Recommended Workflow</h2>
 <hr />
+<h3 id="writing-documentation-using-odoc">Writing Documentation using Odoc</h3>
+<p>OCaml has a tool, <a href="/libraries/odoc">odoc</a>, for generating documentation from comments in the code that start with a double asterisk <code>(** my nice comment *)</code>.</p>
+<p>The full documentation for the syntax of documentation comments can be found <a href="https://caml.inria.fr/pub/docs/manual-ocaml/ocamldoc.html#s%3Aocamldoc-comments">here</a>. The recommended place for documentation strings are in the interface (<code>.mli</code>) files. Here is a small example for a library which offers a, very limited, selection of functions on numbers.</p>
+<!-- $MDX file=examples/doc/src/numbers.mli -->
+<pre><code class="language-ocaml">(** {1 Types} *)
+
+type err = [ `Undefined of string ]
+(** The type of number errors *)
+
+(** {1 Number Functions} *)
+
+val fact : int -&gt; (int, err) Result.t
+(** [fact n] computes n! ({{:https://en.wikipedia.org/wiki/Factorial}
+    factorial}). If [n] is less than [0] then it returns an [Error err] where
+    the errors are {!err} *)
+</code></pre>
+<p>The parts of the documentation strings in square brackets like <code>[fact n]</code> will be formatted as code in the documentation site. Another useful feature is the <code>{{: &lt;link&gt;} &lt;text&gt;}</code> constructor for making links to external resources. The comments with <code>{1 &lt;header&gt;}</code> indicate level one headers.</p>
+<p>You can cross reference other types, functions and modules using the <code>{! &lt;value&gt;}</code> syntax. This is being used to link back to the <code>err</code> type. For large projects this can help moving around the interface that is exposed to your users.</p>
 <h3 id="generating-documentation">Generating Documentation</h3>
-<p>OCaml has a tool, odoc, for generating documentation from comments in the code that start with a double asterisk <code>(** my nice comment *)</code>.</p>
-<p>The full documentation for the syntax of documentation comments can be found <a href="https://caml.inria.fr/pub/docs/manual-ocaml/ocamldoc.html#s%3Aocamldoc-comments">here</a>. Some of the most used features of the syntax include, source code styling with <code>[...]</code>:</p>
-<pre><code class="language-ocaml">val add : int -&gt; int -&gt; int 
-(** [add a b] takes the two integers [a] and [b] and produces their sum *) 
-</code></pre>
-<p>Inserting links to external sources <code>{{: link} text}</code>:</p>
-<pre><code class="language-ocaml">val gcd : int -&gt; int -&gt; int 
-(** [gcd a b] computes the 
-	{{: https://en.wikipedia.org/wiki/Greatest_common_divisor} gcd} 
-	of two integers [a] and [b] *)
-</code></pre>
-<p>Cross referencing other types, modules or functions:</p>
-<pre><code class="language-ocaml">val mult : int -&gt; int -&gt; int 
-(** [mult a b] returns the product of [a] and [b] using {! Arith.add} to do so *)
-</code></pre>
 <p>If you are already using opam and dune then the hardest part to generating documentation is actually writing it. From the root of your project it is as simple as:</p>
-<pre><code class="language-bash">opam install odoc 
+<pre><code>opam install odoc 
 dune build @doc 
 </code></pre>
 <p>This will build a documentation website in <code>_build/default/_doc/_html</code>.</p>
 <h3 id="releasing-documentation">Releasing Documentation</h3>
 <p>If you are hosting your code on Github then you can also go one step further and deploy your documentation to <a href="https://pages.github.com/">Github Pages</a>. This is done using dune-release which will build your documentation for you and push it to a <code>gh-pages</code> branch before moving it upstream.</p>
 <p>Dune-release will build the documentation from the <em>distribution archive</em> - this means you need to build that first in order to get your documentation.</p>
-<pre><code class="language-bash">$ dune-release distrib # build the distribution archive
+<pre><code>$ dune-release distrib # build the distribution archive
 $ dune-release publish doc # build and push docs to gh-pages
 </code></pre>
 <h2 id="real-world-examples">Real World Examples</h2>

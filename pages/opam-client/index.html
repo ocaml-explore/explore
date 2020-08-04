@@ -187,7 +187,7 @@
                                                      
     <main id="main"> 
      <h1 id="opam-client">Opam Client</h1>
-<p><em>Last Updated: 27, July 2020 at 09:35:49</em></p>
+<p><em>Last Updated: 03, August 2020 at 13:20:38</em></p>
 <hr />
 <h2 id="overview">Overview</h2>
 <hr />
@@ -230,10 +230,8 @@ the compiler available at once.</p>
 <p>Source and show are very useful commands for library authors. Source downloads the latest code attached to the version of a given library.</p>
 <p>Show allows you to see the metadata associated with a library. You can even print the opam file with: <code>opam show &lt;library&gt; --raw</code></p>
 <h3 id="plugins">Plugins</h3>
-<p>Plugins in opam are ways to extend opam's functionality in a more accessible way (anyone can write a plugin!). One of the most used is <code>depext</code> - you can tell it is a plugin from it's opam file:</p>
-<p><code>tags: &quot;flags:plugin&quot;</code></p>
-<p><a href="https://github.com/ocaml-opam/opam-depext">ocaml-opam/opam-depext</a></p>
-<p>Depext tries to install external dependencies for you. Other plugins include <code>opam-user-setup</code> which can be used to setup common tooling for supported editors like <em>emacs</em> or <em>vim.</em></p>
+<p>Plugins in opam are ways to extend opam's functionality in a more accessible way (anyone can write a plugin!). One of the most used is <a href="https://github.com/ocaml-opam/opam-depext">depext</a> - you can tell it is a plugin from it's opam file which has <code>tags: &quot;flags:plugin&quot;</code>. Depext tries to install external dependencies for you. Other plugins include <code>opam-user-setup</code> which can be used to setup common tooling for supported editors like <em>emacs</em> or <em>vim.</em></p>
+<p>Another plugin is <a href="https://github.com/avsm/opam-tools">opam-tools</a> which initialises a local development environment (i.e. using a local switch). The goal is that you could clone a repository and run <code>opam tools</code> which should do a lot of the manual setup to start developing for you.</p>
 
     </main>
                      
