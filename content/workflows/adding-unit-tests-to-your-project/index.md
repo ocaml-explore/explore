@@ -116,29 +116,29 @@ Which, with an appropriate opam file, can be built with the following dune file.
  (public_name main))
 ```
 
-Now we can build a simple test of the CLI tool using mdx. In a `tests/bin` folder we write a `exec.t` file and pass it some tests in markdown code blocks. 
+Now we can build a simple test of the CLI tool using mdx. In a `tests/bin` folder we write a `exec.t` file and pass it some tests in markdown code blocks. Note in the following markdown the `~~~` syntax has been used to delimit the codeblocks - this is to prevent the mdx that builds this site from executing these codeblocks, you should use the triple backticks for yours. 
 
-~~~
+```markdown
 # Testing the command line 
 
 ## Should print that a number should be supplied 
-```sh
+~~~sh
 $ main
 Need to supply a number
-```
+~~~
 
 ## Should print that 11 
-```sh
+~~~sh
 $ main 10
 11
-```
+~~~
 
 ## Should print that 0 
-```sh
+~~~sh
 $ main -1
 0
-```
 ~~~
+```
 
 And add a dune file: 
 
@@ -151,25 +151,25 @@ And add a dune file:
 
 Now when we run `dune runtest` we'll be greeted with a diff of our markdown file with the proposed outputs of our small shell scripts. We can add these to the file by promoting them with `dune promote` then commit them to the repository. If tests fail in the future we will get the diff and can decided whether to promote them or not. 
 
-~~~diff
+```diff
 ## Should print that a number should be supplied 
-```
+~~~sh
 $ main
 +Need to supply a number
-```
+~~~
 
 ## Should print that 11 
-```
+~~~sh
 $ main 10
 +11
-```
+~~~
 
 ## Should print that 0 
-```
+~~~sh
 $ main -1
 +0
-```
 ~~~
+```
 
 ## Alternatives
 
