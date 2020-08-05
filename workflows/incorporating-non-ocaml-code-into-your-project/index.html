@@ -193,7 +193,7 @@
                                                      
     <main id="main"> 
      <h1 id="incorporating-non-ocaml-code-into-your-project">Incorporating non-OCaml Code into your Project</h1>
-<p><em>Last Updated: 31, July 2020 at 12:11:22</em></p>
+<p><em>Last Updated: 05, August 2020 at 15:14:54</em></p>
 <hr />
 <h2 id="overview">Overview</h2>
 <hr />
@@ -205,38 +205,35 @@
 <p>OCaml has a uniform memory representation where everything is a word-sized value. These can either be immediates (represented as unboxed integers) or non-immediates (pointers to a block stored in the OCaml or the C heap). Boxing is the process of wrapping additional meta-data around a value much like IP packets and their header.</p>
 <p><img src="/images/data-repr.jpg" alt="OCaml runtime data represenation" /></p>
 <p>To distinguish between immediates and non-immediates (pointers), OCaml uses a tag bit in the least significant bit as a flag. When it is set to 1 this indicates an immediate, otherwise it should be interpretted as a pointer. This means on a 32-bit machine OCaml integers can only be 31-bit. The runtime value of the number <code>7</code> in OCaml is actually <code>15</code>. The conversion function can be seen <a href="https://github.com/ocaml/ocaml/blob/trunk/runtime/caml/mlvalues.h#L75">here</a> in the OCaml compiler.</p>
-<p>Integers are not the only values represented as immediates.</p>
-<pre><code class="language-ocaml">(* Variants with Constant Constructors *)
-type vehicle = Car | Bike | Truck
-(* Car = 0, Bike = 3, Truck = 5 *)
-
-type poly = `String | `Int 
-(* Hash of the polymorphic variant name *)
-
-(* Built-in booleans *)
-true 
-false 
+<p>Integers are not the only values represented as immediates. Normal and polymorphic variants with constant constructors are represented as immediates, the latter as a hash of the constructor name. The built-in boolen values are also immediates i.e. true is <code>1</code> (which in OCaml is <code>3</code>) and false is <code>0</code> (<code>1</code> in OCaml).</p>
+<pre><code class="language-ocaml"># type vehicle = Car | Bicycle of string | Truck 
+type vehicle = Car | Bicycle of string | Truck
+# type poly = [`String | `Int]
+type poly = [ `Int | `String ]
+# true
+- : bool = true
 </code></pre>
 <p>Variants with non-constant constructors are heap allocated as blocks (only the non-constant ones). Blocks in the heap start with a one-word header, either 32 or 64-bit depending on thearchitecture, which contains information about the length of the value (22 or 54 bits), 2 bits for a colour which is used in garbage collection and 8 bits for a multi-purpose tag byte to indicate what the block is. The type unsafe <code>Obj</code> module lets you inspect the runtime information of values.</p>
-<pre><code class="language-ocaml">type 'a lst = Nil | Cons of 'a * 'a lst 
-(* Nil = 0, Cons is heap allocated *)
-
-Obj.tag (Obj.repr (Cons(1, Nil)))
-(* 0 - Each field is a value *)
-
-Obj.tag (Obj.repr Nil) 
-(* 1000 - Int tag *)
-
-Obj.tag (Obj.repr (fun x -&gt; x)) 
-(* 247 - closure tag *)
+<pre><code class="language-ocaml"># Obj.tag (Obj.repr Car)
+- : int = 1000
+# Obj.is_int (Obj.magic Car)
+- : bool = true
+# Obj.tag (Obj.repr (Bicycle &quot;electric&quot;))
+- : int = 0
+# Obj.is_block (Obj.magic (Bicycle &quot;electric&quot;))
+- : bool = true
+# Obj.tag (Obj.repr `String)
+- : int = 1000
+# Obj.tag (Obj.repr (fun x -&gt; x)) 
+- : int = 247
 </code></pre>
 <h3 id="interacting-with-c-from-ocaml">Interacting with C from OCaml</h3>
 <p>To interact with C code you need to use the Foreign Function Interface (FFI) in OCaml and make some changes to your <code>dune</code> files to incorporate the extra code. To use a foreign C function in OCaml you need to add:</p>
 <pre><code class="language-ocaml">external &lt;ocaml-name&gt; : &lt;type-of-function&gt; = &quot;&lt;c-function-name&gt;&quot;
 </code></pre>
 <p>The C function will take OCaml values as arguments (which will be encoded using the data representation previously described). For example if we want to have an external C <code>add</code> function the C file would be.</p>
-<pre><code class="language-c">// main.c
-#include &lt;caml/mlvalues.h&gt;
+<!-- $MDX file=examples/c-from-ocaml/add.c -->
+<pre><code class="language-c">#include &lt;caml/mlvalues.h&gt;
 
 value add_c(value a, value b)
 {
@@ -244,16 +241,18 @@ value add_c(value a, value b)
 }
 </code></pre>
 <p>To access the code in OCaml we define an external <code>add</code> function and give it proper OCaml types within our <code>main.ml</code> file.</p>
+<!-- $MDX file=examples/c-from-ocaml/main.ml -->
 <pre><code class="language-ocaml">external add : int -&gt; int -&gt; int = &quot;add_c&quot;
 
 let () = print_int (add 10 10)
 </code></pre>
 <p>Finally we compile everything using dune and the <em>foreign_stubs</em> optional field.</p>
+<!-- $MDX file=examples/c-from-ocaml/dune -->
 <pre><code>(executable
  (name main)
  (foreign_stubs
   (language c)
-  (names main)))
+  (names add)))
 </code></pre>
 <h3 id="interacting-with-ocaml-from-c">Interacting with OCaml from C</h3>
 <p>Sometimes you might want to do the inverse and access parts on an <a href="https://ocaml.org/releases/4.10/htmlman/intfc.html">OCaml program from a C program</a>. This still suffers from the data represenation shuffling that might need to take place. There are two main ways that you may want to call OCaml from C. Either as callbacks (OCaml calls C which calls OCaml) or just directly from a main C program. The latter requires you to initialise the OCaml code by calling <code>caml_main</code>.</p>
