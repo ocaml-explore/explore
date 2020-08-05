@@ -2,7 +2,7 @@
 authors:
   - Patrick Ferris
 title: Adding Unit Tests to your Project
-date: 2020-07-30 10:43:50
+date: 2020-08-05 09:10:42
 description: Write tests to check the functionality of your code using Alcotest
 users:
   - Library Authors
@@ -26,7 +26,7 @@ There are lots of ways you can go about testing and a large part of this is depe
 
 ### Testing a library with Alcotest
 
-[Alcotest](https://github.com/mirage/alcotest) is a unit testing framework. In the following example, we'll pretend we are testing the [ocaml-yaml](https://github.com/avsm/ocaml-yaml) library -- an OCaml interface toy he YAML 1.1 specification. Incidentally, the real library [uses alcotest](https://github.com/avsm/ocaml-yaml/blob/master/tests/test.ml).
+[Alcotest](https://github.com/mirage/alcotest) is a unit testing framework. In the following example, we'll pretend we are testing the [ocaml-yaml](https://github.com/avsm/ocaml-yaml) library -- an OCaml interface for the YAML 1.1 specification. Incidentally, the real library [uses alcotest](https://github.com/avsm/ocaml-yaml/blob/master/tests/test.ml).
 
 Dune supports test stanzas which indicate that the directory is building a test suite and should be treated as such. The main fields that you need to provide are the test entry point (`(name file)`) and what libraries you are using. For our yaml example, we need the yaml library and alcotest. 
 
@@ -57,7 +57,7 @@ let pp_error ppf (`Msg x) = Format.pp_print_string ppf x
 let error = Alcotest.testable pp_error ( = )
 ```
 
-Next we write the unit tests. Alcotest provides useful combinators for building up larger, more complex testable types. Here we have used the `result` combinator to make a `Yaml.value Yaml.res` testable with our custom `yaml` and `err` testables. It is up to to write good unit tests. 
+Next we write the unit tests. Alcotest provides useful combinators for building up larger, more complex testable types. Here we have used the `result` combinator to make a `Yaml.value Yaml.res` testable with our custom `yaml` and `err` testables. It is up to you write good unit tests. 
 
 <!-- $MDX file=examples/yaml/test_yaml.ml,part=1 -->
 ```ocaml
@@ -116,7 +116,7 @@ Which, with an appropriate opam file, can be built with the following dune file.
  (public_name main))
 ```
 
-Now we can build a simple test of the CLI tool using mdx. In a `tests/bin` folder we write a `exec.t` file and pass it some tests in markdown code blocks. Note in the following markdown the `~~~` syntax has been used to delimit the codeblocks - this is to prevent the mdx that builds this site from executing these codeblocks, you should use the triple backticks for yours. 
+Now we can build a simple test of the CLI tool using mdx. In a `tests/bin` folder we write a `exec.t` file and pass it some tests in markdown code blocks. Note in the following markdown the `~~~` syntax has been used to delimit the codeblocks. This is to prevent the mdx that builds this site from executing these codeblocks, you should use the triple backticks for yours. 
 
 ```markdown
 # Testing the command line 

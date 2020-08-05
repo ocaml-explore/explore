@@ -153,14 +153,41 @@
            <a class="toc-item-2" href="#recommended-workflow">
             Recommended Workflow
            </a>
+           <ul class="toc">
+            <li>
+             <a class="toc-item-3" href="#visual-studio-code">
+              Visual Studio Code
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li>
+             <a class="toc-item-3" href="#tips-for-using-vs-code">
+              Tips for using VS Code
+             </a>
+            </li>
+           </ul>
           </li>
          </ul>
          <ul class="toc">
           <li><a class="toc-item-2" href="#alternatives">Alternatives</a>
            <ul class="toc">
-            <li><a class="toc-item-3" href="#vs-code">VS Code</a></li>
+            <li>
+             <a class="toc-item-3" href="#other-vs-code-plugins">
+              Other VS Code Plugins
+             </a>
+            </li>
            </ul>
-           <ul class="toc"><li><a class="toc-item-3" href="#vim">Vim</a></li>
+           <ul class="toc">
+            <li><a class="toc-item-3" href="#vim">Vim</a>
+             <ul class="toc">
+              <li>
+               <a class="toc-item-4" href="#useful-merlin-commands">
+                Useful Merlin Commands
+               </a>
+              </li>
+             </ul>
+            </li>
            </ul>
            <ul class="toc">
             <li><a class="toc-item-3" href="#emacs">Emacs</a></li>
@@ -179,15 +206,17 @@
                                                      
     <main id="main"> 
      <h1 id="configuring-ocaml-tools-for-your-editor">Configuring OCaml Tools for your Editor</h1>
-<p><em>Last Updated: 27, July 2020 at 09:35:49</em></p>
+<p><em>Last Updated: 05, August 2020 at 11:00:45</em></p>
 <hr />
 <h2 id="overview">Overview</h2>
 <hr />
 <p>Having a helpful development environment can boost productivity and help catch errors early. OCaml has a powerful type system which reduces runtime errors, with a good editor setup you'll be able to catch them before you run <code>dune build</code>.</p>
 <h2 id="recommended-workflow">Recommended Workflow</h2>
 <hr />
-<p>The recommended editor for OCaml is <strong>Visual Studio Code</strong> - an editor with a rich ecosystem of useful plugins, themes and developer tools.</p>
-<p>To get the best setup, there is a marketplace plugin and an opam package that must be installed.</p>
+<h3 id="visual-studio-code">Visual Studio Code</h3>
+<p>The recommended editor for OCaml is <strong>Visual Studio Code</strong>, an editor with a rich ecosystem of useful plugins, themes and developer tools.</p>
+<p>To get the best setup, there is a marketplace plugin and an opam package that must be installed. The plugin is called <a href="https://github.com/ocamllabs/vscode-ocaml-platform">vscode-ocaml-platform</a> and offers syntax highlighting for Dune, OCaml, opam files, ReasonML and much more.</p>
+<p>It also has built-in snippets so, for example, writing <code>exec</code> in a dune file and hitting the tab key will generate a simple executable stanza.</p>
 <pre><code class="language-bash"># This is the language server protocol for OCaml
 opam install ocaml-lsp-server
 
@@ -195,25 +224,39 @@ opam install ocaml-lsp-server
 </code></pre>
 <p>From here make sure to add a <code>workplace</code> to VS Code for your project. And watch out for the following errors:</p>
 <ul>
-<li>VS Code might complain about not being able to find <code>ocaml-lsp</code> - this is done on a per switch basis and clicking on the dialog box should let you pick the switch you installed it on.
+<li>VS Code might complain about not being able to find <code>ocaml-lsp</code> - this is done on a per switch basis and clicking on the dialog box should let you pick the switch you installed it on. This is important: it will only work with switches where the LSP server is installed.
+</li>
+<li>Sometimes the syntax highlighting can seem outdated (e.g. changing the type signature of a function but no visual errors). The best thing to do is to restart the LSP server by opening the command palette and typing <code>&gt; OCaml: Restart language server</code>.
 </li>
 </ul>
+<h3 id="tips-for-using-vs-code">Tips for using VS Code</h3>
+<p>There are a few quality of life improvements you can make when working with OCaml and VS Code beyond installing the plugin. One very useful feature is running <a href="/platform/ocamlformat">OCamlFormat</a> on save. To do this you can:</p>
+<ol>
+<li>Open the VS Code settings JSON file by typing <code>&gt; Preferences: Open Settings (JSON)</code> into the command palette
+</li>
+<li>Add the following to the configurations <code>&quot;editor.formatOnSave&quot;: true</code>.
+</li>
+</ol>
+<p>Now whenever you save a file it will apply the formatting changes for you.</p>
 <h2 id="alternatives">Alternatives</h2>
 <hr />
-<h3 id="vs-code">VS Code</h3>
-<p>Other extensions exist which offer support for OCaml and Reason including:</p>
-<p><a href="https://github.com/hackwaly/vscode-ocaml">hackwaly/vscode-ocaml</a></p>
-<p><a href="https://github.com/reasonml-editor/vscode-reasonml">reasonml-editor/vscode-reasonml</a></p>
+<h3 id="other-vs-code-plugins">Other VS Code Plugins</h3>
+<p>Other extensions exist which offer support for OCaml and ReasonML including <a href="https://github.com/hackwaly/vscode-ocaml">vscode-ocaml</a> and <a href="https://github.com/reasonml-editor/vscode-reasonml">vscode-reasonml</a>.</p>
 <h3 id="vim">Vim</h3>
-<p>The to use with vim is merlin. OCaml LSP is the next generation of merlin, but for vim you will need merlin installed. There is also a useful opam plugin for getting up and running with the merlin features:</p>
+<p>The following is based heavily on the excellent wiki, <a href="https://github.com/ocaml/merlin/wiki/vim-from-scratch">Vim from scratch</a>. If you are new to vim, <a href="https://habr.com/en/post/440130/">this tutorial</a> should help you get started.</p>
+<p>The tool to use with vim is <a href="/platform/merlin">merlin</a>. OCaml LSP is the next generation of merlin, but for vim you will need merlin installed. There is also a useful opam plugin for getting up and running with the merlin features:</p>
 <pre><code class="language-bash">opam install merlin ocp-indent 
 opam user-setup install 
+</code></pre>
+<p>If you already have a <code>.vimrc</code> file you may need to manually modify it to add additional features. For example the following will switch between different merlins depending on which opam switch you are on.</p>
+<pre><code>let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+execute &quot;set rtp+=&quot; . g:opamshare . &quot;/merlin/vim&quot;
 </code></pre>
 <p>To get code completion you will need to enable omnipresent in your <code>.vimrc</code> file:</p>
 <pre><code>filetype plugin on
 set omnifunc=syntaxcomplete#Complete
 </code></pre>
-<p>Then whilst in <code>INSERT</code> mode type <code>ctrl+c ctrl+o</code> to see completions for something like <code>List.m</code>.</p>
+<p>Then whilst in <code>INSERT</code> mode type <code>ctrl+x ctrl+o</code> to see completions for something like <code>List.m</code>.</p>
 <p>For syntax errors you need to add <em>syntastic</em> as a vim plugin. For this you'll need a vim plugin manager like pathogen. The <a href="https://github.com/vim-syntastic/syntastic">syntastic documentation</a> will let you get started and then add the following to your <code>.vimrc</code> file.</p>
 <pre><code>execute pathogen#infect()
 
@@ -223,13 +266,34 @@ set statusline+=%*
 
 let g:syntastic_ocaml_checkers = ['merlin']
 </code></pre>
-<p>For more features and information be sure to read the wiki on merlin linked in the resources.</p>
+<h4 id="useful-merlin-commands">Useful Merlin Commands</h4>
+<p>When working with vim you can use different commands from Merlin to do useful things, here are a few to get you started.</p>
+<ul>
+<li><code>:MerlinUse &lt;packages&gt;</code>: this will make the package available for tab completion and type information.
+</li>
+<li><code>:MerlinTypeOf</code>: this will give you type information for the currently selected value in your OCaml program. For example, if you are on the <code>a</code> in <code>let a = 3</code> this will tell you it is an <code>int</code>. If you were on <code>Core.List.map</code> you would get <code>'a list -&gt; f:('a -&gt; 'b) -&gt; 'b list</code>.
+</li>
+<li><code>:MerlinErrorCheck</code>: this will perform a quick type check of the current file.
+</li>
+</ul>
+<p>You can see the full list by typing <code>:h merlin.txt</code>. Typing lots of these commands to say source packages can become tedious, you can use a <code>.merlin</code> file to configure merlin for a project. For more information on that check the <a href="/platform/merlin">merlin</a> platform tool page.</p>
 <h3 id="emacs">Emacs</h3>
-<p>The workflow for emacs is very similar to vim.</p>
-<pre><code class="language-bash">opam install merlin ocp-indent 
+<p>The workflow for emacs is very similar to vim. If you are completely new to emacs, <a href="http://www.jesshamrick.com/2012/09/10/absolute-beginners-guide-to-emacs/">this tutorial</a> should help you understand the key concepts.</p>
+<pre><code class="language-bash">opam install merlin ocp-indent tuareg
 opam user-setup install 
 </code></pre>
-<p>After that the documentation in &quot;Emacs from Scratch&quot; linked in the resources tag will guide you through setting up OCaml with emacs.</p>
+<p>Note that in addition to merlin it is also recommended to install the OCaml Emacs mode called <a href="https://github.com/ocaml/tuareg">tuareg</a>. This will allow you to use a REPL and debug mode within the emacs editor.</p>
+<p>You can then run <a href="/platform/utop">utop</a>, providing you have it installed, from within the editor by typing <code>M-x run-ocaml</code> and then typing <code>utop</code> and swapping to that window (<code>C-x o</code>).</p>
+<p>What follows is a short list of useful shortcuts to make your experience working with OCaml and emacs better.</p>
+<ul>
+<li><code>C-c C-t</code>: type information for the currently selected phrase.
+</li>
+<li><code>C-c C-l</code>: this will try to take you to wherever this phrase was first defined, usually the <code>.mli</code> file for a value.
+</li>
+<li><code>M-x completion-at-point</code>: code completition from within the editor.
+</li>
+</ul>
+<p>The same <a href="/platform/merlin">merlin advice</a> applies to using emacs as it did with vim.</p>
 
      <h3>Resources</h3>
      <ol>
@@ -238,6 +302,12 @@ opam user-setup install
         Vim from Scratch
        </a> - 
        Wiki explaining how to get started with an OCaml setup for Vim users
+      </li>
+      <li>
+       <a href="https://github.com/ocaml/merlin/wiki/vim-from-emacs">
+        Emacs from Scratch
+       </a> - 
+       Wiki explaining how to get started with an OCaml setup for Emacs users
       </li>
      </ol>
     </main>

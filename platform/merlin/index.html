@@ -146,6 +146,17 @@
          </ul>
          <ul class="toc">
           <li><a class="toc-item-2" href="#key-concepts">Key Concepts</a>
+           <ul class="toc">
+            <li><a class="toc-item-3" href="#installation">Installation</a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li>
+             <a class="toc-item-3" href="#configuration-files">
+              Configuration Files
+             </a>
+            </li>
+           </ul>
           </li>
          </ul>
         </li>
@@ -160,13 +171,34 @@
                                                      
     <main id="main"> 
      <h1 id="merlin">Merlin</h1>
-<p><em>Last Updated: 27, July 2020 at 09:35:49</em></p>
+<p><em>Last Updated: 05, August 2020 at 11:49:14</em></p>
 <hr />
 <h2 id="overview">Overview</h2>
 <hr />
-<p><a href="https://github.com/ocaml/merlin">Merlin</a> is a tool for providing IDE features for OCaml with support for Vim and Emacs. The <em>related workflows</em> links to more useful advice for setting up in those two environments.</p>
+<p><a href="https://github.com/ocaml/merlin">Merlin</a> is a tool for providing IDE features for OCaml with support for Vim and Emacs. If you want to set up either of these editors for a modern OCaml editting experience be sure to check out the related workflows section.</p>
 <h2 id="key-concepts">Key Concepts</h2>
 <hr />
+<h3 id="installation">Installation</h3>
+<p>With opam installation (and some configuration) is as simple as running:</p>
+<pre><code>opam install merlin
+opam user-setup install 
+</code></pre>
+<h3 id="configuration-files">Configuration Files</h3>
+<p>Working with merlin adds modern IDE features to Vim and Emacs, but some of the commands can become tedious. Merlin can be configured with a <code>.merlin</code> file. This can be use to describe the structure of your project along with the external packages it uses. Instead of running <code>:MerlinUse Core</code> every time you open your editor you can add a <code>PKG core</code> to a <code>.merlin</code> file.</p>
+<p>There is a very <a href="https://github.com/ocaml/merlin/wiki/Project-configuration">thorough handling</a> of <code>.merlin</code> files on the Merlin wiki, but as brief summary of what is supported.</p>
+<p>The three most commonly used direcives are <code>S</code>, <code>B</code> and <code>PKG</code>. <code>S</code> is used to describe source paths, that is, the other files in your project. <code>B</code> unsurprisingly is for build paths. <code>PKG</code> for external packages. Consider the following structure:</p>
+<pre><code>.
+|-- dune
+|-- main.ml
+|-- utils.ml
+`-- utils.mli
+</code></pre>
+<p>The dune file is building an executable from <code>main.ml</code> that uses the <code>utils.ml</code> file. Since we are using dune whenever we run<code>dune build</code> a <code>.merlin</code> file will be generated for us. The most important aspects of the file are:</p>
+<pre><code>B _build/default/.main.eobjs/byte
+S .
+</code></pre>
+<p>If our project used the Core library then the <code>.merlin</code> file would include many links to the sources of that library in our opam switch.</p>
+<p>The source should be fairly straightforward since all of our sources are located at the root of this simple project. Dune stores the compiled interface files (<code>.cmi</code> files) in the <code>_build/default/.main.eobjs/byte</code> folder. For an overview of the different OCaml file types there is a good explanation <a href="http://caml.inria.fr/pub/ml-archives/caml-list/2008/09/2bc9b38171177af5dc0d832a365d290d.en.html">here</a>.</p>
 
      <h3>Related Workflows</h3>
      <div>

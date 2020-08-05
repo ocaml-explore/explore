@@ -202,7 +202,7 @@
                                                      
     <main id="main"> 
      <h1 id="adding-unit-tests-to-your-project">Adding Unit Tests to your Project</h1>
-<p><em>Last Updated: 30, July 2020 at 10:43:50</em></p>
+<p><em>Last Updated: 05, August 2020 at 09:10:42</em></p>
 <hr />
 <h2 id="overview">Overview</h2>
 <hr />
@@ -211,7 +211,7 @@
 <h2 id="recommended-workflow">Recommended Workflow</h2>
 <hr />
 <h3 id="testing-a-library-with-alcotest">Testing a library with Alcotest</h3>
-<p><a href="https://github.com/mirage/alcotest">Alcotest</a> is a unit testing framework. In the following example, we'll pretend we are testing the <a href="https://github.com/avsm/ocaml-yaml">ocaml-yaml</a> library -- an OCaml interface toy he YAML 1.1 specification. Incidentally, the real library <a href="https://github.com/avsm/ocaml-yaml/blob/master/tests/test.ml">uses alcotest</a>.</p>
+<p><a href="https://github.com/mirage/alcotest">Alcotest</a> is a unit testing framework. In the following example, we'll pretend we are testing the <a href="https://github.com/avsm/ocaml-yaml">ocaml-yaml</a> library -- an OCaml interface for the YAML 1.1 specification. Incidentally, the real library <a href="https://github.com/avsm/ocaml-yaml/blob/master/tests/test.ml">uses alcotest</a>.</p>
 <p>Dune supports test stanzas which indicate that the directory is building a test suite and should be treated as such. The main fields that you need to provide are the test entry point (<code>(name file)</code>) and what libraries you are using. For our yaml example, we need the yaml library and alcotest.</p>
 <!-- $MDX file=examples/yaml/dune -->
 <pre><code>(test
@@ -231,7 +231,7 @@ let pp_error ppf (`Msg x) = Format.pp_print_string ppf x
 
 let error = Alcotest.testable pp_error ( = )
 </code></pre>
-<p>Next we write the unit tests. Alcotest provides useful combinators for building up larger, more complex testable types. Here we have used the <code>result</code> combinator to make a <code>Yaml.value Yaml.res</code> testable with our custom <code>yaml</code> and <code>err</code> testables. It is up to to write good unit tests.</p>
+<p>Next we write the unit tests. Alcotest provides useful combinators for building up larger, more complex testable types. Here we have used the <code>result</code> combinator to make a <code>Yaml.value Yaml.res</code> testable with our custom <code>yaml</code> and <code>err</code> testables. It is up to you write good unit tests.</p>
 <!-- $MDX file=examples/yaml/test_yaml.ml,part=1 -->
 <pre><code class="language-ocaml">let test_of_string () =
   let open Yaml in
@@ -274,7 +274,7 @@ let error = Alcotest.testable pp_error ( = )
  (name main)
  (public_name main))
 </code></pre>
-<p>Now we can build a simple test of the CLI tool using mdx. In a <code>tests/bin</code> folder we write a <code>exec.t</code> file and pass it some tests in markdown code blocks. Note in the following markdown the <code>~~~</code> syntax has been used to delimit the codeblocks - this is to prevent the mdx that builds this site from executing these codeblocks, you should use the triple backticks for yours.</p>
+<p>Now we can build a simple test of the CLI tool using mdx. In a <code>tests/bin</code> folder we write a <code>exec.t</code> file and pass it some tests in markdown code blocks. Note in the following markdown the <code>~~~</code> syntax has been used to delimit the codeblocks. This is to prevent the mdx that builds this site from executing these codeblocks, you should use the triple backticks for yours.</p>
 <pre><code class="language-markdown"># Testing the command line 
 
 ## Should print that a number should be supplied 
