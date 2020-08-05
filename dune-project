@@ -37,5 +37,7 @@
   mdx
   ppx_jane
   ezjsonm
+  js_of_ocaml-ppx
+  js_of_ocaml-compiler
   jekyll-format
   re))
