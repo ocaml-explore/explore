@@ -4,37 +4,7 @@ description: Explore OCaml is a centralised source for workflows in OCaml catego
 date: 2020-07-27 09:35:49
 ---
 
-One of the biggest problems programming languages face in a real world setting is that getting started with them isn't necessarily easy. OCaml is no exception. There tend to be lots of great resources explaining interesting aspects of the language like GADTs or the module system - but not as many centred around productivity workflows i.e. getting things done in OCaml. 
-
-Often these workflows are obvious... once you know them. Explore OCaml is a centralised source for workflows in OCaml categorised by user, tools and libraries with rich linking to external sources of information.
-
-Here are some of the common problems users face: 
-
-1. I'm running the `ABC` operating system, how do I get started with OCaml? (In particular the Windows experience).
-2. I want to build a library that does `X`, what is the best workflow* for achieving this?
-3. I just want to run some *Hello-World* examples and get started with OCaml - how do I do this? (similar to 1)
-4. I've noticed a bug in library `Y` - how do I fix it and contribute to the original library?
-5. OCaml seems to have many backends - *x86, ARM, RISC-V, JavaScript* - but how do I use them?
-6. There is a cool tool written in OCaml - how do I install and use it? 
-7. I'm running on OS `ABC` but want to compile for `XYZ` - can I do that in OCaml?
-
-**workflow: this involves testing, publishing, formatting, building etc. all of the common tooling that needs to be in place to allow most programming languages to solve real world problems.*
-
-This site aims to answer these questions for you, as well as let you discover more advanced workflows as your use of OCaml grows. First, we'll introduce the only essential tool you need — opam.
-
-# Opam
-
-------------- 
-
-[Opam](https://opam.ocaml.org/) is the the OCaml package manager.  In order to join the OCaml open source community, all you need to do is to add an [opam file](./pages/opam-files) to your project.  This `opam` file describes the build instructions for your project, as well as any dependencies it might need. An `opam` file is useful for a project of any size — from toy learning exercises to big theorem provers — since it allows someone else to easily rebuild and replicate your work, and even extend it if they choose to.
-
-Once you are comfortable with your code and want to share it more publicly, an opam file can be published to the central OCaml [opam repository](https://github.com/ocaml/opam-repository/).  This is a collection of tens of thousands of packages that have been contributed freely by the community since 2013.  The opam-repository does not contain the full source code to your project; instead, it tracks pointers to different versions of your code, and also the various compatibility constraints to automatically figure out which versions work with each other.  The usual mechanism to track your releases is to use a version control system such as git.  You can [browse the packages](https://opam.ocaml.org) online to see what's available.
-
-How do you actually manipulate opam files?  There are several tools that can parse these files and repositories and install the software you want.  The primary reference implementation that runs on macOS and Linux is also the [opam client](./pages/opam-client) , and is the first thing you will want to configure on your system to get started.  Read on below for more details about opam files and the client.  If you'd like to just get on with a particular task, skip to the next section to find out which archetype you best fit into.
-
-[opam files](./pages/opam-files)
-
-[opam client](./pages/opam-client)
+Welcome to Explore OCaml! Explore OCaml is a centralised source for workflows in OCaml categorised by user, tools and libraries with rich linking to external sources of information. It aims to provide all users with the recommended way to be productive in getting something done in OCaml. Check the [about page](/pages/about) for more information on Explore OCaml and the [opam page](/pages/opam) if you are unfamiliar with the OCaml Package Manager. Otherwise, choose the user that best matches you and explore the workflows.
 
 # Workflows
 
