@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+ <head><title>About</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8"/>
+  <meta name="description"
+   content="More information about Explore OCaml, why it exists and who it is for"
+   />
+  <link rel="stylesheet"
+   href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
+   />
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/base.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-dropdown.css"/>
+  <link rel="stylesheet" href="/css/main.css"/>
+  <link rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
+   />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js">
+  </script>
+  <script
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"
+   >
+  </script>
+  <script charset="UTF-8"
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/ocaml.min.js"
+   >
+  </script><script>hljs.initHighlightingOnLoad();</script>
+ </head>
+ <body>
+             
+  <header>
+                  
+   <a class="skip-to-content" href="#main"> Skip to main content </a>
+   <div class="pure-g">
+                             
+    <div class="pure-u-1-3">
+                                    
+     <a class="title-link" href="/">
+                                              
+      <h2 style="text-align: center">Explore OCaml</h2>
+                                                               
+     </a>
+               
+    </div>
+                
+    <div class="pure-u-1-3"></div>
+                                          
+    <nav class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
+     
+               
+     <ul class="flex-row flex-center nav-ul">
+      <li class="nav-button">
+                                           
+       <a href="/platform">
+                                           Tools 
+                                         </a>
+       
+                   
+      </li>
+      <li class="nav-button">
+                                           
+       <a href="/users">
+                                        Users
+                                      </a>
+       
+                   
+      </li>
+      <li class="nav-button">
+                                           
+       <a href="/libraries">
+                                            Libraries
+                                          </a>
+       
+                   
+      </li>
+     </ul>
+                  
+    </nav>
+                  
+    <nav class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu
+     pure-menu-horizontal flex-col flex-vert pure-u-1-3">
+                                                                   
+     <ul class="pure-menu-list" style="text-align: center">
+      <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+       
+                   <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
+       
+                   
+       <ul class="pure-menu-children mob-menu-list">
+        <li class="pure-menu-item mob-menu-item">
+                                                                   
+         <a href="/platform">
+                                                 Tools 
+                                               </a>
+         
+                         
+        </li>
+        <li class="pure-menu-item mob-menu-item">
+                                                                   
+         <a href="/users">
+                                              Users
+                                            </a>
+         
+                         
+        </li>
+        <li class="pure-menu-item mob-menu-item">
+                                                                   
+         <a href="/libraries">
+                                                Libraries
+                                                
+         </a>
+                             
+        </li>
+       </ul>
+                        
+      </li>
+     </ul>
+                  
+    </nav>
+              
+   </div>
+               
+  </header>
+                   
+  <div class="pure-g">
+                                
+   <div class="pure-u-1-12 pure-u-md-1-4">
+                                                      
+    <div class="pure-hidden-xs pure-hidden-sm pure-hidden-md toc-container
+     sticky">
+     <ul class="toc">
+      <li>
+       <ul class="toc">
+        <li><a class="toc-item-1" href="#about">About</a>
+         <ul class="toc">
+          <li>
+           <a class="toc-item-2" href="#what-explore-ocaml-aims-to-achieve">
+            What Explore OCaml aims to achieve
+           </a>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li>
+           <a class="toc-item-2" href="#how-it-achieves-it">
+            How it achieves it
+           </a>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li>
+           <a class="toc-item-2" href="#who-can-contribute">
+            Who can contribute
+           </a>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </div>
+                    
+   </div>
+                   
+   <div class="pure-u-5-6 pure-u-md-1-2">
+                                                     
+    <main id="main"> 
+     <h1 id="about">About</h1>
+<p><em>Last Updated: 11, August 2020 at 17:08:57</em></p>
+<hr />
+<h2 id="what-explore-ocaml-aims-to-achieve">What Explore OCaml aims to achieve</h2>
+<p>One of the biggest problems programming languages face in a real world setting is that getting started with them isn't necessarily easy. OCaml is no exception. There tend to be lots of great resources explaining interesting aspects of the language like GADTs or the module system - but not as many centred around productivity workflows i.e. getting things done in OCaml.</p>
+<p>Often these workflows are obvious... once you know them. Explore OCaml is a centralised source for workflows in OCaml categorised by user, tools and libraries with rich linking to external sources of information.</p>
+<p>Here are some of the common problems users face:</p>
+<ol>
+<li>I'm running the <code>ABC</code> operating system, how do I get started with OCaml? (In particular the Windows experience).
+</li>
+<li>I want to build a library that does <code>X</code>, what is the best workflow* for achieving this?
+</li>
+<li>I just want to run some <em>Hello-World</em> examples and get started with OCaml - how do I do this? (similar to 1)
+</li>
+<li>I've noticed a bug in library <code>Y</code> - how do I fix it and contribute to the original library?
+</li>
+<li>OCaml seems to have many backends - <em>x86, ARM, RISC-V, JavaScript</em> - but how do I use them?
+</li>
+<li>There is a cool tool written in OCaml - how do I install and use it?
+</li>
+<li>I'm running on OS <code>ABC</code> but want to compile for <code>XYZ</code> - can I do that in OCaml?
+</li>
+</ol>
+<p>*<em>workflow: this involves testing, publishing, formatting, building etc. all of the common tooling that needs to be in place to allow most programming languages to solve real world problems.</em></p>
+<p>This site aims to answer these questions for you, as well as let you discover more advanced workflows as your use of OCaml grows. First, we'll introduce the only essential tool you need — opam.</p>
+<h2 id="how-it-achieves-it">How it achieves it</h2>
+<p>Explore OCaml is an open-source collection of workflows and user-generated content for being productive in the OCaml language. It relies on the community to help keep workflows up to date.</p>
+<p>With that being said it employs <a href="/platform/dune">dune</a> and <a href="/platform/mdx">mdx</a> to run the example repositories and code snippets every time the site rebuilds, adding a defensive layer against <a href="https://en.wikipedia.org/wiki/Software_rot">bitrot</a>.</p>
+<h2 id="who-can-contribute">Who can contribute</h2>
+<p>The site is open-sourced on <a href="https://github.com/ocaml-explore/explore">github</a>!</p>
+
+    </main>
+                     
+   </div>
+                 
+  </div>
+            
+          
+        </body>
+</html>
