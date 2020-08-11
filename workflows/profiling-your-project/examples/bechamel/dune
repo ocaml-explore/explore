@@ -1,0 +1,3 @@
+(executable
+ (name bench)
+ (libraries yaml bechamel bechamel.js))

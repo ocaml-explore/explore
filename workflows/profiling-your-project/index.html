@@ -145,31 +145,54 @@
           Profiling your Project
          </a>
          <ul class="toc">
-          <li><a class="toc-item-2" href="#overview">Overview</a></li>
+          <li><a class="toc-item-2" href="#overview">Overview</a>
+           <ul class="toc">
+            <li>
+             <a class="toc-item-3" href="#anatomy-of-an-ocaml-program">
+              Anatomy of an OCaml Program
+             </a>
+            </li>
+           </ul>
+          </li>
          </ul>
          <ul class="toc">
-          <li>
-           <a class="toc-item-2" href="#recommended-workflow">
-            Recommended Workflow
-           </a>
+          <li><a class="toc-item-2" href="#performance">Performance</a>
            <ul class="toc">
-            <li><a class="toc-item-3" href="#memory">Memory</a></li>
+            <li>
+             <a class="toc-item-3" href="#macro-benchmaring">
+              Macro-benchmaring
+             </a>
+            </li>
            </ul>
            <ul class="toc">
-            <li><a class="toc-item-3" href="#performance">Performance</a>
+            <li>
+             <a class="toc-item-3" href="#benchmarking-with-perf">
+              Benchmarking with Perf
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li>
+             <a class="toc-item-3" href="#micro-benchmarking-with-bechamel">
+              Micro-benchmarking with Bechamel
+             </a>
+            </li>
+           </ul>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li><a class="toc-item-2" href="#memory">Memory</a>
+           <ul class="toc">
+            <li>
+             <a class="toc-item-3" href="#garbage-collection">
+              Garbage Collection
+             </a>
             </li>
            </ul>
           </li>
          </ul>
          <ul class="toc">
           <li><a class="toc-item-2" href="#alternatives">Alternatives</a>
-           <ul class="toc">
-            <li>
-             <a class="toc-item-3" href="#real-world-examples">
-              Real World Examples
-             </a>
-            </li>
-           </ul>
           </li>
          </ul>
         </li>
@@ -184,21 +207,189 @@
                                                      
     <main id="main"> 
      <h1 id="profiling-your-project">Profiling your Project</h1>
-<p><em>Last Updated: 27, July 2020 at 09:35:49</em></p>
+<p><em>Last Updated: 11, August 2020 at 11:20:12</em></p>
 <hr />
 <h2 id="overview">Overview</h2>
 <hr />
-<p>For profiling programs there tend to be two main properties that most developers care about:</p>
-<ol>
-<li>Performance
-</li>
-<li>Memory Usage
-</li>
-</ol>
+<p>For profiling programs there tend to be two main properties that most developers care about performance and memory usage.</p>
 <p>OCaml is a garbage-collected programming language, but there are ways to alleviate the the strain on the GC. There is also good support for profiling the performance of your program to find the sections that are consuming the most execution time.</p>
-<h2 id="recommended-workflow">Recommended Workflow</h2>
+<h3 id="anatomy-of-an-ocaml-program">Anatomy of an OCaml Program</h3>
+<p>Before diving into performance and profiling, it is important to understand how an OCaml program runs. OCaml is garbage-collected which means you don't have to worry about memory management (allocating and freeing memory). But this requires a runtime, an environment in which your OCaml program runs in order to work.</p>
+<p>The compiler source code contains <a href="https://github.com/ocaml/ocaml/tree/trunk/runtime">the runtime</a> with code for doing things like managing <a href="https://github.com/ocaml/ocaml/blob/trunk/runtime/major_gc.c">the major heap</a> or <a href="https://github.com/ocaml/ocaml/blob/trunk/runtime/hash.c#L306">hashing polymorphic variant names</a>. Whenever code is compiled to assembly the runtime is automatically compiled with it.</p>
+<p>Many functions make use of the runtime - for example the polymorhpic comparision operators made available through the standard library. We can actually see this by outputing assembly for OCaml programs using the <code>-S</code> flag which can be added to your dune file under <code>ocamlopt_flags</code> or on the command-line if using <code>ocamlopt</code> manually.</p>
+<pre><code class="language-sh">$ echo &quot;let compare = ( &lt;= )&quot; &gt; main.ml 
+$ echo &quot;OCaml compiler:&quot; $(ocamlopt -vnum) &amp;&amp; ocamlopt -S main.ml 
+OCaml compiler: 4.10.0
+$ cat main.S | grep -A 8 &quot;__compare.*:.*&quot;
+_camlMain__compare_80:
+	.cfi_startproc
+	subq	$8, %rsp
+	.cfi_adjust_cfa_offset 8
+L101:
+	movq	%rax, %rdi
+	movq	%rbx, %rsi
+	movq	_caml_lessequal@GOTPCREL(%rip), %rax
+	call	_caml_c_call
+</code></pre>
+<p>Here, we compiled an alias (<code>compare</code>) to the less than or equal operation outputing the assembly (using <code>-S</code>) to a file called <code>main.S</code>. After that, a use of <a href="https://www.man7.org/linux/man-pages/man1/grep.1.html">grep</a> to find the relevant assembly for the compare function. From this we can see calls to <code>_caml_lessequal</code> and <code>_caml_c_call</code>. This can be found <a href="https://github.com/ocaml/ocaml/blob/trunk/runtime/compare.c#L340">in the runtime</a>, implementing structural equality giving <code>&lt;=</code> its type <code>'a -&gt; 'a -&gt; bool</code>.</p>
+<p>Hopefully these examples provide insight into how an OCaml program runs. This is very important for understanding what the tools we'll cover later, like perf, tell us. For more information, the <a href="https://caml.inria.fr/pub/docs/manual-ocaml/">OCaml Manual</a> is probably the best place to start.</p>
+<h2 id="performance">Performance</h2>
 <hr />
-<h3 id="memory">Memory</h3>
+<p>Performance is a complex beast with many differing objectives when it comes to analysing code for &quot;performance&quot;. Not only that but lots of seemingly unrelated factors impact how code performs: garbage collection, the OS scheduler and CPU oddities to name a few. Sometimes the variations caused by these factors are neglible -- macro-benchmarking -- and sometimes they're not and clever analysis is needed to smooth them out, micro-benchmarking.</p>
+<p>There are parallels to be drawn between unit tests and micro-benchmarking and end-to-end tests and macro-benchmarking. With micro you likely care about the individual performance or memory profile of functions. These can be greatly impacted by things like OS scheduling. With macro the performance tends to be for longer periods of time and variations caused by externalities are just part of the test.</p>
+<h3 id="macro-benchmaring">Macro-benchmaring</h3>
+<p>Macro-benchmarking tends to involve wanting to the know the performance of large sections of code or whole programs like a webserver using <a href="https://github.com/mirage/ocaml-cohttp">cohttp</a>.</p>
+<p>Large-scale benchmarking is very application specific and no one tool can do everything. The webserver example was carefully choosen to point out the benchmarking work <a href="https://github.com/inhabitedtype/httpaf">httpaf</a> did to <a href="https://github.com/mirage/ocaml-cohttp/issues/328">improve performance</a> over cohttp. This is a good example of how the domain impacts the benchmarking and performance profiling methodology. What follows is an example of tool you can use to profile your OCaml programs.</p>
+<h3 id="benchmarking-with-perf">Benchmarking with Perf</h3>
+<p><a href="https://perf.wiki.kernel.org/index.php/Main_Page">Perf</a> is a performance analysing tool for Linux. It is Linux only because it relies on non-standard system calls (<code>perf_event_open</code>). With perf you can inspect your program to see where it is spending the most time computing without any instrumentation to your code.</p>
+<p>Take the following small program from the <a href="https://github.com/ocaml-bench/sandmark/blob/77ec0e5f85a21b7e5ae46939e17a8a022740fb61/benchmarks/simple-tests/alloc.ml">sandmark test suite</a>. It explicitly allocates lots of values to heap and uses <code>Sys.opaque_identity</code> to ensure the calls don't get optimised away.</p>
+<!-- $MDX file=examples/perf/src/main.ml,part=1 -->
+<pre><code class="language-ocaml">let iterations = try int_of_string Sys.argv.(1) with _ -&gt; 1_000_000
+
+type a_mutable_record = { an_int : int; mutable a_string : string ; a_float: float } 
+
+let rec create f n =
+  match n with 
+  | 0 -&gt; ()
+  | _ -&gt; let _ = f () in
+    create f (n - 1)
+
+let () = for _ = 0 to iterations do
+  Sys.opaque_identity create (fun () -&gt; { an_int = 5; a_string = &quot;foo&quot;; a_float = 0.1 }) 1000
+done
+</code></pre>
+<p>We can run this program under perf to analyse which functions are being called and what proportion of the program's total execution time they each take up.</p>
+<pre><code class="language-sh">perf record --call-graph dwarf -i -e cycles:u -- _build/default/main.exe
+</code></pre>
+<p>Here we tell perf to record what's happening with our program. It does this by sampling to see the state of the program every so often including things like the call stack. This is the chain of functions (callers) calling other functions (callees). We pass the <code>--call-graph dwarf</code> parameter to tell perf that it should use that method of inspecting the stack instead of frame pointers. <code>-i</code> tells child tasks to <strong>not</strong> inherit counters. Finally, <code>-e cycles:u</code> tells perf we are only interested in things happening in user space not kernel space.</p>
+<p>This should produce a <code>perf.data</code> file which we can helpfully inspect with perf.</p>
+<pre><code class="language-sh">perf report --children
+</code></pre>
+<p>The first and most obvious thing is that the original functions of the program have seemingly vanished and many new functions that we didn't write have appeared. Many of them will be a part of the <a href="#anatomy-of-an-ocaml-program">runtime</a>. Our functions have changed name to something like <code>camlDune__exe__Main__create_&lt;id&gt;</code>.</p>
+<p>A very useful tool for visualising perf reports is <a href="https://github.com/brendangregg/FlameGraph">Flamegraph</a>. Here is an example for the allocation test.</p>
+<p><img src="/images/perf-flamegraph.svg" alt="A Perf Flamegraph for the Alloc test case" /> An interactive version is available <a href="/images/perf-flamegraph.svg">here</a>.</p>
+<p>From the graph, we can see the program spends most of the time in the <code>create</code> function as expected with a substantial part of that function being the anonymous function we pass in (<code>fun_489</code>). A small part of that function calls the runtime garbage collection function <code>caml_call_gc</code>.</p>
+<p>The anonymous function is a little opaque unlike the runtime functions which tell us what they are doing in their name. Using <code>perf report --no-source</code> we can naviagte to the anonymous function and type <code>a</code> to inspect the assembly.</p>
+<pre><code> 0000000000015b60 &lt;camlDune__exe__Main__fun_489&gt;:
+       │    camlDune__exe__Main__fun_489():
+ 11.13 │      sub    $0x8,%rsp
+  4.80 │ 4:   sub    $0x20,%r15
+  5.67 │      cmp    0x8(%r14),%r15
+       │      jb     3c
+  8.43 │      lea    0x8(%r15),%rax
+  1.15 │      movq   $0xc00,-0x8(%rax)
+ 38.18 │      movq   $0xb,(%rax)
+  9.52 │      lea    camlDune__exe__Main__1,%rbx
+  2.29 │      mov    %rbx,0x8(%rax)
+  5.61 │      lea    camlDune__exe__Main__2,%rbx
+  4.56 │      mov    %rbx,0x10(%rax)
+  7.13 │      add    $0x8,%rsp
+  1.53 │      retq
+       │3c:   callq  caml_call_gc3
+       │      jmp    4 
+</code></pre>
+<p>The numbers (percentages) down the left-hand side indicate how &quot;hot&quot; each instruction is. In addition to this we can see some stack pointer moving (<code>sub $0x8,%rsp</code>), garbage collection checking (<code>jb 3c</code> and <code>callq caml_call_gc3</code> where register <code>%r15</code> holds the minor heap stack pointer) and in the middle the allocations like <code>movq $0xb,(%rax)</code> which says to move <code>11</code> into the place <code>%rax</code> points to. <a href="/workflows/incorporating-non-ocaml-code-into-your-project">The interoperating with C workflow</a> sheds some light into why this is <code>11</code> and not <code>5</code>.</p>
+<p>Hopefully this brief but dense introduction to perf and OCaml is enough for you to begin analysing your own programs.</p>
+<h3 id="micro-benchmarking-with-bechamel">Micro-benchmarking with Bechamel</h3>
+<p><a href="https://github.com/dinosaure/bechamel/blob/master/src/main.ml">Bechamel</a> is a framework for building micro-benchmarks. This <a href="https://github.com/dinosaure/bechamel/blob/master/src/main.ml">example</a> gives a good overview, what follows is a brief explanation and example.</p>
+<p>Bechamel works by taking tests with inputs, a decision on some configuration parameters and tools to analyse the output. It tries to be platform agnostic by abstracting the tools you use to perform calculations -- for example, you just need a monotonic clock to time executions.</p>
+<p>The first part of writing a benchmark is thinking of what test you are going to run. Unlike unit tests, this isn't about functionality but instead about performance. It's a good idea to vary the inputs. Take, for example, the <a href="https://github.com/avsm/ocaml-yaml/blob/master/lib/yaml.ml#L182"><code>Yaml.of_string</code></a> function. We want to benchmark its performance over increasingly longer or more complex strings of correct yaml.</p>
+<p>To benchmark this function we can generate some random Yaml strings using the Yaml library.</p>
+<!-- $MDX file=examples/bechamel/bench.ml,part=1 -->
+<pre><code class="language-ocaml">let gen_random_yaml_strings n d =
+  let gen_str () = `String (random_string 100) in
+  let gen_bool () = if Random.int 2 = 1 then `Bool true else `Bool false in
+  let gen_float () = `Float (Random.float 100.) in
+  let rec gen_kv d () = (random_string 10, (gen_value (d - 1) ()) ())
+  and gen_arr d c () = `A (List.init c (fun _ -&gt; (gen_value (d - 1) ()) ()))
+  and gen_o d () = `O (List.init n (fun _ -&gt; gen_kv (d - 1) ()))
+  and gen_value d () =
+    if d &lt;= 0 then gen_str
+    else
+      match Random.int 6 with
+      | 0 -&gt; gen_str
+      | 1 -&gt; gen_bool
+      | 2 -&gt; gen_float
+      | _ -&gt; gen_arr (d - 1) (Random.int 10)
+  in
+  Yaml.pp Format.str_formatter (gen_o d ());
+  Format.flush_str_formatter ()
+</code></pre>
+<p>From here a small list of increasingly longer yaml strings can be generated. We will use the <code>Bechamel.Test.make_indexed</code> function later which expects a list of arguments to give to our testing function, so we'll package up the indices along with the inputs.</p>
+<!-- $MDX file=examples/bechamel/bench.ml,part=2 -->
+<pre><code class="language-ocaml">let inputs =
+  List.init 6 (fun i -&gt; (i, gen_random_yaml_strings ((i + 1) * 10) 2))
+
+let args, inputs = List.split inputs
+
+let of_string inputs i =
+  let v = inputs.(i) in
+  Bechamel.Staged.stage (fun () -&gt;
+      match Yaml.of_string v with Ok t -&gt; t | Error _ -&gt; assert false)
+</code></pre>
+<p>Note as well that if <code>Yaml.of_string</code> returns an error then we just panic and fail since there's something wrong with our random yaml generator -- the idea is this should never happen.</p>
+<p><code>make_indexed</code> expects our testing function to be of the form <code>(int -&gt; (unit -&gt; 'a) Staged.t)</code> which can be constructed with the <code>Bechamel.Staged.stage</code> function.</p>
+<!-- $MDX file=examples/bechamel/bench.ml,part=3 -->
+<pre><code class="language-ocaml">let tests =
+  let test_of_string =
+    Bechamel.Test.make_indexed ~name:&quot;of_string&quot; ~args
+      (of_string (Array.of_list inputs))
+  in
+  Bechamel.Test.make_grouped ~name:&quot;yaml&quot; [ test_of_string ]
+</code></pre>
+<p>We make our indexed test where <code>of_string</code> is a partially evaluated function in the sense that it now has its inputs and the framework can just supply it with the indices that we pass using the labelled arguments <code>args</code>.</p>
+<p>Finally we wrap this test up into a group, you could imagine testing many more functions, but here there is only one element.</p>
+<p>Now the testing is in place we need to focus on the backend of our benchmarking -- what do we care about, how are we going to analyse it and the output format.</p>
+<!-- $MDX file=examples/bechamel/bench.ml,part=4 -->
+<pre><code class="language-ocaml">let benchmark () =
+  let open Bechamel in
+  let ols =
+    Bechamel.Analyze.ols ~bootstrap:0 ~r_square:true
+      ~predictors:Bechamel.Measure.[| run |]
+  in
+  let instances =
+    Toolkit.Instance.[ minor_allocated; major_allocated; monotonic_clock ]
+  in
+  let raw_res =
+    let quota = Time.second 3. in
+    Benchmark.all (Benchmark.cfg ~run:3000 ~quota ()) instances tests
+  in
+  List.map (fun instance -&gt; Analyze.all ols instance raw_res) instances
+  |&gt; fun r -&gt; (Analyze.merge ols instances r, raw_res)
+</code></pre>
+<p>The first thing is <a href="https://en.wikipedia.org/wiki/Ordinary_least_squares">ordinary least squares</a> (OLS), a type of linear regression that bechamel provides to help smooth the noise in the results.</p>
+<p>Instances in bechamel are measurements we can look at. They are based largely on execution time and <a href="#garbage-collection">garbage collection statistics</a>.</p>
+<p>The last piece of the puzzle is to combine everything we have so far into a <a href="https://github.com/dinosaure/bechamel/blob/702fd1685f40f9aea630624a31592412bf397631/lib/benchmark.ml#L48">benchmark</a>. We pass a benchmark configuration with:</p>
+<ul>
+<li><code>~run</code>: this is the number of runs we want to perform per test.
+</li>
+<li><code>~quota</code>: this is the length of time we wish to spend per test.
+</li>
+</ul>
+<p>The test will run until one of the limits are exceeded. Other parameters include GC stabilisation and the method for sampling. GC stablisation performs a series of <a href="https://caml.inria.fr/pub/docs/manual-ocaml/libref/Gc.html"><code>Gc.compact</code></a> operations to try to minimise the discrepancies between runs by emptying and compacting the heap.</p>
+<p>Once we have the raw results from our benchmark, we need to analyse it using OLS. For each instance from our <code>instances</code> we analyse the results before merging them into a one single hashtable.</p>
+<p>The last piece is to make our entry point for the benchmark executable and use one of the output backends to make our results readable. Here we will use the <a href="https://github.com/dinosaure/bechamel/tree/702fd1685f40f9aea630624a31592412bf397631/lib/js">JS</a> backend combined later with the <a href="https://d3js.org/">D3-based</a> HTML renderer.</p>
+<!-- $MDX file=examples/bechamel/bench.ml,part=5 -->
+<pre><code class="language-ocaml">let nothing _ = Ok ()
+
+let () =
+  Random.self_init ();
+  let results = benchmark () in
+  let open Bechamel in
+  let open Bechamel_js in
+  match
+    emit ~dst:(Channel stdout) nothing ~x_label:Measure.run
+      ~y_label:(Measure.label Toolkit.Instance.monotonic_clock)
+      results
+  with
+  | Ok () -&gt; ()
+  | Error (`Msg err) -&gt; failwith err
+</code></pre>
+<p>The most important part is the emit function which let's us indicate where we wish the results to go (<code>~dst</code>), what we are plotting (<code>~x_label</code> and <code>~y_label</code>). Since we are using <code>Channel stdout</code> this is of type <code>(out_channel -&gt; unit or_error) dst</code> so we just provide the <code>nothing</code> function to return <code>Ok ()</code>.</p>
+<p>We can now execute the benchmark and pipe the results to the bechamel HTML generator. You can see the results generated <a href="./examples/bechamel/index.html">here</a>.</p>
+<pre><code class="language-sh">dune exec -- ./bench.exe | bechamel-html &gt; index.html
+</code></pre>
+<h2 id="memory">Memory</h2>
 <p>To enable memory profiling (much like with fuzzing) you need to install specific variants of the OCaml compiler - in particular it must have <code>+spacetime</code> in its package name.</p>
 <p>Spacetime monitors the OCaml heap - this is where values are stored if they are not represented as unboxed integers. You can set the interval you want spacetime to monitor at by issuing:</p>
 <pre><code class="language-bash">ocamlopt -o &lt;executable&gt; somefile.ml
@@ -225,8 +416,26 @@ prof_spacetime process spacetime-&lt;id&gt;
 # View the results in a browser 
 prof_spacetime serve -p spacetime-&lt;id&gt;.p
 </code></pre>
-<h3 id="performance">Performance</h3>
-<p>Perf is a tool that can be used to profile programs without any additional instrumentation.</p>
+<h3 id="garbage-collection">Garbage Collection</h3>
+<p>OCaml is a garbage-collected language. This means the burden of managing memory is taken from the programmer and instead a part of the runtime is constantly checking what objects are dead can can be freed to allow for new objects to be allocated.</p>
+<p>Just because the burden of explicity allocating and freeing memory is taken from the programmer does not mean the programmer does not have some control over this. OCaml gives the programmer access to the <code>Gc</code> module for controlling aspects of garbage collection and profiling activity within the OCaml heaps.</p>
+<pre><code class="language-ocaml"># Gc.get ()
+- : Gc.control =
+{Gc.minor_heap_size = 262144; major_heap_increment = 15; space_overhead = 80;
+ verbose = 0; max_overhead = 500; stack_limit = 1048576;
+ allocation_policy = 0; window_size = 1; custom_major_ratio = 44;
+ custom_minor_ratio = 100; custom_minor_max_size = 8192}
+</code></pre>
+<p>A small allocation example can help show how you can use these statistics to determine how allocation-heavy your program is.</p>
+<!-- $MDX file=examples/gc/main.ml,part=0 -->
+<pre><code class="language-ocaml">let alloc n =
+  let lst_lst = List.init n (fun i -&gt; List.init i (fun j -&gt; string_of_int j)) in
+  let lst_lst =
+    List.map (fun lst -&gt; List.map (fun s -&gt; &quot;Hello &quot; ^ s) lst) lst_lst
+  in
+  lst_lst
+</code></pre>
+<p>Running <code>alloc 10</code> and collecting GC statistics with <code>Gc.print_stat ()</code> shows that there were no minor or major heap collections. Changing that to <code>alloc 1000</code> gives <code>23</code> minor heap and <code>5</code> major heap collections. There is a brilliant chapter in <a href="https://dev.realworldocaml.org/garbage-collector.html">Real World OCaml</a> that goes into garbage collection in much more detail.</p>
 <h2 id="alternatives">Alternatives</h2>
 <hr />
 <h3>Performance with <code>gprof</code></h3>
@@ -252,7 +461,7 @@ gprof test | less
   (flags (:standard -p))))
 </code></pre>
 <p>There after the process is very similar:</p>
-<pre><code># Compile the program with profiling enabled 
+<pre><code class="language-bash"># Compile the program with profiling enabled 
 dune build --profile perf 
 
 # Run the program
@@ -261,8 +470,6 @@ _build/default/test.exe
 # See the profiling results 
 gprof _build/default/test.exe | less 
 </code></pre>
-<h3 id="real-world-examples">Real World Examples</h3>
-<hr />
 
      <h3>Resources</h3>
      <ol>
@@ -275,11 +482,25 @@ gprof _build/default/test.exe | less
        Tom Kelly and Sadiq Jaffer
       </li>
       <li>
+       <a
+        href="https://github.com/ocaml-multicore/parallel-programming-in-multicore-ocaml/tree/draft#profiling-your-code"
+        >Parallel Programming in Multicore OCaml
+       </a> - 
+       Notes from the multicore OCaml team on how they profile code and find
+       parts which are holding back the expected speedups of parallelising
+       code.
+      </li>
+      <li>
        <a href="https://blog.janestreet.com/a-brief-trip-through-spacetime/">
         A Brief Trip through Space Time
        </a> - 
        A thorough explanation of how to use the OCaml Spactime compiler
        variant for memory profiling your OCaml code by Leo White
+      </li>
+      <li>
+       <a href="https://dev.realworldocaml.org/garbage-collector.html">
+        Understanding the Garbage Collector
+       </a> - A chapter from Real World OCaml on Garbage Collection
       </li>
      </ol>
     </main>
