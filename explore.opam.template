@@ -1,4 +1,5 @@
 pin-depends: [
   ["omd.dev" "git+https://github.com/ocaml/omd"]
   ["jekyll-format.dev" "git+https://github.com/avsm/jekyll-format"]
+  ["bechamel.dev" "git+https://github.com/dinosaure/bechamel#f1b3db0115af3854422697134a1555e3c07a19f5"]
 ]
