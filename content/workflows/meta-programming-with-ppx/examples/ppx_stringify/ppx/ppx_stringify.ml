@@ -18,7 +18,9 @@ let rec expr_of_type typ =
               (fun acc s -> acc ^ [%e expr_of_type t] s ^ ";")
               "" lst
           ^ "]"]
-  | _ -> failwith "No support for this type"
+  | _ ->
+      Location.raise_errorf ~loc "No support for this type: %s"
+        (string_of_core_type typ)
 
 [@@@part "1"]
 
