@@ -158,11 +158,18 @@ img {
   background: white;
 }
 
-
-
 /* === TOC === */
 .toc {
   list-style-type: none;
+  margin-bottom: 1.1em;
+}
+
+.toc-link {
+  font-size: 0.9em;
+}
+
+.toc-li {
+  line-height: 1.2em;
 }
 
 .toc-container {

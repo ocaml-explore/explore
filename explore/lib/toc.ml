@@ -94,11 +94,17 @@ let map_to_item h =
   match h with
   | H (i, txt) ->
       if String.equal txt "" then []
-      else [ to_elt [ "toc-item-" ^ string_of_int i ] (text_to_id txt) txt ]
+      else
+        [
+          to_elt
+            [ "toc-link"; "toc-item-" ^ string_of_int i ]
+            (text_to_id txt) txt;
+        ]
 
 (* Nested List Spec: https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals *)
 let rec preorder = function
-  | Br (v, []) -> [%html "<ul class='toc'><li>" (map_to_item v) "</li></ul>"]
+  | Br (v, []) ->
+      [%html "<ul class='toc'><li class='toc-li'>" (map_to_item v) "</li></ul>"]
   | Br (v, lst) ->
       [%html
         "<ul class='toc'><li>"
