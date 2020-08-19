@@ -142,30 +142,34 @@
       <li>
        <ul class="toc">
         <li>
-         <a class="toc-item-1" href="#navigating-ocaml-projects">
+         <a class="toc-link toc-item-1" href="#navigating-ocaml-projects">
           Navigating OCaml Projects
          </a>
          <ul class="toc">
-          <li><a class="toc-item-2" href="#overview">Overview</a></li>
+          <li class="toc-li">
+           <a class="toc-link toc-item-2" href="#overview">Overview</a>
+          </li>
          </ul>
          <ul class="toc">
-          <li><a class="toc-item-2" href="#structure">Structure</a>
+          <li><a class="toc-link toc-item-2" href="#structure">Structure</a>
            <ul class="toc">
-            <li>
-             <a class="toc-item-3" href="#files-in-the-top-level-directory">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3"
+              href="#files-in-the-top-level-directory">
               Files in the top-level directory
              </a>
             </li>
            </ul>
            <ul class="toc">
-            <li>
-             <a class="toc-item-3" href="#directory-layout">Directory Layout
+            <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#directory-layout">
+              Directory Layout
              </a>
             </li>
            </ul>
            <ul class="toc">
-            <li>
-             <a class="toc-item-3" href="#the-omnipresent-dune-file">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#the-omnipresent-dune-file">
               The Omnipresent Dune File
              </a>
             </li>
@@ -173,15 +177,17 @@
           </li>
          </ul>
          <ul class="toc">
-          <li>
-           <a class="toc-item-2" href="#implementation-and-interfaces">
+          <li class="toc-li">
+           <a class="toc-link toc-item-2"
+            href="#implementation-and-interfaces">
             Implementation and Interfaces
            </a>
           </li>
          </ul>
          <ul class="toc">
-          <li>
-           <a class="toc-item-2" href="#miscellaneous-files-and-directories">
+          <li class="toc-li">
+           <a class="toc-link toc-item-2"
+            href="#miscellaneous-files-and-directories">
             Miscellaneous Files and Directories
            </a>
           </li>
@@ -212,9 +218,9 @@
 </li>
 <li><code>.gitignore</code> - a file that tells git which files or folders it should ignore. Some standard OCaml things you might consider ignoring are: <a href="/platform/dune">dune</a>'s build directory (<code>_build</code>), <a href="/pages/opam-client">local opam switches</a> (<code>_opam</code>) and <a href="/platform/merlin">merlin</a> files (<code>.merlin</code>).
 </li>
-<li><code>.ocamlformat</code> and <code>.ocp-indent</code> - these are configuration files for the <a href="https://github.com/ocaml-ppx/ocamlformat">OCamlFormat</a> and <a href="https://github.com/OCamlPro/ocp-indent">Ocp-indent</a> tools respectively. It will, at a bare minimum, a version number inside. For more information on setting this up see the <a href="/workflows/keeping-your-code-clean">relevant workflow</a>.
+<li><code>.ocamlformat</code> and <code>.ocp-indent</code> - these are configuration files for the <a href="https://github.com/ocaml-ppx/ocamlformat">OCamlFormat</a> and <a href="https://github.com/OCamlPro/ocp-indent">Ocp-indent</a> tools respectively. It will have, at a bare minimum, a version number inside. For more information on setting this up see the <a href="/workflows/keeping-your-code-clean">relevant workflow</a>.
 </li>
-<li><code>dune-project</code> - a file which marks the root of the project. It will usually be generated for you whenever you run <code>dune build</code> for the first time. It contains a <a href="https://dune.readthedocs.io/en/stable/dune-files.html#dune-project">lang</a> stanza which tells dune what version you are using. It is also <a href="/workflows/initialising-a-new-library">recommended</a> that you generate your opam files from here.
+<li><code>dune-project</code> - a file which marks the root of the project. It will usually be generated for you whenever you run <code>dune build</code> for the first time. It contains a <a href="https://dune.readthedocs.io/en/stable/dune-files.html#dune-project"><code>lang</code></a> stanza which tells dune what version you are using. It is also <a href="/workflows/initialising-a-new-library">recommended</a> that you generate your opam files from here.
 </li>
 <li><code>*.opam</code> or <code>opam</code> - these are <a href="/pages/opam-files">opam files</a> which contain project metadata and dependency information.
 </li>
@@ -224,7 +230,7 @@
 </li>
 </ul>
 <h3 id="directory-layout">Directory Layout</h3>
-<p>How directories are laid-out for a project varies greatly depending on what is being built and who is building it - what follows is an attempt at describing the most general and common project structure. Our running example will be a library called <code>explore</code> that also makes a command-line tool.</p>
+<p>How directories are laid-out for a project varies greatly depending on what is being built and who is building it. What follows is an attempt at describing the most general and common project structure. Our running example will be a library called <code>explore</code> that also makes a command-line tool.</p>
 <p>Here is what a typical structure may look like.</p>
 <pre><code>.
 |-- bin
@@ -263,7 +269,7 @@
 <p>Nearly every directory contains a <code>dune</code> file. Dune uses these to understand the structure of your project and build it appropriately. Running <code>dune runtest</code> for example knows to go looking in the <code>test</code> folder because the <code>dune</code> file in it has a <code>test</code> stanza. For more on this, check out the <a href="/platform/dune">dune</a> page.</p>
 <h2 id="implementation-and-interfaces">Implementation and Interfaces</h2>
 <p>OCaml is built around the idea of <a href="https://caml.inria.fr/pub/docs/manual-ocaml/moduleexamples.html#s:separate-compilation">compilation units</a>. Each unit being made up of an implementation (the <code>.ml</code> file) and an interface or specification (the <code>.mli</code> file). The interface is like the contractual obligation for what the implementation must provide.</p>
-<p>This means the interface files is a good place to start looking if you are using a library or want to get a broad overview of how a project is structured. What types are abstracted (i.e. appear as just <code>type t</code> in the file), what submodules are defined etc. This information helps in knowing what you can and can't do.</p>
+<p>This means the interface files are a good place to start looking if you are using a library or want to get a broad overview of how a project is structured. It answers questions like which types are abstracted (i.e. appear as just <code>type t</code> in the file) and what submodules are defined for you to use. This information helps in knowing what you can and can't do.</p>
 <p>It is also where most <a href="/workflows/documenting-your-project">documentation</a> is written and as you become more familiar with reading type information, it can be a very useful way to properly use someone's library.</p>
 <p><a href="/platform/utop">Utop</a> offers good support for quickly inspecting other code, as does the <a href="/platform/visual-studio-code">VS Code platform</a>.</p>
 <h2 id="miscellaneous-files-and-directories">Miscellaneous Files and Directories</h2>
@@ -278,7 +284,7 @@
      <h3>Resources</h3>
      <ol>
       <li>
-       <a href="https://www.craigfe.io/posts/the-intf-trick">The intf trick
+       <a href="https://www.craigfe.io/posts/the-intf-trick">The _intf trick
        </a> - 
        Craig Ferguson explains a different way of laying out OCaml
        compilation units to reduce duplication of type information and the
