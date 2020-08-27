@@ -1,0 +1,3 @@
+(library
+ (name config_file)
+ (libraries base))

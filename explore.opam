@@ -30,6 +30,7 @@ depends: [
   "jekyll-format"
   "re"
   "ppx_deriving_yaml"
+  "crowbar"
 ]
 build: [
   ["dune" "subst"] {pinned}
