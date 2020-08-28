@@ -24,7 +24,7 @@ let build_libraries () =
 
 let build_platform () =
   build_collection
-    (fun (path, content) -> Collection.Platform.v ~path ~content)
+    (fun (path, content) -> Collection.Tool.v ~path ~content)
     "content/platform/"
 
 let build_pages () =
@@ -34,10 +34,9 @@ let build_pages () =
 
 let output_workflows workflows =
   List.iter
-    ~f:(fun w ->
+    ~f:(fun (w : Collection.Workflow.t) ->
       Files.output_html
-        ~path:
-          (Filename.chop_extension (Collection.Workflow.get_path w) ^ ".html")
+        ~path:(Filename.chop_extension w.path ^ ".html")
         ~doc:(Collection.Workflow.to_html w))
     workflows
 

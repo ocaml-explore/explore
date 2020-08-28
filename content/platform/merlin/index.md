@@ -2,6 +2,7 @@
 title: Merlin
 date: 2020-08-05 11:49:15 
 description: Brining IDE features to editors like Vim and Emacs
+repo: https://github.com/ocaml/merlin
 license: MIT
 ---
 

@@ -2,6 +2,7 @@
 title: Dune-release
 date: 2020-07-27 09:35:49
 description: A CLI tool for easier packaging and publishing
+repo: https://github.com/ocamllabs/dune-release
 license: None
 ---
 

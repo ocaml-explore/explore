@@ -1,7 +1,8 @@
 ---
 title: Mdx
 date: 2020-07-27 09:35:49
-description: Excutable code blocks in your markdown
+description: Executable code blocks in your markdown
+repo: https://github.com/realworldocaml/mdx
 license: ISC
 ---
 
