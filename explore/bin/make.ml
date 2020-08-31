@@ -57,3 +57,32 @@ let output_pages pages =
         ~path:(Filename.chop_extension (Page.get_path p) ^ ".html")
         ~doc:(Page.to_html p))
     pages
+
+module Lib = Collection.Library
+module User = Collection.User
+module Tool = Collection.Tool
+
+let build_phase () =
+  let pages = build_pages () in
+  let index = Build.build_page ~file:"content/index.md" in
+  let workflows = build_workflows () in
+  let libraries = build_libraries () in
+  let platform = build_platform () in
+  let users = build_users () in
+  output_pages (index :: pages);
+  output_workflows workflows;
+  output_collection
+    (fun (t : Lib.t) -> t.path)
+    Lib.to_html_with_workflows "content/libraries/index.html"
+    (Lib.build_index "Libraries" "Useful OCaml community libraries")
+    Lib.get_workflows workflows libraries;
+  output_collection
+    (fun (t : User.t) -> t.path)
+    User.to_html_with_workflows "content/users/index.html"
+    (User.build_index "Users" "People using OCaml to get things done")
+    User.get_workflows workflows users;
+  output_collection
+    (fun (t : Tool.t) -> t.path)
+    Tool.to_html_with_workflows "content/platform/index.html"
+    (Tool.build_index "Platform" "The OCaml Platform")
+    Tool.get_workflows workflows platform
