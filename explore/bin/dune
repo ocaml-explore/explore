@@ -1,6 +1,6 @@
 (executable
  (name main)
  (public_name explore)
- (libraries explore ptime omd core httpaf httpaf-lwt-unix logs fmt)
+ (libraries explore cmdliner ptime omd core httpaf httpaf-lwt-unix logs fmt)
  (preprocess
   (pps ppx_jane)))

@@ -86,3 +86,16 @@ let build_phase () =
     Tool.to_html_with_workflows "content/platform/index.html"
     (Tool.build_index "Platform" "The OCaml Platform")
     Tool.get_workflows workflows platform
+
+(* Command Line Tool *)
+open Cmdliner
+
+let run () =
+  build_phase ();
+  0
+
+let info =
+  let doc = "Build the site to static files" in
+  Term.info ~doc "build"
+
+let cmd = (Term.(const run $ const ()), info)

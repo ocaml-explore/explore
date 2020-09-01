@@ -8,7 +8,7 @@ module type S = sig
   (** [v path content] takes the contents of a markdown file [content] and
       either produces a [result] of type [t] or an error of tpye [err] *)
 
-  val build : unit
+  val build : unit -> unit
   (** A small program to be run through the CLI to build a new workflow *)
 end
 

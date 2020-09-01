@@ -9,7 +9,7 @@ module type S = sig
 
   val v : path:string -> content:string -> t
 
-  val build : unit
+  val build : unit -> unit
 end
 
 let get_date d =
@@ -71,7 +71,7 @@ module Workflow = struct
     | Error (`MalformedCollection err) ->
         failwith ("Failed building (" ^ path ^ ") - " ^ err)
 
-  let build = ()
+  let build () = ()
 
   let to_html (t : t) =
     let make_resources lst =
@@ -183,7 +183,7 @@ module User = struct
     | Ok (data, body) -> { path; data; body }
     | Error (`MalformedCollection err) -> failwith err
 
-  let build = ()
+  let build () = ()
 
   let build_index title description ts =
     let lst =
@@ -241,7 +241,7 @@ module Tool = struct
     | Ok (data, body) -> { path; data; body }
     | Error (`MalformedCollection err) -> failwith err
 
-  let build = ()
+  let build () = ()
 
   let get_workflows t (workflows : Workflow.t list) =
     List.filter
@@ -299,7 +299,7 @@ module Library = struct
     | Ok (data, body) -> { path; data; body }
     | Error (`MalformedCollection err) -> failwith err
 
-  let build = ()
+  let build () = ()
 
   let get_workflows t (workflows : Workflow.t list) =
     List.filter

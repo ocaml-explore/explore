@@ -2,13 +2,12 @@ open Httpaf
 open Lwt.Infix
 open Httpaf_lwt_unix
 open Fmt
-open Explore
 
 let info ppf = pf ppf "[explore.ocaml] %a \n%!"
 
-let uri_to_paths s = Astring.String.trim ~drop:(Char.equal '/') s
-
-let router ?(top_dir = "content") = function
+let router ?(top_dir = "content") =
+  let open Explore in
+  function
   | [ ""; "" ] | [ "" ] | [ "/" ] ->
       Files.read_file ("./" ^ top_dir ^ "/index.html")
   | f -> (
@@ -30,7 +29,7 @@ let get_content_type s =
 let handle_get reqd =
   match Reqd.request reqd with
   | { Request.meth = `GET; Request.target = t; _ } ->
-      Make.build_phase ();
+      Build.build_phase ();
       let str = router (String.split_on_char '/' t) in
       let resp =
         let content_type = get_content_type t in
@@ -61,7 +60,7 @@ let error_handler ?request:_ error start_response =
       Body.write_string response_body (Status.default_reason_phrase error));
   Body.close_writer response_body
 
-let serve ~port =
+let serve port : int =
   info stdout
     (fun ppf a -> pf ppf "Starting server at: http://localhost:%i" a)
     port;
@@ -75,3 +74,23 @@ let serve ~port =
         (Server.create_connection_handler ~request_handler ~error_handler)
       >|= fun _ -> ());
   Lwt_main.run promise
+
+(* Command Line Tool *)
+open Cmdliner
+
+let run port = serve port
+
+let port =
+  let docv = "PORT" in
+  let doc = "Specifiy the port the local server should run on." in
+  Arg.(value & pos 0 int 8000 & info ~doc ~docv [])
+
+let info =
+  let doc =
+    "Run a local server which serves the contents of content. It rebuilds the \
+     entire site for each page load so changes made will be automatically \
+     synced."
+  in
+  Term.info ~doc "serve"
+
+let cmd = (Term.(pure run $ port), info)
