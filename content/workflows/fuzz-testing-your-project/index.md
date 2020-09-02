@@ -148,6 +148,46 @@ Fatal error: exception Crowbar.TestFailure
 
 ```
 
+## Hooking into the build system
+
+A fuzzer is just an executable, but it might not be something that you want to run with your tests on every commit. On the other hand, if the library changes, it is good to keep the fuzzer in sync. A tradeoff is to:
+
+- build the fuzzer as part of tests, without actually running it
+- attach running the fuzzer (in standalone mode) to a `@fuzz` alias
+mode.
+
+<!-- $MDX file=examples/parser/fuzz/dune -->
+```
+(executable
+ (name fuzz_config_file)
+ (libraries config_file crowbar))
+
+(alias
+ (name runtest)
+ (deps fuzz_config_file.exe))
+
+(rule
+ (alias fuzz)
+ (action
+  (run ./fuzz_config_file.exe)))
+```
+
+Note that this makes crowbar a test-dependency at the opam level, so this should
+be marked as such in `dune-project`:
+
+<!-- $MDX file=examples/parser/dune-project -->
+```
+(lang dune 2.7)
+
+(generate_opam_files true)
+
+(package
+ (name config_file)
+ (depends
+   base
+   (crowbar :with-test)))
+```
+
 ## Recommended Workflow
 
 ---
