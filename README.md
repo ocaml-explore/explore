@@ -12,14 +12,24 @@ Explore OCaml is a centralised source for workflows in OCaml categorised by user
 
 ## Building Locally
 
-If you want to run the code locally you will need to clone this repository, install the dependencies and finally install `explore` - from here you can run `explore build` from the root and copy the static folder into the content folder (`cp -r ./static/* ./content`). Next run a [http server](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server#Running_a_simple_local_HTTP_server) from the content folder. 
+Explore OCaml is a both a website and a tool for building the website. To install the CLI you can clone this repository and run `opam install .` from the root. Running `explore --help` from the command line will provide more details about the tool. 
 
-It is a good idea to leave the server running in one terminal and edit, run `explore build` and copying css from another terminal to see your changes. 
+The simplest way to get started is to run `explore serve <optional-port>` from the root. This will (a) build the site and (b) start a server at `http://localhost:8000` unless you specify a port. The server rebuilds the entire website on every request (it's reasonably fast) so you can make changes to markdown files and then simply refresh the page and the changes should be there.
 
 ## A Workflow for Workflows 
 
-The recommended way to add a workflow is to fork this project and install explore. From there you can copy one of the prexisting workflows and edit the content from there. Be sure to check the `/static/admin/config.yml` file to see what fields are not `required` (libraries for example). 
+The recommend way to create a new workflow is from the command-line. Once `explore` is installed you can run `explore new workflow` this will setup a small workflow wizard to guide you through adding the mandatory information for generating a new workflow. If you give the workflow a title of `Building multiple packages` it will be added under `content/workflows/building-multiple-packages/index.md`. 
 
-If the `explore` CLI tool is installed you can get the time by running `explore time` to updated the date field. To rebuild the site run `explore build`. Note that for a workflow to appear as a related workflow to a user, you need to add it to the frontmatter of that user file. 
+We use [mdx](https://github.com/realworldocaml/mdx) to keep our content maintained and synchronised, the recommended way of doing this is to add a `dune` file and a `prelude.ml` file to a workflow and then any larger examples in an `examples` directory. The "Adding Unit Tests" workflow exemplifies this and can be used as guidance for how to set it up. Running `dune runtest` will run mdx and check all of the examples. 
 
-We use [mdx](https://github.com/realworldocaml/mdx) to keep our content maintained and synchronised, the recommended way of doing this is to add a `dune` file and a `prelude.ml` file to a workflow and then any larger examples in an `examples` directory. The "Adding Unit Tests" workflow exemplifies this. 
+## A Brief Guide to Explore OCaml
+
+What follows is a brief explanation of the build process of Explore OCaml using `lib`. This is aimed at developers wanting to change the layout of the site or fix bugs in the site generation. 
+
+The site content is stored in the `content` folder as markdown. The markdown contains yaml front-matter for holding meta-data. The `index.md` file just inside `content` is the homepage content. Pages without a clear home, say the `opam-client` information page live in the `pages` folder. 
+
+The process of building the site is mainly conversion from markdown to HTML handled primarily by [omd](https://github.com/ocaml/omd). Libraries, users, tools and workflows are `Collections`. There types are described in `collection.mli` and we are using `ppx_deriving_yaml` to transform yaml to these types and where needed transforming the types to yaml. 
+
+Collections also build so-called index pages for listing all of the users or tools etc. The `(workflow, user)` relation is stored with the user file. The ordering in the markdown represents the ordering we think makes sense as a user to follow through the different workflows. 
+
+The `components.ml` provides some basic `Tyxml` components for building pages. The `toc.ml` contains code for generating a table of contents from markdown files using the headers. It also enforces good heading-nesting practices. 

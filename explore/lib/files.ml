@@ -27,6 +27,9 @@ let read_file filename =
     ~f:(fun () -> String.concat ~sep:"\n" (In_channel.input_lines file))
     ~finally:(fun () -> In_channel.close file)
 
+let title_to_dirname s =
+  Core.(String.lowercase s |> String.substr_replace_all ~pattern:" " ~with_:"-")
+
 let output_file str filename =
   let outc = Out_channel.create filename in
   Exn.protect

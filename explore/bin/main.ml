@@ -1,6 +1,8 @@
 open Cmdliner
 
-let cmds = [ Build.cmd; Serve.cmd; New.cmd ]
+let cmds = [ Build.cmd; Serve.cmd; New.cmd; Lint.cmd ]
+
+let setup_std_outputs : unit = Fmt_tty.setup_std_outputs ()
 
 let doc = "Explore OCaml CLI tool"
 

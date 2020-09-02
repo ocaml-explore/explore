@@ -4,10 +4,30 @@ module Jf = Jekyll_format
 
 type err = [ `MalformedCollection of string ]
 
+type ask_err = [ `NoDefault of string ]
+
+let ask ?(break = false) question default =
+  (if break then Format.(fprintf std_formatter "%s\n%!" question)
+  else Format.(fprintf std_formatter "%s: %!" question));
+  let line = read_line () in
+  match (line, default) with
+  | "", Some d -> Ok d
+  | "", None ->
+      Error
+        (`NoDefault "No default for that question, please provide an answer")
+  | l, _ -> Ok l
+
+let split_drop s =
+  List.filter (( <> ) "")
+    Core.String.(split ~on:',' (substr_replace_all ~pattern:", " ~with_:"," s))
+  |> function
+  | [] -> None
+  | lst -> Some lst
+
 module type S = sig
   type t
 
-  val v : path:string -> content:string -> t
+  val v : path:string -> content:string -> (t, err) result
 
   val build : unit -> unit
 end
@@ -57,6 +77,8 @@ module Workflow = struct
 
   type t = { path : string; data : workflow; body : string }
 
+  let content_path = "content/workflows/"
+
   let v ~path ~content =
     let post t =
       match Jf.parse_date t.date with
@@ -67,11 +89,59 @@ module Workflow = struct
     in
     let mkr : workflow maker = { of_yaml = workflow_of_yaml; post } in
     match v_generic mkr ~content with
-    | Ok (data, body) -> { path; data; body }
-    | Error (`MalformedCollection err) ->
-        failwith ("Failed building (" ^ path ^ ") - " ^ err)
+    | Ok (data, body) -> Ok { path; data; body }
+    | Error err -> Error err
 
-  let build () = ()
+  let build () =
+    let open Rresult in
+    let user_input () =
+      ask "Title of the workflow" None >>= fun title ->
+      ask "Description of the workflow" None >>= fun description ->
+      ask "Author of the workflow" None >>= fun author ->
+      ask "Platform tools used by the workflow e.g. dune, dune-release"
+        (Some "")
+      >>= fun tools ->
+      ask "Libraries used by the workflow e.g. alcotest, cstruct" (Some "")
+      >>= fun libraries ->
+      ask "Users of the workflow e.g. library authors, application developers"
+        None
+      >>= fun users ->
+      let date = Utils.get_time () in
+      let tools = split_drop tools in
+      let libraries = split_drop libraries in
+      let users = split_drop users in
+      Ok
+        {
+          title;
+          date;
+          description;
+          authors = [ author ];
+          tools;
+          libraries;
+          users;
+          resources = None;
+        }
+    in
+    match user_input () with
+    | Ok w -> (
+        let dirname = Files.title_to_dirname w.title in
+        let yaml =
+          Yaml.pp Format.str_formatter (workflow_to_yaml w);
+          Format.flush_str_formatter ()
+        in
+        Unix.mkdir (content_path ^ dirname) 0o777;
+        Files.output_file
+          ("---\n" ^ yaml ^ "\n---\n")
+          (content_path ^ dirname ^ "/index.md");
+        match w.users with
+        | Some users ->
+            Format.(
+              fprintf std_formatter
+                "Remember to update the users (%s) to contain '%s' under the \
+                 workflows section!"
+                (String.concat ", " users) w.title)
+        | None -> ())
+    | Error (`NoDefault msg) -> failwith msg
 
   let to_html (t : t) =
     let make_resources lst =
@@ -180,8 +250,8 @@ module User = struct
     in
     let mkr : user maker = { of_yaml = user_of_yaml; post } in
     match v_generic mkr ~content with
-    | Ok (data, body) -> { path; data; body }
-    | Error (`MalformedCollection err) -> failwith err
+    | Ok (data, body) -> Ok { path; data; body }
+    | Error err -> Error err
 
   let build () = ()
 
@@ -238,8 +308,8 @@ module Tool = struct
     in
     let mkr : tool maker = { of_yaml = tool_of_yaml; post } in
     match v_generic mkr ~content with
-    | Ok (data, body) -> { path; data; body }
-    | Error (`MalformedCollection err) -> failwith err
+    | Ok (data, body) -> Ok { path; data; body }
+    | Error err -> Error err
 
   let build () = ()
 
@@ -296,8 +366,8 @@ module Library = struct
     in
     let mkr : library maker = { of_yaml = library_of_yaml; post } in
     match v_generic mkr ~content with
-    | Ok (data, body) -> { path; data; body }
-    | Error (`MalformedCollection err) -> failwith err
+    | Ok (data, body) -> Ok { path; data; body }
+    | Error err -> Error err
 
   let build () = ()
 

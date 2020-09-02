@@ -7,24 +7,33 @@ let build_collection f dir =
     ~check:(fun f -> String.equal (Stdlib.Filename.extension f) ".md")
     ~dir
 
+let handle_error path = function
+  | Ok v -> v
+  | Error (`MalformedCollection e) ->
+      failwith ("Failed building: " ^ path ^ " because -- " ^ e)
+
 let build_workflows () =
   build_collection
-    (fun (path, content) -> Collection.Workflow.v ~path ~content)
+    (fun (path, content) ->
+      Collection.Workflow.v ~path ~content |> handle_error path)
     "content/workflows/"
 
 let build_users () =
   build_collection
-    (fun (path, content) -> Collection.User.v ~path ~content)
+    (fun (path, content) ->
+      Collection.User.v ~path ~content |> handle_error path)
     "content/users/"
 
 let build_libraries () =
   build_collection
-    (fun (path, content) -> Collection.Library.v ~path ~content)
+    (fun (path, content) ->
+      Collection.Library.v ~path ~content |> handle_error path)
     "content/libraries/"
 
 let build_platform () =
   build_collection
-    (fun (path, content) -> Collection.Tool.v ~path ~content)
+    (fun (path, content) ->
+      Collection.Tool.v ~path ~content |> handle_error path)
     "content/platform/"
 
 let build_pages () =

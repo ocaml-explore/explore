@@ -1,10 +1,12 @@
 type err = [ `MalformedCollection of string ]
 
+type ask_err = [ `NoDefault of string ]
+
 module type S = sig
   type t
   (** The type for Collections like a [Workflow] or a [User]... *)
 
-  val v : path:string -> content:string -> t
+  val v : path:string -> content:string -> (t, err) result
   (** [v path content] takes the contents of a markdown file [content] and
       either produces a [result] of type [t] or an error of tpye [err] *)
 

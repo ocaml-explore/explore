@@ -30,6 +30,7 @@
   core
   httpaf
   httpaf-lwt-unix
+  fmt
   bechamel
   tyxml
   omd
