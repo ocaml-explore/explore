@@ -44,4 +44,5 @@
   js_of_ocaml-ppx
   js_of_ocaml-compiler
   jekyll-format
-  re))
+  re
+  ppx_deriving_yaml))
