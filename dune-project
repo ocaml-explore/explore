@@ -46,3 +46,16 @@
   jekyll-format
   re
   ppx_deriving_yaml))
+
+(package
+ (name syntax)
+ (synopsis "Build time syntax highlighting for OCaml-related code")
+ (description
+   "A library for adding syntax highlighting to OCaml-related code and outputing to Tyxml.Html")
+ (depends
+  (alcotest :with-test)
+  (ocaml
+   (and
+    (>= 4.10.0)
+    (< 4.11.0)))
+  textmate-language))
