@@ -6,7 +6,24 @@ let run collection =
   | "workflow" ->
       Collection.Workflow.build ();
       0
-  | _ -> assert false
+  | "user" ->
+      Collection.User.build ();
+      0
+  | "tool" ->
+      Collection.Tool.build ();
+      0
+  | "platform" ->
+      Collection.Tool.build ();
+      0
+  | "library" ->
+      Collection.Library.build ();
+      0
+  | s ->
+      Fmt.(
+        pf stdout "%a: No support for %s - try workflow, user, tool or library"
+          (styled `Red string)
+          "[BUILD FAILURE]" s);
+      -1
 
 let collection =
   let docv = "COLLECTION" in

@@ -59,6 +59,15 @@ let v_generic : 'a. 'a maker -> content:string -> ('a * string, err) result =
       | Error (`Msg m) -> Error (`MalformedCollection m))
   | Error (`Msg m) -> Error (`MalformedCollection m)
 
+let output ~path ~title yaml =
+  let dirname = Files.title_to_dirname title in
+  let yaml =
+    Yaml.pp Format.str_formatter yaml;
+    Format.flush_str_formatter ()
+  in
+  Unix.mkdir (path ^ dirname) 0o777;
+  Files.output_file ("---\n" ^ yaml ^ "\n---\n") (path ^ dirname ^ "/index.md")
+
 module Workflow = struct
   type resource = { title : string; description : string; url : string }
   [@@deriving yaml]
@@ -77,8 +86,6 @@ module Workflow = struct
 
   type t = { path : string; data : workflow; body : string }
 
-  let content_path = "content/workflows/"
-
   let v ~path ~content =
     let post t =
       match Jf.parse_date t.date with
@@ -94,6 +101,7 @@ module Workflow = struct
 
   let build () =
     let open Rresult in
+    let content_path = "content/workflows/" in
     let user_input () =
       ask "Title of the workflow" None >>= fun title ->
       ask "Description of the workflow" None >>= fun description ->
@@ -124,15 +132,7 @@ module Workflow = struct
     in
     match user_input () with
     | Ok w -> (
-        let dirname = Files.title_to_dirname w.title in
-        let yaml =
-          Yaml.pp Format.str_formatter (workflow_to_yaml w);
-          Format.flush_str_formatter ()
-        in
-        Unix.mkdir (content_path ^ dirname) 0o777;
-        Files.output_file
-          ("---\n" ^ yaml ^ "\n---\n")
-          (content_path ^ dirname ^ "/index.md");
+        output ~title:w.title ~path:content_path (workflow_to_yaml w);
         match w.users with
         | Some users ->
             Format.(
@@ -253,7 +253,18 @@ module User = struct
     | Ok (data, body) -> Ok { path; data; body }
     | Error err -> Error err
 
-  let build () = ()
+  let build () =
+    let open Rresult in
+    let content_path = "content/users/" in
+    let user_input () =
+      ask "Title of the user" None >>= fun title ->
+      ask "Description of the user" None >>= fun description ->
+      let date = Utils.get_time () in
+      Ok { title; description; date; workflows = [] }
+    in
+    match user_input () with
+    | Ok u -> output ~title:u.title ~path:content_path (user_to_yaml u)
+    | Error (`NoDefault m) -> failwith m
 
   let build_index title description ts =
     let lst =
@@ -311,7 +322,20 @@ module Tool = struct
     | Ok (data, body) -> Ok { path; data; body }
     | Error err -> Error err
 
-  let build () = ()
+  let build () =
+    let open Rresult in
+    let content_path = "content/platform/" in
+    let user_input () =
+      ask "Name of the tool" None >>= fun title ->
+      ask "Description of the user" None >>= fun description ->
+      ask "Repository of the tool" None >>= fun repo ->
+      ask "License of the tool" None >>= fun license ->
+      let date = Utils.get_time () in
+      Ok { title; description; date; repo; license }
+    in
+    match user_input () with
+    | Ok t -> output ~title:t.title ~path:content_path (tool_to_yaml t)
+    | Error (`NoDefault m) -> failwith m
 
   let get_workflows t (workflows : Workflow.t list) =
     List.filter
@@ -369,7 +393,19 @@ module Library = struct
     | Ok (data, body) -> Ok { path; data; body }
     | Error err -> Error err
 
-  let build () = ()
+  let build () =
+    let open Rresult in
+    let content_path = "content/libraries/" in
+    let user_input () =
+      ask "Name of the tool" None >>= fun title ->
+      ask "Description of the user" None >>= fun description ->
+      ask "Repository of the tool" None >>= fun repo ->
+      let date = Utils.get_time () in
+      Ok { title; description; date; repo }
+    in
+    match user_input () with
+    | Ok t -> output ~title:t.title ~path:content_path (library_to_yaml t)
+    | Error (`NoDefault m) -> failwith m
 
   let get_workflows t (workflows : Workflow.t list) =
     List.filter
