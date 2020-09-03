@@ -29,6 +29,7 @@ depends: [
   "js_of_ocaml-compiler"
   "jekyll-format"
   "re"
+  "ppx_deriving_yaml"
 ]
 build: [
   ["dune" "subst"] {pinned}

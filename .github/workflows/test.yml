@@ -6,8 +6,6 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-      with:
-        ref: trunk
     - uses: avsm/setup-ocaml@v1.1.0
       with:
         ocaml-version: "4.10.0"
