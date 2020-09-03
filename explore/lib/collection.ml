@@ -208,7 +208,7 @@ let to_html_with_workflows_generic :
           w.data.description ))
       related
   in
-  let workflow_comp = Components.make_index_list path_and_title in
+  let workflow_comp = Components.make_ordered_index_list path_and_title in
   let td =
     Components.make_omd_title_date ~title:(info.title t) ~date:(info.date t)
   in

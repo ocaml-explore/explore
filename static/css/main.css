@@ -158,6 +158,12 @@ img {
   background: white;
 }
 
+/* === COMPONENTS === */
+
+.ordered-list {
+  margin-bottom: .5em;
+}
+
 /* === TOC === */
 .toc {
   list-style-type: none;
