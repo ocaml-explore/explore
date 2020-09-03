@@ -1,7 +1,8 @@
 ---
-title: OCamlformat
+title: OCamlFormat
 date: 2020-07-27 09:35:49
 description: Enforcing formatting styles to an OCaml project
+repo: https://github.com/ocaml-ppx/ocamlformat
 license: MIT
 ---
 

@@ -11,6 +11,10 @@ val to_html : path:string -> string
 val read_file : string -> string
 (** [read_file filepath] will read the file to a string *)
 
+val title_to_dirname : string -> string
+(** [title_to_dirname title] will convert the title to the hyphen-separated
+    dirname *)
+
 val output_html : path:string -> doc:Tyxml.Html.doc -> unit
 (** [output_html path doc] will print the HTML document [doc] to [path] *)
 

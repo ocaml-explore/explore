@@ -133,6 +133,19 @@ let make_index_list lst =
     </div>
   |}]
 
+let make_ordered_index_list lst =
+  let to_elt (path, title, description) =
+    [%html
+      "<li class='ordered-list'><a class='index-a' href=" path ">"
+        [ Html.txt title ] " </a> - " [ Html.txt description ] "</li>"]
+  in
+  [%html
+    {|
+      <ol>
+        |} (List.map ~f:to_elt lst) {|
+      </ol>
+    |}]
+
 let emit_page filename html =
   let outc = Out_channel.create filename in
   let fmt = Format.formatter_of_out_channel outc in

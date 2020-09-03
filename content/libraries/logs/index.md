@@ -2,6 +2,7 @@
 title: Logs
 date: 2020-07-27 09:35:49
 description: Logging library in OCaml
+repo: https://github.com/dbuenzli/logs
 ---
 
 ## Overview

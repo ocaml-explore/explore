@@ -2,6 +2,7 @@
 title: Odoc
 date: 2020-07-27 09:35:49
 description: OCaml documentation compiler
+repo: https://github.com/ocaml/odoc
 ---
 
 ## Overview

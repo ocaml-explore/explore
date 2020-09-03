@@ -28,6 +28,9 @@
     (>= 4.10.0)
     (< 4.11.0)))
   core
+  httpaf
+  httpaf-lwt-unix
+  fmt
   bechamel
   tyxml
   omd

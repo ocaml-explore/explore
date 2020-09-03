@@ -1,55 +1,94 @@
+type err = [ `MalformedCollection of string ]
+
+type ask_err = [ `NoDefault of string ]
+
 module type S = sig
   type t
-  (** Collections are either a workflow or the others. Workflows contain more
-      metadata than other collections hence the distinction - metadata for
-      collections like users and libraries can be built from the workflows. They
-      do share some common functions *)
+  (** The type for Collections like a [Workflow] or a [User]... *)
 
-  type resource = { url : string; title : string; description : string }
+  val v : path:string -> content:string -> (t, err) result
+  (** [v path content] takes the contents of a markdown file [content] and
+      either produces a [result] of type [t] or an error of tpye [err] *)
 
-  val v : path:string -> content:string -> t
-
-  val to_string : t -> string
-
-  val get_meta : t -> Jekyll_format.fields
-
-  val get_title : t -> string
-
-  val get_date : textual:bool -> t -> string
-
-  val get_md : t -> string
-
-  val get_path : t -> string
-
-  val get_prop : coll:t -> ident:string -> Yaml.value option
-
-  val get_resources : t -> resource list
-
-  val get_description : t -> string
-
-  val to_html : t -> Tyxml.Html.doc
-
-  val build_index : string -> string -> t list -> Tyxml.Html.doc
-  (** [build_index ts] builds the index page for a list of collection items [ts] *)
-
-  val get_relations :
-    string -> t -> (Yaml.value list, [> `Msg of string ]) Result.t
+  val build : unit -> unit
+  (** A small program to be run through the CLI to build a new workflow *)
 end
 
 module Workflow : sig
-  include S
+  type resource = { title : string; description : string; url : string }
+
+  type workflow = {
+    title : string;
+    date : string;
+    authors : string list;
+    description : string;
+    tools : string list option;
+    users : string list option;
+    libraries : string list option;
+    resources : resource list option;
+  }
+  [@@deriving yaml]
+
+  type t = { path : string; data : workflow; body : string }
+
+  include S with type t := t
+
+  val to_html : t -> Tyxml.Html.doc
+  (** Takes a constructed Collection [t] and produces the HTML document *)
 end
 
 module type Collection = sig
-  include S
+  type t
+
+  include S with type t := t
 
   val to_html_with_workflows : Workflow.t list -> t -> Tyxml.Html.doc
+  (** Users, Libraries and Tools all have related to workflows *)
 
-  val get_workflows : string -> t -> Workflow.t list -> Workflow.t list
+  val build_index : string -> string -> t list -> Tyxml.Html.doc
+  (** [build_index title description ts] will build a page with [ts] listed on
+      it adding the [title] and [description] to the HTML meta data *)
+
+  val get_workflows : t -> Workflow.t list -> Workflow.t list
+  (** A function to get the workflows which are related to a given collection *)
 end
 
-module User : Collection
+module User : sig
+  type user = {
+    title : string;
+    date : string;
+    description : string;
+    workflows : string list;
+  }
 
-module Library : Collection
+  type t = { path : string; data : user; body : string }
 
-module Platform : Collection
+  include Collection with type t := t
+end
+
+module Tool : sig
+  type tool = {
+    title : string;
+    repo : string;
+    license : string;
+    date : string;
+    description : string;
+  }
+
+  type t = { path : string; data : tool; body : string }
+
+  include Collection with type t := t
+end
+
+module Library : sig
+  type library = {
+    title : string;
+    repo : string;
+    date : string;
+    description : string;
+  }
+
+  type t = { path : string; data : library; body : string }
+
+  include Collection with type t := t
+end

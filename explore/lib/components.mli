@@ -18,6 +18,12 @@ val make_index_list :
     element to form an a div of links to [path] with the text [title] and p tag
     of description. *)
 
+val make_ordered_index_list :
+  (string * string * string) list -> [> Html_types.ol ] Tyxml.Html.elt
+(** [make_order_index_list a b lst] will use the [(path, title, description)] of
+    each element to form an ordered list of links to [path] with the text
+    [title] and a description. *)
+
 val make_omd_title_date : title:string -> date:string -> Omd.doc
 (** [make_omd_title_date title date] produces a heading 1 and italicized
     paragraph for the title and date respectively *)
