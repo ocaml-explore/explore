@@ -1,6 +1,7 @@
 ---
 title: Bun
 date: 2020-07-31 09:38:42
+repo: https://github.com/yomimono/ocaml-bun
 description: A CLI tool for helping fuzz testing commands
 license: MIT
 ---

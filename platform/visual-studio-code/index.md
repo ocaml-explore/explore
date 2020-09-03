@@ -3,6 +3,7 @@ title: Visual Studio Code
 date: 2020-07-27 09:35:49
 description: The recommended OCaml editor with helpful plugins
 license: None
+repo: https://github.com/ocamllabs/vscode-ocaml-platform
 ---
 
 ## Overview

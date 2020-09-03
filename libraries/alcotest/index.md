@@ -2,6 +2,7 @@
 title: Alcotest
 date: 2020-07-27 09:35:49
 description: A library for building unit tests
+repo: https://github.com/mirage/alcotest
 ---
 
 ## Key Concepts
