@@ -1,6 +1,6 @@
 (library
  (name explore)
  (public_name explore)
- (libraries core tyxml yaml ezjsonm re omd jekyll-format calendar uri)
+ (libraries core syntax tyxml yaml ezjsonm re omd jekyll-format calendar)
  (preprocess
   (pps tyxml-ppx ppx_deriving_yaml)))

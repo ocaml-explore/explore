@@ -174,7 +174,12 @@ module Workflow = struct
     Components.wrap_body
       ~toc:(Some [ toc ])
       ~title:t.data.title ~description:t.data.description
-      ~body:([ Html.Unsafe.data (Omd.to_html (Toc.transform omd)) ] @ resources)
+      ~body:
+        ([
+           Html.Unsafe.data
+             (Omd.to_html (Toc.transform omd |> Highlight.transform));
+         ]
+        @ resources)
 end
 
 module type Collection = sig

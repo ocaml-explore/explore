@@ -2,36 +2,30 @@ open Tyxml
 
 let span class_gen =
   let span_gen c s =
-    [%html "<span id=" (class_gen c) ">" [ Html.txt s ] "</span>"]
+    [%html "<span class=" [ class_gen c ] ">" [ Html.txt s ] "</span>"]
   in
   function
   | "constant" :: "character" :: _ -> span_gen "constant-character"
-  | "constant" :: "language" :: "boolean" :: _ ->
-      span_gen "constant-language-boolean"
+  | "constant" :: "language" :: _ -> span_gen "constant-language"
   | "comment" :: _ -> span_gen "comment"
   | "constant" :: "numeric" :: _ -> span_gen "constant-numeric"
   | "entity" :: "name" :: "tag" :: "label" :: _ ->
       span_gen "entity-name-tag-label"
-  | "entity" :: "name" :: "type" :: "variant" :: _ ->
-      span_gen "entity-name-tag-variant"
+  | "entity" :: "name" :: _ -> span_gen "entity-name"
+  | "entity" :: "tag" :: _ -> span_gen "entity-tag"
   | "invalid" :: _ -> span_gen "invalid"
   | "keyword" :: "control" :: _ -> span_gen "keyword-control"
   | "keyword" :: "operator" :: _ -> span_gen "keyword-operator"
   | "keyword" :: _ -> span_gen "keyword"
-  | "support" :: "other" :: "module" :: _ -> span_gen "support-other-module"
-  | "meta" :: "module-reference" :: _ -> span_gen "meta-module-reference"
+  | "support" :: _ -> span_gen "support"
+  | "meta" :: _ -> span_gen "meta"
   | "punctuation" :: "definition" :: "comment" :: _ ->
       span_gen "punctuation-definition-comment"
   | "punctuation" :: "definition" :: "string" :: _ ->
       span_gen "punctuation-definition-string"
   | "string" :: "quoted" :: _ -> span_gen "string-quoted"
   | "source" :: _ -> span_gen "source"
-  | "entity" :: "name" :: "tag" :: _ -> span_gen "entity-name-tag"
   | "variable" :: "parameter" :: _ -> span_gen "variable-parameter"
-  | "meta" :: "stanza" :: "library" :: "field" :: _ ->
-      span_gen "meta-stanza-library-field"
-  | "meta" :: "stanza" :: _ -> span_gen "meta-stanza"
-  | "meta" :: "class" :: "stanza" :: _ -> span_gen "meta-class-stanza"
   | t ->
       print_endline (String.concat " " t);
       span_gen "other"
@@ -72,7 +66,7 @@ let lang_to_plist s =
     | "ocaml" -> Plists.ocaml
     | "dune" -> Plists.dune
     | "opam" -> Plists.opam
-    | _ -> failwith "Language not supported"
+    | l -> failwith ("Language not supported: " ^ l)
   in
   Markup.string data |> Plist_xml.parse_exn
 

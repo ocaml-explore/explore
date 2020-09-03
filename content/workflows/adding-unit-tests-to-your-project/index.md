@@ -27,7 +27,7 @@ There are lots of ways you can go about testing and a large part of this is depe
 Dune supports test stanzas which indicate that the directory is building a test suite and should be treated as such. The main fields that you need to provide are the test entry point (`(name file)`) and what libraries you are using. For our yaml example, we need the yaml library and alcotest. 
 
 <!-- $MDX file=examples/yaml/dune -->
-```
+```dune
 (test
  (name test)
  (libraries alcotest yaml))
@@ -79,7 +79,7 @@ let test_of_string () =
 
 The tests can be run from the command line with `dune runtest` - it is also common to augment your opam file's build command with running tests: 
 
-```
+```opam
 build: [
  ["dune" "build" "-p" name "-j" jobs]
  ["dune" "runtest" "-p" name] {with-test}
@@ -106,7 +106,7 @@ let () =
 Which, with an appropriate opam file, can be built with the following dune file. The `public_name` field makes the tool globally available provided there is an opam file.
 
 <!-- $MDX file=examples/mdx/src/dune -->
-```
+```dune
 (executable
  (name main)
  (public_name main))
