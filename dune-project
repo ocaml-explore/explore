@@ -58,4 +58,8 @@
    (and
     (>= 4.10.0)
     (< 4.11.0)))
+  markup
+  tyxml
+  fmt
+  plist-xml
   textmate-language))
