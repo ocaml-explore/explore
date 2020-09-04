@@ -188,20 +188,11 @@ be marked as such in `dune-project`:
    (crowbar :with-test)))
 ```
 
-## Recommended Workflow
+## Examples
 
 ---
 
-To get started with fuzzing your project you will need to do the following: 
-
-1. Install AFL on your machine 
-2. Install an AFL variant of the OCaml compiler into a new switch
-3. Install crowbar and bun using opam 
-
-This Github repository and the accompanying article found in the resource tag are a great place to start. 
-
-[NathanReb/ocaml-afl-examples](https://github.com/NathanReb/ocaml-afl-examples)
-
-## Real World Examples
-
----
+- [NathanReb/ocaml-afl-examples](https://github.com/NathanReb/ocaml-afl-examples)
+- [colombe](https://github.com/mirage/colombe/blob/da2281afa60cf906405120f647d8c247d189cb85/fuzz/fuzz.ml)
+- [eqaf](https://github.com/mirage/eqaf/blob/234ac0b414ba6740fbceedf25ad6cab4633b7de0/fuzz/fuzz.ml)
+- [opam](https://github.com/ocaml/opam/tree/7803ac4c3ad0697c3607ef3c05572ec3b894dfc0/src/crowbar)
