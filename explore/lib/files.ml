@@ -24,7 +24,7 @@ let to_html ~path = Filename.chop_extension path ^ ".html"
 let read_file filename =
   let file = In_channel.create filename in
   Exn.protect
-    ~f:(fun () -> String.concat ~sep:"\n" (In_channel.input_lines file))
+    ~f:(fun () -> In_channel.input_all file)
     ~finally:(fun () -> In_channel.close file)
 
 let title_to_dirname s =
