@@ -1,0 +1,4 @@
+(mdx
+ (files index.md))
+
+(data_only_dirs examples)

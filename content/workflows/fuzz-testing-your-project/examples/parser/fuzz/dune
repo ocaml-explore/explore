@@ -1,0 +1,12 @@
+(executable
+ (name fuzz_config_file)
+ (libraries config_file crowbar))
+
+(alias
+ (name runtest)
+ (deps fuzz_config_file.exe))
+
+(rule
+ (alias fuzz)
+ (action
+  (run ./fuzz_config_file.exe)))
