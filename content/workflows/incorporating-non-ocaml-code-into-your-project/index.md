@@ -22,13 +22,9 @@ resources:
 
 ## Overview
 
----
-
 Sometimes OCaml just can't do what lower level languages can do or you want to use pre-existing code written in C or Rust from OCaml. 
 
 ## Recommended Workflow
-
----
 
 ### OCaml Internals 
 
@@ -115,8 +111,6 @@ Sometimes you might want to do the inverse and access parts on an [OCaml program
 In order for C to find OCaml functions you need to register them as callbacks using `Callback.register`. This [small example](https://github.com/patricoferris/ocaml-c-example) calls a fibonacci function written in OCaml from C. Note the additional C compiler parameters in the Makefile for linking in the standard library and only producing an object OCaml file. 
 
 ## Real World Examples
-
----
 
 [Digestif](https://github.com/mirage/digestif/tree/master/src-c/native) implements many common hashing algorithms both in C and OCaml.
 

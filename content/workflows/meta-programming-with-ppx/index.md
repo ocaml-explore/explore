@@ -19,8 +19,6 @@ resources:
 
 ## Overview
 
----
-
 Meta-programming is programming for programming. You can think of it as a program which works with another program as data. Ppx is the OCaml syntax extension allowing programmers to meta-program directly on the abstract syntax tree (AST) of OCaml code. This means simple tasks like writing comparison functions or hashing functions can be automated through clever inference on types. 
 
 ### The Abstract Syntax Tree 
@@ -86,8 +84,6 @@ If the tree structure does not reveal itself from the code, this greatly simplif
 Manipulating the tree structure is much simpler than working with text. A ppx works on these structures allowing you to access the information and perform transformations from one tree to another. 
 
 ## Recommended Workflow
-
---- 
 
 ### Using PPX libraries
 
@@ -162,8 +158,6 @@ To write your own ppx library you are strongly encourage to use `ppxlib` (linked
 The best way to learn is by example. Let's continue with some of Jane Street's ppxes and look at how `ppx_compare` works. 
 
 ## Real World Examples
-
----
 
 [ocaml-ppx/ppx_deriving_yojson](https://github.com/ocaml-ppx/ppx_deriving_yojson)
 

@@ -6,8 +6,6 @@ date: 2020-07-27 09:35:49
 
 [https://www.youtube.com/watch?v=oyeKLAYPmQQ](https://www.youtube.com/watch?v=oyeKLAYPmQQ)
 
----
-
 ## Summary in a Q&A Format
 
 **User Concerns:**
@@ -78,8 +76,6 @@ date: 2020-07-27 09:35:49
     - Long term support for *important* versions of the OCaml compiler (for example those used by Bucklescript)
     - Precompiled tools to make getting started as quick as possible (similar to `go get`).
     - The *monorepo* approach provides better visibility into how changes in a single platform tools impacts others.
-
----
 
 **Technical Details** 
 

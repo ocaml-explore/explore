@@ -12,15 +12,11 @@ tools:
 
 ## Overview
 
----
-
 Getting started with a project should be simple - ideally a single command would initialise some kind of wizard to guide you through setting a project up. Much like the `npm init` command which takes answers to populate the `package.json` file. 
 
 This is important because it is very easy to make mistakes in setting up a repository for a new project and the ideal workflow for a library author would to start writing code almost immediately.
 
 ## Recommended Workflow
-
----
 
 ### Opam and Dune
 
@@ -48,8 +44,6 @@ Using the `dune-project` file to [generate your opam file](https://dune.readthed
 Note that sometimes you need an escape-hatch as the specification in `dune-project` for opam files is not as flexible as an opam file - for this you should use the [templates](https://dune.readthedocs.io/en/stable/opam.html#opam-template) as an escape-hatch. 
 
 ## Real World Examples
-
----
 
 Many of the community libraries use dune and opam to build their projects - [cstruct](https://github.com/mirage/ocaml-cstruct) and [alcotest](https://github.com/mirage/alcotest) for example. 
 

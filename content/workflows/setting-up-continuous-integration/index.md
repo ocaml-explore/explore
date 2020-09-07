@@ -14,8 +14,6 @@ tools:
 
 ## Overview
 
----
-
 Continuous integration (CI) has become a basic necessity for managing projects, especially when there are multiple contributors. The idea is that for code to make it into production (or to get a "seal of approval" to move to the main branch) - code should pass a series of quality tests. 
 
 These tests may include: 
@@ -27,8 +25,6 @@ These tests may include:
 The point of CI is to automate most of this away. Wherever your project lives it should constantly be checking that new code meets the quality tests before allowing that code to make into "production". 
 
 ## Recommended Workflow
-
----
 
 Github offers a feature called Github Actions. It works on the principle of *workflows -* different things you might want to do on different "actions" within your Github repository. This can include releasing code, testing code etc. Here we're focusing on testing. 
 
@@ -68,8 +64,6 @@ jobs:
 
 ## Alternatives
 
----
-
 TravisCI is a continuous integration tool that is very flexible and also robust. There are two main ways you can use TravisCI.
 
 `ocaml-ci-scripts` is a collection of useful scripts for building a complex CI testing platform. One of the main goals of CI is to make sure your code runs well *everywhere.* This implies forming a matrix of operating systems and OCaml compiler versions to make sure your code runs properly. 
@@ -79,7 +73,5 @@ There are quite few scripts such as `.travis.opam.sh` ,  `.travis.docker.sh` and
 Each is built around environment variables in order to execute different jobs with say different linux distributions, ocaml versions etc. 
 
 ## Real World Examples
-
----
 
 [avsm/ocaml-yaml](https://github.com/avsm/ocaml-yaml/blob/master/.github/workflows/test.yml)

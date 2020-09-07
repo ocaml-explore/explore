@@ -13,13 +13,9 @@ tools:
 
 ## Overview
 
----
-
 Fuzz testing (or fuzzing) is a way to find test cases that break your code programmatically using instrumented binaries. This can extremely useful for complex parsers or protocols which are expected to cope with a large variety of inputs.
 
 ## Recommended Workflow
-
----
 
 To get started with fuzzing your project you will need to do the following: 
 
@@ -32,5 +28,3 @@ This Github repository and the accompanying article found in the resource tag ar
 [NathanReb/ocaml-afl-examples](https://github.com/NathanReb/ocaml-afl-examples)
 
 ## Real World Examples
-
----

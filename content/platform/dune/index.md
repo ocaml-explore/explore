@@ -7,15 +7,11 @@ license: MIT
 ---
 ## Overview
 
----
-
 Dune is a build tool that has been widely adopted in the OCaml world - it plays nicely with lots of other tools like opam and mdx. The documentation is very thorough - but do checkout the *key concepts* to get a high-level overview of how dune works and how to get started building your OCaml project. 
 
 [Welcome to dune's documentation! - dune documentation](https://dune.readthedocs.io/en/stable/)
 
 ## Key Concepts
-
----
 
 ### Compositional Builds
 
@@ -67,8 +63,6 @@ The following file structure is taken from `ocaml-yaml` and has been trimmed to 
 ```
 
 ## In the Wild
-
----
 
 Dune is used in a lot of OCaml projects thanks to its flexibility, integration with opam and lightweightness. Below are just a few projects using dune: 
 

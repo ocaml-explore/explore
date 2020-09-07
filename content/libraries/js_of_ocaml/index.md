@@ -7,8 +7,6 @@ repo: https://github.com/ocsigen/js_of_ocaml
 
 ## Overview
 
----
-
 A compiler that takes OCaml byte-code and compiles it to Javascript - it also offers handy functions for interacting with browser objects like the DOM. 
 
 [ocsigen/js_of_ocaml](https://github.com/ocsigen/js_of_ocaml)

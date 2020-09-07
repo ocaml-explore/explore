@@ -8,13 +8,9 @@ repo: https://github.com/ocaml-community/utop
 
 ## Overview
 
----
-
 [Utop](https://github.com/ocaml-community/utop) is the *universal top-level* for OCaml. It is essentially a *read-evaluate-print* loop which makes it great for prototyping functions, learning OCaml and checking type signatures. It can be installed using opam with `opam install utop`. 
 
 ## Key Concepts
-
----
 
 Utop is much more than just a learning tool - it can help any OCaml programmer discover type signatures and prototype new ideas quickly without having to build a full program. Some of the most useful directives are: 
 

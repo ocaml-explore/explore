@@ -15,13 +15,9 @@ users:
 
 ## Overview
 
----
-
 Compared to other more popular languages, OCaml has a lot less instructional tutorials and helpful stack-overflow questions. For any user, this can be incredibly frustrating. Finding answers can be different depending on what user you are, but some places offer a good starting point for nearly everyone.
 
 ## Recommended Workflow
-
----
 
 ### Discuss OCaml
 
@@ -34,8 +30,6 @@ OCaml has a very active and supportive discussion forum which is most people's f
 Another great place to look for answers for a specific library or executable is in the Github issues of that library. Often bugs are reported which might just be because of a confusing API and the maintainers of the code clear it up and close the issue - use this to your advantage and learn from them. This is also a good sanity-check before you disappear down the rabbit hole to debug something!
 
 ## Alternatives
-
----
 
 ### Caml Mailing List & Discord
 

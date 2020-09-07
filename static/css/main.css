@@ -158,6 +158,11 @@ img {
   background: white;
 }
 
+main h1, main h2 {
+  border-bottom: 1px solid gray;
+  padding-bottom: .67em;
+}
+
 /* === COMPONENTS === */
 
 .ordered-list {
