@@ -18,5 +18,5 @@ val title_to_dirname : string -> string
 val output_html : path:string -> doc:Tyxml.Html.doc -> unit
 (** [output_html path doc] will print the HTML document [doc] to [path] *)
 
-val output_file : string -> string -> unit
-(** [output_file path content] will dump a [content] to a given [path] *)
+val output_file : content:string -> path:string -> unit
+(** [output_file content path] will dump a [content] to a given [path] *)

@@ -1,16 +1,16 @@
 ---
-authors:
-  - Patrick Ferris
 title: Adding Unit Tests to your Project
-date: 2020-08-05 09:10:42
+date: 2020-09-07 11:52:40 +00:00
+authors:
+- Patrick Ferris
 description: Write tests to check the functionality of your code using Alcotest
-users:
-  - Library Authors
-  - Application Developers
 tools:
-  - Dune
+- Dune
+users:
+- Library Authors
+- Application Developers
 libraries:
-  - Alcotest
+- Alcotest 
 ---
 ## Overview
 
@@ -180,3 +180,4 @@ These tests tend to be written inline with your source OCaml code using `ppx_inl
 ## Real World Examples
 
 [Yojson](https://github.com/ocaml-community/yojson/tree/master/test) is good example of using Alcotest to unit test the different aspects of the library. [Dune-release](https://github.com/ocamllabs/dune-release/tree/master/tests/bin), part of the OCaml Platform, uses Mdx to ensure the CLI tool is properly tested.
+

@@ -29,9 +29,7 @@ There tend to be three main types of builds that will suffice for most projects:
 
 ### Typical Project Layout
 
-The following file structure is taken from `ocaml-yaml` and has been trimmed to show only the relevant dune-related parts and still be readable. 
-
-[avsm/ocaml-yaml](https://github.com/avsm/ocaml-yaml)
+The following file structure is taken from [`ocaml-yaml`](https://github.com/avsm/ocaml-yaml) and has been trimmed to show only the relevant dune-related parts and still be readable. 
 
 ```
 .
