@@ -1,4 +1,4 @@
-name: Test Site
+name: Test And Preview Site
 on: [pull_request]
 jobs:
   build:
@@ -22,3 +22,15 @@ jobs:
       run: opam exec -- dune runtest
     - name: Build Site 🔨
       run: opam exec -- explore build 
+    - name: Move static content 
+      run: cp -r ./static/* ./content
+    - name: Deploy Preview with Netlify
+      uses: nwtgck/actions-netlify@v1.1
+      with:
+        publish-dir: './content'
+        alias: deploy-preview-${{ github.event.number }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        deploy-message: "Deploying Preview with GitHub Actions"
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
