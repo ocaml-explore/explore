@@ -8,13 +8,9 @@ license: ISC
 
 ## Overview
 
----
-
 [Mdx](https://github.com/realworldocaml/mdx) is a tool for executing code blocks inside of markdown. It can be used to improve documentation workflows and write tests. Documentation struggles from becoming out-dated fairly quickly or just being incorrect given it is usually typed by a programmer into something like markdown.  
 
 ## Key Concepts
-
----
 
 ### Dune Integration
 
@@ -25,7 +21,5 @@ license: ISC
 - `preludes` - files to run before anything else, useful for automatically opening packages like `Core`
 
 ## In the Wild
-
----
 
 The excellent book for learning OCaml, [Real World OCaml,](https://github.com/realworldocaml/book) uses mdx extensively to automate their book and ensure the code snippets included within it are correct. Code is written in an *examples* directory and mdx keeps the examples and embedded code blocks in the content of the book synchronised.

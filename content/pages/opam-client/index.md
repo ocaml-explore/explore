@@ -6,8 +6,6 @@ date: 2020-08-03 13:20:39
 
 ## Overview
 
----
-
 opam is an OCaml Package Manager. It handles the sharing of libraries and code, dependency management and installation. In addition to this it also handles compiler installation. Opam handles what the following do for other languages: 
 
 - Rust: `rustup` & `cargo`
@@ -19,8 +17,6 @@ opam is an OCaml Package Manager. It handles the sharing of libraries and code, 
 A simplfied diagram of some of the key features in opam
 
 ## Key Concepts
-
----
 
 ### Switches
 
@@ -69,4 +65,4 @@ Show allows you to see the metadata associated with a library. You can even prin
 
 Plugins in opam are ways to extend opam's functionality in a more accessible way (anyone can write a plugin!). One of the most used is [depext](https://github.com/ocaml-opam/opam-depext) - you can tell it is a plugin from it's opam file which has `tags: "flags:plugin"`. Depext tries to install external dependencies for you. Other plugins include `opam-user-setup` which can be used to setup common tooling for supported editors like *emacs* or *vim.*
 
-Another plugin is [opam-tools](https://github.com/avsm/opam-tools) which initialises a local development environment (i.e. using a local switch). The goal is that you could clone a repository and run `opam tools` which should do a lot of the manual setup to start developing for you. 
+Another plugin is [opam-tools](https://github.com/avsm/opam-tools) which initialises a local development environment (i.e. using a local switch). The goal is that you could clone a repository and run `opam tools` which should do a lot of the manual setup to start developing for you.

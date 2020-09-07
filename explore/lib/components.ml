@@ -108,7 +108,7 @@ let wrap_body ~toc ~title ~description ~body =
 |}] [@@ocamlformat "disable"]
 
 let make_omd_title_date ~title ~date =
-  Omd.of_string ("# " ^ title ^ "\n*Last Updated: " ^ date ^ "*\n\n---\n")
+  Omd.of_string ("# " ^ title ^ "\n*Last Updated: " ^ date ^ "*\n\n")
 
 let make_link_list lst =
   let to_link (path, title) =

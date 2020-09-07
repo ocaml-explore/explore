@@ -13,15 +13,11 @@ libraries:
 
 ## Overview
 
----
-
 Jupyter notebooks combine an interactive read-evaluate-print-loop (REPL) with markdown text (with support for LATEX) to offer a unique solution for people wanting to teach, explore OCaml or perform more data-centric operations (ML models etc.) 
 
 From a learning point-of-view, students are more concerned with *syntax* and *concepts* rather than tooling (in the beginning). Much like `utop` the REPL format is great for learning, but with **jupyter** you can also write notes, explain algorithms etc. 
 
 ## Recommended Workflow
-
----
 
 ### Locally Running an OCaml Jupyter Notebook
 
@@ -45,8 +41,6 @@ For teachers or presenters you can use the [RISE](https://rise.readthedocs.io/en
 
 ## Alternatives
 
----
-
 ### Using Docker to run a Notebook
 
 Using the link below, a jupyter notebook can be created inside a docker container and connected to a port so users can begin coding fairly quickly. This involves a second level of indirection in installing docker. 
@@ -61,7 +55,5 @@ docker run -it -p 8888:8888 akabe/ocaml-jupyter-datascience -v $PWD:/notebooks a
 [akabe/docker-ocaml-jupyter-datascience](https://github.com/akabe/docker-ocaml-jupyter-datascience)
 
 ## Real World Examples
-
----
 
 [](https://kcsrk.info/ocaml/prolog/jupyter/notebooks/2020/01/19/OCaml-Prolog-Jupyter/)

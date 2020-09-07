@@ -14,15 +14,11 @@ libraries:
 ---
 ## Overview
 
----
-
 Testing is critical to ensuring the longevity of your project. When writing code it is very likely some new implementation will break something you wrote before. Testing provides visibility into this. 
 
 There are lots of ways you can go about testing and a large part of this is dependent on the type of project you are working on - is it a command line tool, a library, a web-application etc. This workflow focuses mainly on writing unit tests for your OCaml code and so will likely be applicable to most applications. 
 
 ## Recommended Workflow
-
----
 
 ### Testing a library with Alcotest
 
@@ -173,8 +169,6 @@ $ main -1
 
 ## Alternatives
 
----
-
 ### QCheck
 
 [QCheck](https://github.com/c-cube/qcheck) is based on Haskell's [QuickCheck](https://hackage.haskell.org/package/QuickCheck) library for property-based testing. It also offers a sub-library that can integrate directly with Alcotest.  
@@ -184,7 +178,5 @@ $ main -1
 These tests tend to be written inline with your source OCaml code using `ppx_inline_test`. To get expect tests you can use `ppx_expect` to write assertions about parts of your program. The [documentation](https://dune.readthedocs.io/en/stable/tests.html) covers all of this in much more detail. 
 
 ## Real World Examples
-
----
 
 [Yojson](https://github.com/ocaml-community/yojson/tree/master/test) is good example of using Alcotest to unit test the different aspects of the library. [Dune-release](https://github.com/ocamllabs/dune-release/tree/master/tests/bin), part of the OCaml Platform, uses Mdx to ensure the CLI tool is properly tested.

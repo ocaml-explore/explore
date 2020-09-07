@@ -26,8 +26,6 @@ resources:
 
 ## Overview
 
----
-
 For profiling programs there tend to be two main properties that most developers care about performance and memory usage.  
 
 OCaml is a garbage-collected programming language, but there are ways to alleviate the the strain on the GC. There is also good support for profiling the performance of your program to find the sections that are consuming the most execution time. 
@@ -61,7 +59,6 @@ Here, we compiled an alias (`compare`) to the less than or equal operation outpu
 Hopefully these examples provide insight into how an OCaml program runs. This is very important for understanding what the tools we'll cover later, like perf, tell us. For more information, the [OCaml Manual](https://caml.inria.fr/pub/docs/manual-ocaml/) is probably the best place to start.
 
 ## Performance 
---- 
 
 Performance is a complex beast with many differing objectives when it comes to analysing code for "performance". Not only that but lots of seemingly unrelated factors impact how code performs: garbage collection, the OS scheduler and CPU oddities to name a few. Sometimes the variations caused by these factors are neglible -- macro-benchmarking -- and sometimes they're not and clever analysis is needed to smooth them out, micro-benchmarking. 
 
@@ -337,8 +334,6 @@ let alloc n =
 Running `alloc 10` and collecting GC statistics with `Gc.print_stat ()` shows that there were no minor or major heap collections. Changing that to `alloc 1000` gives `23` minor heap and `5` major heap collections. There is a brilliant chapter in [Real World OCaml](https://dev.realworldocaml.org/garbage-collector.html) that goes into garbage collection in much more detail.
 
 ## Alternatives
-
----
 
 ### Performance with `gprof`
 

@@ -16,13 +16,9 @@ libraries:
 
 ## Overview
 
----
-
 Code coverage can be a good indicator into how well your code does what it is supposed to do. Of course, the goal is not to blindly chase 100% coverage, but to use the output to help you write correct and maintainable code. 
 
 ## Recommended Workflow
-
----
 
 Setting up code coverage requires changes to your `dune` file for the libraries you want to cover. You will also need to update your opam file to depend on `ppx_bisect`. The opam file will add `bisec_ppx` as a dependency: 
 
@@ -56,7 +52,5 @@ bisect-ppx-report html
 ```
 
 ## Real World Examples
-
----
 
 [arenadotio/ocaml-mssql](https://github.com/arenadotio/ocaml-mssql)

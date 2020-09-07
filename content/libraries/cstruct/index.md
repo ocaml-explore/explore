@@ -6,8 +6,6 @@ repo: https://github.com/mirage/ocaml-cstruct
 ---
 ## Overview
 
----
-
 Cstruct is a library for interacting with structs in the C programming language. 
 
 [mirage/ocaml-cstruct](https://github.com/mirage/ocaml-cstruct)

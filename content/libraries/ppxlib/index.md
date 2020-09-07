@@ -7,8 +7,6 @@ repo: https://github.com/ocaml-ppx/ppxlib
 
 ## Overview
 
----
-
 The recommended tool for writing your PPX libraries 
 
 [ocaml-ppx/ppxlib](https://github.com/ocaml-ppx/ppxlib)

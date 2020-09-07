@@ -14,16 +14,12 @@ tools:
 
 ## Overview
 
----
-
 Having a unified approach to formatting is important for multiple reasons: 
 
 - Good for beginners: using tooling to help properly format, code-complete, syntax highlighting etc. removes this burden (somewhat) for new people lowering the barrier of entry for contributions.
 - Easier to read: the code tends to be easier to read (or will be once the standard formatting is learnt) which helps onboard new people to a codebase and also discover bugs.
 
 ## Recommended Workflow
-
----
 
 ### OCamlformat
 
@@ -51,8 +47,6 @@ set rtp^="$(opam config var ocp-indent:share)/vim"
 ```
 
 ## Real World Examples
-
----
 
 [mirage/alcotest](https://github.com/mirage/alcotest/blob/master/.ocamlformat)
 

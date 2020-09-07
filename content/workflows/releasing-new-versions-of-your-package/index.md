@@ -13,16 +13,8 @@ tools:
 
 ## Overview
 
----
-
 ## Recommended Workflow
-
----
 
 ## Alternatives
 
----
-
 ## Real World Examples
-
----
