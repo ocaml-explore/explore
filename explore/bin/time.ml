@@ -23,6 +23,9 @@ let run collection path =
       | Error _ ->
           Fmt.(string stdout "Failed to update workflow time");
           -1)
+  | _, None ->
+      Fmt.(string stdout (Utils.get_time ()));
+      0
   | _ ->
       Fmt.(
         string stdout
