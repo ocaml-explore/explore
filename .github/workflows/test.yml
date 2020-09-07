@@ -11,7 +11,7 @@ jobs:
         ocaml-version: "4.10.0"
     - run: opam pin add explore.dev -n .
     - name: External Dependencies
-      run: opam depext -yt explore
+      run: opam depext -y explore
     - name: Dependencies
       run: opam install -t . --deps-only
     - name: Build
