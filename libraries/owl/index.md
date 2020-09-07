@@ -7,8 +7,6 @@ repo: https://github.com/owlbarn/owl
 
 ## Overview
 
----
-
 OWL is a scientific computing library for OCaml - the Real World OCaml styled book can be found here: 
 
 [OCaml Scientific Computing](https://ocaml.xyz/book/)

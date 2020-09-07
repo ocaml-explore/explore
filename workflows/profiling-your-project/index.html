@@ -212,9 +212,7 @@
     <main id="main"> 
      <h1 id="profiling-your-project">Profiling your Project</h1>
 <p><em>Last Updated: 11, August 2020 at 11:20:12</em></p>
-<hr />
 <h2 id="overview">Overview</h2>
-<hr />
 <p>For profiling programs there tend to be two main properties that most developers care about performance and memory usage.</p>
 <p>OCaml is a garbage-collected programming language, but there are ways to alleviate the the strain on the GC. There is also good support for profiling the performance of your program to find the sections that are consuming the most execution time.</p>
 <h3 id="anatomy-of-an-ocaml-program">Anatomy of an OCaml Program</h3>
@@ -238,7 +236,6 @@ L101:
 <p>Here, we compiled an alias (<code>compare</code>) to the less than or equal operation outputing the assembly (using <code>-S</code>) to a file called <code>main.S</code>. After that, a use of <a href="https://www.man7.org/linux/man-pages/man1/grep.1.html">grep</a> to find the relevant assembly for the compare function. From this we can see calls to <code>_caml_lessequal</code> and <code>_caml_c_call</code>. This can be found <a href="https://github.com/ocaml/ocaml/blob/trunk/runtime/compare.c#L340">in the runtime</a>, implementing structural equality giving <code>&lt;=</code> its type <code>'a -&gt; 'a -&gt; bool</code>.</p>
 <p>Hopefully these examples provide insight into how an OCaml program runs. This is very important for understanding what the tools we'll cover later, like perf, tell us. For more information, the <a href="https://caml.inria.fr/pub/docs/manual-ocaml/">OCaml Manual</a> is probably the best place to start.</p>
 <h2 id="performance">Performance</h2>
-<hr />
 <p>Performance is a complex beast with many differing objectives when it comes to analysing code for &quot;performance&quot;. Not only that but lots of seemingly unrelated factors impact how code performs: garbage collection, the OS scheduler and CPU oddities to name a few. Sometimes the variations caused by these factors are neglible -- macro-benchmarking -- and sometimes they're not and clever analysis is needed to smooth them out, micro-benchmarking.</p>
 <p>There are parallels to be drawn between unit tests and micro-benchmarking and end-to-end tests and macro-benchmarking. With micro you likely care about the individual performance or memory profile of functions. These can be greatly impacted by things like OS scheduling. With macro the performance tends to be for longer periods of time and variations caused by externalities are just part of the test.</p>
 <h3 id="macro-benchmaring">Macro-benchmaring</h3>
@@ -441,7 +438,6 @@ prof_spacetime serve -p spacetime-&lt;id&gt;.p
 </code></pre>
 <p>Running <code>alloc 10</code> and collecting GC statistics with <code>Gc.print_stat ()</code> shows that there were no minor or major heap collections. Changing that to <code>alloc 1000</code> gives <code>23</code> minor heap and <code>5</code> major heap collections. There is a brilliant chapter in <a href="https://dev.realworldocaml.org/garbage-collector.html">Real World OCaml</a> that goes into garbage collection in much more detail.</p>
 <h2 id="alternatives">Alternatives</h2>
-<hr />
 <h3>Performance with <code>gprof</code></h3>
 <p><em><strong>Note: gprof is only supported up to version 4.08.0 of the OCaml compiler. Additionally, because of the required linking options with Clang and MacOS you may encounter the following error &quot;<strong>the clang compiler does not support -pg option on versions of OS X 10.9 and later</strong>&quot;</strong></em></p>
 <p><a href="https://sourceware.org/binutils/docs/gprof/">Gprof</a> is the GNU profiler and can be used to track how much time is spent in different parts of your application. Like memory profiling this requires additional instrumentation in your binaries. However, unlike spacetime profiling, it doesn't require a specific switch, just some flags to be set.</p>

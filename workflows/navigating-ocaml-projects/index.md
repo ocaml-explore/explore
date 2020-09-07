@@ -13,12 +13,10 @@ resources:
     description: Craig Ferguson explains a different way of laying out OCaml compilation units to reduce duplication of type information and the tradeoffs associated with it. This is a technique commonly used by Jane Street in their OSS.
 ---
 ## Overview 
-----
 
 Looking at the root of an OCaml project can be intimidating - there can be many files and many directories. There are, however, some common standards and best practices that many OCaml libraries use. This workflow aims to help you navigate most OCaml projects.
 
 ## Structure 
-----
 
 ### Files in the top-level directory
 
@@ -91,6 +89,3 @@ There are many different ways to structure an OCaml project, particularly when y
 
 - `fuzz` and `bench` directories - these hold [fuzz tests](/workflows/fuzz-testing-your-project) and [benchmarks](profiling-your-project) respectively. 
 - `doc` directory or `gh-pages` branch - either one of these may contain the result of producing documentation with the [odoc](/libraries/odoc) tool. The [documentation workflow](/workflows/documenting-your-project) explains how this works. 
-
- 
- 

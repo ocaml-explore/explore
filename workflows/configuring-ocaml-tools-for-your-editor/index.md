@@ -23,13 +23,9 @@ resources:
 
 ## Overview
 
----
-
 Having a helpful development environment can boost productivity and help catch errors early. OCaml has a powerful type system which reduces runtime errors, with a good editor setup you'll be able to catch them before you run `dune build`.
 
 ## Recommended Workflow
-
----
 
 ### Visual Studio Code 
 
@@ -61,8 +57,6 @@ There are a few quality of life improvements you can make when working with OCam
 Now whenever you save a file it will apply the formatting changes for you. 
 
 ## Alternatives
-
----
 
 ### Other VS Code Plugins
 

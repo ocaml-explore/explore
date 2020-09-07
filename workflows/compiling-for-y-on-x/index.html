@@ -199,13 +199,10 @@
     <main id="main"> 
      <h1 id="compiling-for-y-on-x">Compiling for Y on X</h1>
 <p><em>Last Updated: 05, August 2020 at 09:21:13</em></p>
-<hr />
 <h2 id="overview">Overview</h2>
-<hr />
 <p>Cross-compiling in OCaml is still an experimental feature, but there are plans to make it a fully supported one in the future.</p>
 <p>Cross-compiling allows a programmer on, for example, an <em>x86</em> machine to compile OCaml code to run on a <em>RISC-V</em> device. Usually the target architecture is the same as the architecture our machine is running on. This is particularly useful for embedded devices running architectures like <em>ARM-32, ESP-32 or RISC-V</em>.</p>
 <h2 id="recommended-workflow">Recommended Workflow</h2>
-<hr />
 <h3 id="building-for-different-architectures">Building for Different Architectures</h3>
 <p>Dune has built-in support for cross-compilation thanks to toolchains in OCamlfind. To work with cross-compiling you will need the following:</p>
 <ol>
@@ -218,7 +215,6 @@
 <h3 id="testing-on-different-operating-systems">Testing on Different Operating Systems</h3>
 <p>Quite often you will be interested in knowing if your library works on different operating systems like Linux, MacOS and Windows. The easiest way to do this is to setup a Github Actions workflow which tests on all three of theses OSes. For more details on how to do this, check out the <a href="/workflows/setting-up-continuous-integration">continuous integration workflow</a>.</p>
 <h2 id="real-world-examples">Real World Examples</h2>
-<hr />
 <h3 id="example-opam-repositories">Example opam repositories</h3>
 <p><a href="https://github.com/well-typed-lightbulbs">Well-typed lightbulbs</a></p>
 <p><a href="https://github.com/mirage-shakti-iitm">mirage-shakti-iitm</a></p>

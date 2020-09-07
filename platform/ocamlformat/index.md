@@ -8,13 +8,9 @@ license: MIT
 
 ## Overview
 
----
-
 [OCamlFormat](https://github.com/ocaml-ppx/ocamlformat) is a tool for applying formatting decisions to an OCaml project - it supports 
 
 ## Key Concepts
-
----
 
 ### Versioning
 
@@ -31,7 +27,5 @@ The full, tuneable options list can be seen with `ocamlformat --help` but to giv
 - *space-around-records=true*: this is set by default (along with arrays and lists) which formats these values as `{ age = 3 }` rather than `{age=3}` which again helps with legibility.
 
 ## In the Wild
-
----
 
 Lots of large code bases now uses OCamlFormat to make styling one less thing to worry about. Facebook's [Infer](https://github.com/facebook/infer/blob/master/infer/src/.ocamlformat) uses it as well as [Mirage](https://github.com/mirage/mirage/blob/master/.ocamlformat).

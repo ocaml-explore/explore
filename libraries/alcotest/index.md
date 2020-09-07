@@ -7,8 +7,6 @@ repo: https://github.com/mirage/alcotest
 
 ## Key Concepts
 
----
-
 The structure of your tests should look something like: 
 
 ```

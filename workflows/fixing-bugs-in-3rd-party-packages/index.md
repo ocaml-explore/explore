@@ -16,8 +16,6 @@ resources:
 
 ## Overview
 
----
-
 Working with third-party packages means coming across areas for improvement or those that need fixing. Knowing how common codebases are structured and an appreciation for the tools allows you to more easily:
 
 - Fix the bug if you know how.
@@ -35,8 +33,6 @@ There are multiple aspects to unpack in this workflow including:
 Quite a lot of this workflow is made simpler by using the [opam client](/pages/opam-client). 
 
 ## Recommended Workflow
-
----
 
 ### Getting the Source Code
 
@@ -75,4 +71,4 @@ Keeping track of what packages you have pinned and which ones you haven't can be
 
 ### Subsequent Changes & Upgrading
 
-Pinning a package tells opam where the source code is coming from but as you add new bits of code, opam doesn't see these. In order to add those you will have to run `opam upgrade` to get the latest changes of pinned packages. 
+Pinning a package tells opam where the source code is coming from but as you add new bits of code, opam doesn't see these. In order to add those you will have to run `opam upgrade` to get the latest changes of pinned packages.

@@ -7,8 +7,6 @@ repo: https://github.com/dbuenzli/logs
 
 ## Overview
 
----
-
 This is a very powerful, yet difficult to get started with library for doing logging in OCaml. The key idea is that logging should:
 
 1. Have a severity of reporting level (`Debugger`, `Error` ...)

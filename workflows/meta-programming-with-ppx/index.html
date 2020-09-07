@@ -196,9 +196,7 @@
     <main id="main"> 
      <h1 id="meta-programming-with-ppx">Meta-programming with PPX</h1>
 <p><em>Last Updated: 04, August 2020 at 11:22:34</em></p>
-<hr />
 <h2 id="overview">Overview</h2>
-<hr />
 <p>Meta-programming is programming for programming. You can think of it as a program which works with another program as data. Ppx is the OCaml syntax extension allowing programmers to meta-program directly on the abstract syntax tree (AST) of OCaml code. This means simple tasks like writing comparison functions or hashing functions can be automated through clever inference on types.</p>
 <h3 id="the-abstract-syntax-tree">The Abstract Syntax Tree</h3>
 <p>Before diving into using a ppx or writing your own, it is important to understand the OCaml AST. Your program starts its life in OCaml's concrete syntax. This is the predefined set of strings which are given some semantic meaning in the OCaml world like <code>let ... in ...</code>. The first important job of the compiler is to render this as abstract syntax, a simpler internal represenation of your program often structured as a labelled tree.</p>
@@ -252,7 +250,6 @@ val add_one : int -&gt; int = &lt;fun&gt;
 <p><img src="/images/parsetree.png" alt="The OCaml AST for let add_one x = x + 1" /></p>
 <p>Manipulating the tree structure is much simpler than working with text. A ppx works on these structures allowing you to access the information and perform transformations from one tree to another.</p>
 <h2 id="recommended-workflow">Recommended Workflow</h2>
-<hr />
 <h3 id="using-ppx-libraries">Using PPX libraries</h3>
 <p>Dune comes with ppx support which makes it very easy to start using different ppx libraries to meta-program in OCaml. In this example we will define a new type of person and try to use it with the <code>Core.Hashtbl</code> module.</p>
 <p>The Core implementation of a <a href="https://github.com/janestreet/base/blob/master/src/hashtbl_intf.ml#L425">hashtable expects</a> an <code>'a Key.t</code> which should be a first-class module with hash, compare and s-expression functions. This is very common for Jane Street modules so they made ppxes to auto-generate such functions from type signatures.</p>
@@ -306,7 +303,6 @@ include
 <p><a href="https://ppxlib.readthedocs.io/en/latest/">ppxlib's user manual - ppxlib documentation</a></p>
 <p>The best way to learn is by example. Let's continue with some of Jane Street's ppxes and look at how <code>ppx_compare</code> works.</p>
 <h2 id="real-world-examples">Real World Examples</h2>
-<hr />
 <p><a href="https://github.com/ocaml-ppx/ppx_deriving_yojson">ocaml-ppx/ppx_deriving_yojson</a></p>
 <p><a href="https://github.com/ocaml-ppx/ppx_deriving_protobuf">ocaml-ppx/ppx_deriving_protobuf</a></p>
 

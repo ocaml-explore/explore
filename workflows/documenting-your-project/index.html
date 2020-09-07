@@ -198,9 +198,7 @@
     <main id="main"> 
      <h1 id="documenting-your-project">Documenting your Project</h1>
 <p><em>Last Updated: 27, July 2020 at 09:35:49</em></p>
-<hr />
 <h2 id="overview">Overview</h2>
-<hr />
 <p>Documentation is vital for your library to be used by other people, it also helps others to contribute and even reminds you of your design decisions.</p>
 <p>The goal of the  workflow is to make your documentation:</p>
 <ul>
@@ -212,7 +210,6 @@
 </li>
 </ul>
 <h2 id="recommended-workflow">Recommended Workflow</h2>
-<hr />
 <h3 id="writing-documentation-using-odoc">Writing Documentation using Odoc</h3>
 <p>OCaml has a tool, <a href="/libraries/odoc">odoc</a>, for generating documentation from comments in the code that start with a double asterisk <code>(** my nice comment *)</code>.</p>
 <p>The full documentation for the syntax of documentation comments can be found <a href="https://caml.inria.fr/pub/docs/manual-ocaml/ocamldoc.html#s%3Aocamldoc-comments">here</a>. The recommended place for documentation strings are in the interface (<code>.mli</code>) files. Here is a small example for a library which offers a, very limited, selection of functions on numbers.</p>
@@ -244,7 +241,6 @@ dune build @doc
 $ dune-release publish doc # build and push docs to gh-pages
 </code></pre>
 <h2 id="real-world-examples">Real World Examples</h2>
-<hr />
 <p>Many frequently used OCaml libraries take advantage of this easy workflow for publishing documentation as part of the release process for a new version of a package. Good examples are <a href="https://mirage.github.io/irmin/">Irmin</a> and <a href="https://mirage.github.io/ocaml-cohttp/">Cohttp</a>.</p>
 
     </main>

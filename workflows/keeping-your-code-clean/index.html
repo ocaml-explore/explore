@@ -187,9 +187,7 @@
     <main id="main"> 
      <h1 id="keeping-your-code-clean">Keeping your Code Clean</h1>
 <p><em>Last Updated: 27, July 2020 at 09:35:49</em></p>
-<hr />
 <h2 id="overview">Overview</h2>
-<hr />
 <p>Having a unified approach to formatting is important for multiple reasons:</p>
 <ul>
 <li>Good for beginners: using tooling to help properly format, code-complete, syntax highlighting etc. removes this burden (somewhat) for new people lowering the barrier of entry for contributions.
@@ -198,7 +196,6 @@
 </li>
 </ul>
 <h2 id="recommended-workflow">Recommended Workflow</h2>
-<hr />
 <h3 id="ocamlformat">OCamlformat</h3>
 <p>OCamlformat tends to be the tool of choice for enforcing formatting styles in a project. It requires a very simple <code>.ocamlformat</code> file in the root of the project which can specify a few configuration options.</p>
 <p>A bare bones file will contain the version of OCamlformat you want to use:</p>
@@ -217,7 +214,6 @@
 <pre><code>set rtp^=&quot;$(opam config var ocp-indent:share)/vim&quot;
 </code></pre>
 <h2 id="real-world-examples">Real World Examples</h2>
-<hr />
 <p><a href="https://github.com/mirage/alcotest/blob/master/.ocamlformat">mirage/alcotest</a></p>
 <p><a href="https://github.com/ocaml-ppx/ocamlformat/blob/master/.ocp-indent">ocaml-ppx/ocamlformat</a></p>
 

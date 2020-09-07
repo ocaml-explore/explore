@@ -17,8 +17,6 @@ libraries:
 
 ## Overview
 
----
-
 Documentation is vital for your library to be used by other people, it also helps others to contribute and even reminds you of your design decisions. 
 
 The goal of the  workflow is to make your documentation:
@@ -28,8 +26,6 @@ The goal of the  workflow is to make your documentation:
 - Correct - your documentation will likely contain code examples and workflows, these should be checked for correctness in an automated way.
 
 ## Recommended Workflow
-
----
 
 ### Writing Documentation using Odoc 
 
@@ -79,7 +75,5 @@ $ dune-release publish doc # build and push docs to gh-pages
 ```
 
 ## Real World Examples
-
----
 
 Many frequently used OCaml libraries take advantage of this easy workflow for publishing documentation as part of the release process for a new version of a package. Good examples are [Irmin](https://mirage.github.io/irmin/) and [Cohttp](https://mirage.github.io/ocaml-cohttp/).

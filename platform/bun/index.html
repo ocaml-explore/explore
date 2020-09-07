@@ -170,9 +170,7 @@
     <main id="main"> 
      <h1 id="bun">Bun</h1>
 <p><em>Last Updated: 31, July 2020 at 09:38:41</em></p>
-<hr />
 <h2 id="overview">Overview</h2>
-<hr />
 <p><a href="https://github.com/yomimono/ocaml-bun">Bun</a> is a CLI tool for integrating fuzzer-based testing into a continuous integration pipeline. Some of the main problems it solves are:</p>
 <ol>
 <li>Fuzz tests need time to properly work and most CI tools can kill long running processes.
@@ -183,11 +181,9 @@
 </li>
 </ol>
 <h3 id="key-concepts">Key Concepts</h3>
-<hr />
 <p>Bun is all about fuzz testing, so make sure you're <a href="/workflows/fuzz-testing-your-project">up to speed with it</a>.</p>
 <p>As a very brief synopsis, fuzz testing is about instrumenting your code to allow a fuzzer to analyse input and output from functions to cleverly detect edge cases that are more likely to break your code. This is especially useful when implementing complex functions that could take many different inputs like parsers or implementations of protocols.</p>
 <h3 id="in-the-wild">In the Wild</h3>
-<hr />
 <p><a href="https://github.com/mirage/ocaml-cstruct">Cstruct</a> is a library for mapping OCaml values to C-like structs. It uses fuzz-based testing along with the <a href="https://drone.io/">Drone</a> CI tool. The <a href="https://github.com/mirage/ocaml-cstruct/tree/master/fuzz">fuzz</a> directory contains the relevant code.</p>
 
      <h3>Related Workflows</h3>

@@ -8,8 +8,6 @@ Welcome to Explore OCaml! Explore OCaml is a centralised source for workflows in
 
 # Workflows
 
---------------- 
-
 Below are three lists: archetypical users, meet the tools and community libraries. All workflows have one or more users in mind with most using a tool from the OCaml Platform. The community libraries are popular projects which have become standard for certain workflows. 
 
 To get started with workflows, open the user that best describes you and start exploring! 
@@ -34,8 +32,6 @@ To get started with workflows, open the user that best describes you and start e
 
 # The OCaml Platform 🔨
 
----------------- 
-
 The OCaml Platform is a collection of tools that allow programmers to be productive in the OCaml language. It has been an iterative process of refinement as new tools are added and older tools are updated. Different tools accomplish different workflows and are used at different points of a project's life. You can see how the platform progress in [2017](https://www.youtube.com/watch?v=y-1Zrzdd9KM), [2018](https://www.youtube.com/watch?v=oyeKLAYPmQQ) and [2019](https://speakerdeck.com/avsm/workflows-in-the-ocaml-platform). 
 
 There is no requirement to use all of the tools. You can mix and match different combinations to suit the needs of your project and the workflows you want to accomplish.  
@@ -48,8 +44,6 @@ Community libraries are recommendations for additional tools and libraries to he
 
 <!-- ### Getting started on:
 
----
-
 Brief guides on getting started on the three most common operating systems. There are a few *gotchas* to look out for and alternative ways of doing things with explanations as to what is going on. Start with **common** for a quick review of the problem we're trying to solve. 
 
 [Common](Explore%20OCaml%20294d4a6975e84e509cdc53dc6cb1ba3b/Common%20a4216fb9ab5342c792327110a27c802d.md)
@@ -61,8 +55,6 @@ Brief guides on getting started on the three most common operating systems. Ther
 [Windows](Explore%20OCaml%20294d4a6975e84e509cdc53dc6cb1ba3b/Windows%20e56df5482da84558981dfad34b6e591a.md) -->
 
 ## Notes & Misc.
-
----------------- 
 
 Understanding how these tools came to be requires and understanding of how the OCaml Ecosystem has evolved. This includes tools like `ocamlbuild`, `ocamlfind` and `jbuild`. Many sources of documentation and tutorials still reference some of these out-dated tools and some of the modern platform tools directly use them. 
 
