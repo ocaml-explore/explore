@@ -3,3 +3,41 @@
  (preludes prelude.ml))
 
 (data_only_dirs examples)
+
+; Rules from RWO for building workspaced dune projects on runtest
+
+(rule
+ (alias event)
+ (deps
+  (source_tree ./examples/event))
+ (action
+  (run dune build @all @runtest --root ./examples/event)))
+
+(alias
+ (name runtest)
+ (deps
+  (alias event)))
+
+(rule
+ (alias yojson)
+ (deps
+  (source_tree ./examples/yojson))
+ (action
+  (run dune build @all @runtest --root ./examples/yojson)))
+
+(alias
+ (name runtest)
+ (deps
+  (alias yojson)))
+
+(rule
+ (alias ppx)
+ (deps
+  (source_tree ./examples/ppx))
+ (action
+  (run dune build @all @runtest --root ./examples/ppx)))
+
+(alias
+ (name runtest)
+ (deps
+  (alias ppx)))
