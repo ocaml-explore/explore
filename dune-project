@@ -42,6 +42,7 @@
   ppx_jane
   ezjsonm
   js_of_ocaml-ppx
+  js_of_ocaml-lwt
   lwt_ppx
   js_of_ocaml-compiler
   jekyll-format
