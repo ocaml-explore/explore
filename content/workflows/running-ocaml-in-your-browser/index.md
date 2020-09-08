@@ -2,7 +2,7 @@
 authors:
   - Patrick Ferris
 title: Running OCaml in your Browser
-date: 2020-08-05 15:57:05
+date: 2020-09-08 15:00:09
 description: Use js_of_ocaml to run OCaml code in the browser
 topic: 
   coding: 
