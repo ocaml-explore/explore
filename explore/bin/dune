@@ -1,5 +1,6 @@
 (executable
  (name main)
+ (package explore)
  (public_name explore)
  (libraries explore cmdliner ptime omd core httpaf httpaf-lwt-unix fmt
    fmt.tty)

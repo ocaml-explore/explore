@@ -1,0 +1,25 @@
+(library
+ (name syntax)
+ (public_name syntax)
+ (libraries textmate-language markup plist-xml tyxml fmt fmt.tty)
+ (preprocess
+  (pps tyxml-ppx)))
+
+(data_only_dirs syntaxes)
+
+(rule
+ (mode promote)
+ (target plists.ml)
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (echo "let ocaml = {|")
+    (cat %{project_root}/syntax/syntaxes/ocaml.plist)
+    (echo "|}\n\n")
+    (echo "let dune = {|")
+    (cat %{project_root}/syntax/syntaxes/dune.plist)
+    (echo "|}\n\n")
+    (echo "let opam = {|")
+    (cat %{project_root}/syntax/syntaxes/opam.plist)
+    (echo "|}\n\n")))))
