@@ -299,11 +299,40 @@ module User = struct
     to_html_with_workflows_generic workflows info t
 end
 
+type license = [ `MIT | `ISC | `LGPL of float | `BSD of int ] [@@deriving yaml]
+
+type lifecycle = [ `INCUBATE | `ACTIVE | `SUSTAIN | `DEPRECATE ]
+[@@deriving yaml]
+
+let license_from_string s : license =
+  match String.lowercase_ascii s with
+  | "mit" -> `MIT
+  | "isc" -> `ISC
+  | "lgplv2" -> `LGPL 2.0
+  | "lgplv2.1" -> `LGPL 2.1
+  | "bsd2" -> `BSD 2
+  | "bsd3" -> `BSD 3
+  | s ->
+      Fmt.(pf stdout "%a %s" (styled `Red string) "[Decoding license failed]" s);
+      failwith ""
+
+let lifecycle_from_string s : lifecycle =
+  match String.lowercase_ascii s with
+  | "incubate" -> `INCUBATE
+  | "active" -> `ACTIVE
+  | "sustain" -> `SUSTAIN
+  | "deprecate" -> `DEPRECATE
+  | s ->
+      Fmt.(
+        pf stdout "%a %s" (styled `Red string) "[Decoding lifecycle failed]" s);
+      failwith "Error"
+
 module Tool = struct
   type tool = {
     title : string;
     repo : string;
-    license : string;
+    license : license;
+    lifecycle : lifecycle;
     date : string;
     description : string;
   }
@@ -332,8 +361,11 @@ module Tool = struct
       ask "Description of the user" None >>= fun description ->
       ask "Repository of the tool" None >>= fun repo ->
       ask "License of the tool" None >>= fun license ->
+      ask "Lifecyle stage of the tool" None >>= fun lifecycle ->
+      let lifecycle = lifecycle_from_string lifecycle in
+      let license = license_from_string license in
       let date = Utils.get_time () in
-      Ok { title; description; date; repo; license }
+      Ok { title; description; date; repo; license; lifecycle }
     in
     match user_input () with
     | Ok t -> output ~title:t.title ~path:content_path (tool_to_yaml t)

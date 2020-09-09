@@ -3,7 +3,10 @@ title: Dune
 date: 2020-07-27 09:35:49
 repo: https://github.com/ocaml/dune
 description: Dune is a build tool that has been widely adopted in the OCaml world
-license: MIT
+license: 
+  MIT: []
+lifecycle: 
+  ACTIVE: []
 ---
 ## Overview
 

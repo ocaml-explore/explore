@@ -2,7 +2,11 @@
 title: Utop
 date: 2020-07-27 09:35:49
 description: OCaml's Universal Toplevel
-license: 3-Clause BSD
+license: 
+   BSD: 
+    - 3 
+lifecycle: 
+   ACTIVE: []
 repo: https://github.com/ocaml-community/utop
 ---
 

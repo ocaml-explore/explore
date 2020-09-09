@@ -66,11 +66,16 @@ module User : sig
   include Collection with type t := t
 end
 
+type license = [ `MIT | `ISC | `LGPL of float | `BSD of int ]
+
+type lifecycle = [ `INCUBATE | `ACTIVE | `SUSTAIN | `DEPRECATE ]
+
 module Tool : sig
   type tool = {
     title : string;
     repo : string;
-    license : string;
+    license : license;
+    lifecycle : lifecycle;
     date : string;
     description : string;
   }
