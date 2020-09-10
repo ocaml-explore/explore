@@ -171,7 +171,26 @@ module Workflow = struct
     let td =
       Components.make_omd_title_date ~title:t.data.title ~date:t.data.date
     in
-    let omd = td @ Omd.of_string t.body in
+    let tools =
+      match t.data.tools with
+      | Some ts ->
+          let spans =
+            List.map
+              (fun t ->
+                let link = "/platform/" ^ Files.title_to_dirname t in
+                [%html
+                  "<span class='details-tools'><a href=" link ">" [ Html.txt t ]
+                    "</a></span>"])
+              ts
+          in
+          [%html "<div><p>Platform tools: " spans "</p></div>"]
+      | None -> Tyxml.Html.span []
+    in
+    let tools =
+      Format.(fprintf str_formatter "%a\n\n" (Tyxml.Html.pp_elt ()) tools);
+      Format.flush_str_formatter ()
+    in
+    let omd = td @ Omd.of_string (tools ^ t.body) in
     let toc = Toc.(to_html (toc omd)) in
     Components.wrap_body
       ~toc:(Some [ toc ])

@@ -175,10 +175,15 @@ main h1, main h2 {
 }
 
 .details {
-  margin: .3em;
-  padding: .3em;
+  margin: .5em;
+  padding: .5em;
   border: solid thin lightgray;
   border-radius: 2px;
+}
+
+.details-tools {
+  margin: .3em;
+  padding: .3em;
 }
 
 .incubate {

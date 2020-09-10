@@ -8,9 +8,9 @@ users:
   - Library Authors
   - Application Developer
 tools:
-  - Dune
-libraries: 
-  - Ppxlib
+  - ppxlib
+  - dune
+  - omp
 resources: 
   - url: https://tarides.com/blog/2019-05-09-an-introduction-to-ocaml-ppx-ecosystem
     title: An Introduction to OCaml PPX Ecosystem
