@@ -186,6 +186,10 @@ main h1, main h2 {
   padding: .3em;
 }
 
+#edit {
+  margin-top: 3em;
+}
+
 .incubate {
   background-color: #b3eeeb;
 }

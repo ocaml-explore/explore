@@ -218,9 +218,16 @@ type 'a info_getter = {
   body : 'a -> string;
 }
 
+let link typ s =
+  "https://github.com/ocaml-explore/explore/tree/trunk/content/"
+  ^ typ
+  ^ "/"
+  ^ Files.title_to_dirname s
+  ^ "/index.md"
+
 let to_html_with_workflows_generic :
-      'a. Workflow.t list -> 'a info_getter -> 'a -> Tyxml.Html.doc =
- fun related info t ->
+      'a. Workflow.t list -> 'a info_getter -> 'a -> string -> Tyxml.Html.doc =
+ fun related info t link ->
   let path_and_title =
     Core.List.map
       ~f:(fun w ->
@@ -233,17 +240,23 @@ let to_html_with_workflows_generic :
   let td =
     Components.make_omd_title_date ~title:(info.title t) ~date:(info.date t)
   in
+  let edit =
+    [%html
+      "<p id='edit'><span class='details'><a href=" link
+        ">Edit this page on Github</a></span></p>"]
+  in
   let omd = td @ Omd.of_string (info.body t) in
   let toc = Toc.(to_html (toc omd)) in
   let workflows = [%html "<h3>" [ Html.txt "Related Workflows" ] "</h3>"] in
   let content =
     if Core.List.is_empty path_and_title then
-      [ Html.Unsafe.data Omd.(to_html (Toc.transform omd)) ]
+      [ Html.Unsafe.data Omd.(to_html (Toc.transform omd)); edit ]
     else
       [
         Html.Unsafe.data Omd.(to_html (Toc.transform omd));
         workflows;
         workflow_comp;
+        edit;
       ]
   in
   Components.wrap_body
@@ -316,7 +329,8 @@ module User = struct
         date = (fun t -> t.data.date);
       }
     in
-    to_html_with_workflows_generic workflows info t
+    let url = link "users" t.data.title in
+    to_html_with_workflows_generic workflows info t url
 end
 
 type license = [ `MIT | `ISC | `LGPL of float | `BSD of int ] [@@deriving yaml]
@@ -464,23 +478,14 @@ module Tool = struct
         @ Components.make_sectioned_list sections)
 
   let to_html_with_workflows workflows t =
-    let link =
-      "https://github.com/ocaml-explore/explore/tree/trunk/content/platform/"
-      ^ Files.title_to_dirname t.data.title
-      ^ "/index.md"
-    in
     let details =
+      let class_ = fst (lifecycle_to_string_priority t.data.lifecycle) in
       [%html
-        "<div><span class='details'><a href=" link
-          ">Edit on Github</a></span><span class='details'>License: "
+        "<div>Meta-data: <span class='details'>License: "
           [ Html.txt (license_to_string t.data.license) ]
-          "</span><span class='details'>Lifecycle: "
-          [ Html.txt (fst (lifecycle_to_string_priority t.data.lifecycle)) ]
-          "</span></div>"]
-    in
-    let details =
-      Format.(fprintf str_formatter "%a\n" (Html.pp_elt ()) details);
-      Format.flush_str_formatter ()
+          "</span><span class=" [ "details"; class_ ] ">Lifecycle: "
+          [ Html.txt class_ ] "</span></div>"]
+      |> Utils.elt_to_string
     in
     let info : t info_getter =
       {
@@ -491,7 +496,8 @@ module Tool = struct
         date = (fun t -> t.data.date);
       }
     in
-    to_html_with_workflows_generic workflows info t
+    let url = link "platform" t.data.title in
+    to_html_with_workflows_generic workflows info t url
 end
 
 module Library = struct
@@ -562,5 +568,6 @@ module Library = struct
         date = (fun t -> t.data.date);
       }
     in
-    to_html_with_workflows_generic workflows info t
+    let url = link "libraries" t.data.title in
+    to_html_with_workflows_generic workflows info t url
 end
