@@ -273,6 +273,7 @@ module User = struct
       Core.List.map
         ~f:(fun t ->
           ( "/" ^ fst (Core.Filename.split (Files.drop_first_dir ~path:t.path)),
+            [],
             t.data.title,
             t.data.description ))
         ts
@@ -316,6 +317,12 @@ let license_from_string s : license =
       Fmt.(pf stdout "%a %s" (styled `Red string) "[Decoding license failed]" s);
       failwith ""
 
+let license_to_string : license -> string = function
+  | `MIT -> "MIT"
+  | `ISC -> "ISC"
+  | `LGPL f -> "LGPLv" ^ string_of_float f
+  | `BSD i -> string_of_int i ^ " Clause BSD"
+
 let lifecycle_from_string s : lifecycle =
   match String.lowercase_ascii s with
   | "incubate" -> `INCUBATE
@@ -326,6 +333,12 @@ let lifecycle_from_string s : lifecycle =
       Fmt.(
         pf stdout "%a %s" (styled `Red string) "[Decoding lifecycle failed]" s);
       failwith "Error"
+
+let lifecycle_to_string_priority : lifecycle -> string * int = function
+  | `INCUBATE -> ("incubate", 0)
+  | `ACTIVE -> ("active", 1)
+  | `SUSTAIN -> ("sustain", 2)
+  | `DEPRECATE -> ("deprecate", 3)
 
 module Tool = struct
   type tool = {
@@ -379,24 +392,83 @@ module Tool = struct
       workflows
 
   let build_index title description ts =
+    let ts =
+      List.sort
+        (fun a b ->
+          Int.compare
+            (snd (lifecycle_to_string_priority a.data.lifecycle))
+            (snd (lifecycle_to_string_priority b.data.lifecycle)))
+        ts
+    in
     let lst =
       Core.List.map
         ~f:(fun t ->
+          let typ = fst (lifecycle_to_string_priority t.data.lifecycle) in
           ( "/" ^ fst (Core.Filename.split (Files.drop_first_dir ~path:t.path)),
+            [ typ ],
             t.data.title,
-            t.data.description ))
+            "[" ^ license_to_string t.data.license ^ "] " ^ t.data.description
+          ))
         ts
     in
+    let incubate =
+      "New tools that fill a gap in the ecosystem but are not quite ready for \
+       wide-scale release and adoption."
+    in
+    let active =
+      "The work-horse tools that are used daily with strong backwards \
+       compatibility guarentees from the community."
+    in
+    let sustain =
+      "Tools that will not likely see any major feature added but can be used \
+       reliably even if not being actively developed."
+    in
+    let deprecate = "Tools that are gradually being phased out of use." in
+    let p str = [ [%html "<p>" [ Html.txt str ] "</p>"] ] in
+    let sections =
+      [
+        ( [%html
+            "<div><h2>" [ Html.txt "Incubate" ] "</h2>" (p incubate) "</div>"],
+          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "incubate" ]) lst );
+        ( [%html "<div><h2>" [ Html.txt "Active" ] "</h2>" (p active) "</div>"],
+          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "active" ]) lst );
+        ( [%html "<div><h2>" [ Html.txt "Sustain" ] "</h2>" (p sustain) "</div>"],
+          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "sustain" ]) lst );
+        ( [%html
+            "<div><h2>" [ Html.txt "Deprecate" ] "</h2>" (p deprecate) "</div>"],
+          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "deprecate" ]) lst );
+      ]
+    in
     Components.wrap_body ~toc:None ~title ~description
-      ~body:[ Components.make_title title; Components.make_index_list lst ]
+      ~body:
+        ([ Components.make_title title ]
+        @ Components.make_sectioned_list sections)
 
   let to_html_with_workflows workflows t =
+    let link =
+      "https://github.com/ocaml-explore/explore/tree/trunk/content/platform/"
+      ^ Files.title_to_dirname t.data.title
+      ^ "/index.md"
+    in
+    let details =
+      [%html
+        "<div><span class='details'><a href=" link
+          ">Edit on Github</a></span><span class='details'>License: "
+          [ Html.txt (license_to_string t.data.license) ]
+          "</span><span class='details'>Lifecycle: "
+          [ Html.txt (fst (lifecycle_to_string_priority t.data.lifecycle)) ]
+          "</span></div>"]
+    in
+    let details =
+      Format.(fprintf str_formatter "%a\n" (Html.pp_elt ()) details);
+      Format.flush_str_formatter ()
+    in
     let info : t info_getter =
       {
         path = (fun t -> t.path);
         title = (fun t -> t.data.title);
         description = (fun t -> t.data.description);
-        body = (fun t -> t.body);
+        body = (fun t -> details ^ t.body);
         date = (fun t -> t.data.date);
       }
     in
@@ -453,6 +525,7 @@ module Library = struct
       Core.List.map
         ~f:(fun t ->
           ( "/" ^ fst (Core.Filename.split (Files.drop_first_dir ~path:t.path)),
+            [],
             t.data.title,
             t.data.description ))
         ts

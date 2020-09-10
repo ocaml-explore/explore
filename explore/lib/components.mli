@@ -13,10 +13,18 @@ val make_link_list : (string * string) list -> [> Html_types.ul ] Tyxml.Html.elt
     unordered list of links to [path] with the text [title]*)
 
 val make_index_list :
-  (string * string * string) list -> [> Html_types.div ] Tyxml.Html.elt
-(** [make_index_list a b lst] will use the [(path, title, description)] of each
-    element to form an a div of links to [path] with the text [title] and p tag
-    of description. *)
+  (string * string list * string * string) list ->
+  [> Html_types.div ] Tyxml.Html.elt
+(** [make_index_list a b lst] will use the [(path, classes, title, description)]
+    of each element to form an a div of links to [path] with the text [title]
+    and p tag of description. *)
+
+val make_sectioned_list :
+  ([< Html_types.div_content_fun > `Div `PCDATA ] Tyxml.Html.elt
+  * (string * string list * string * string) list)
+  list ->
+  [> Html_types.div ] Tyxml.Html.elt list
+(** Creates a [make_index_list] separate by user-defined sections *)
 
 val make_ordered_index_list :
   (string * string * string) list -> [> Html_types.ol ] Tyxml.Html.elt

@@ -121,17 +121,27 @@ let make_link_list lst =
 |}]
 
 let make_index_list lst =
-  let to_elt (path, title, description) =
+  let to_elt (path, classes, title, description) =
     [%html
-      "<a class='index-a' href=" path
-        "><div class='index-div'><h3 style='margin-top: revert'>"
-        [ Html.txt title ] "</h3><p>" [ Html.txt description ] "</p></div></a>"]
+      "<a class='index-a' href=" path "><div class='" ("index-div" :: classes)
+        "'><h3 style='margin-top: revert'>" [ Html.txt title ] "</h3><p>"
+        [ Html.txt description ] "</p></div></a>"]
   in
   [%html {|
     <div>
       |} (List.map ~f:to_elt lst) {|
     </div>
   |}]
+
+let make_sectioned_list lst =
+  let section (d, lst) =
+    [%html {|
+  <div> |} [ d ] {|
+    |} [ make_index_list lst ] {|
+  </div>
+|}]
+  in
+  List.map ~f:section lst
 
 let make_ordered_index_list lst =
   let to_elt (path, title, description) =
