@@ -30,10 +30,10 @@ let read_file filename =
 let title_to_dirname s =
   Core.(String.lowercase s |> String.substr_replace_all ~pattern:" " ~with_:"-")
 
-let output_file str filename =
-  let outc = Out_channel.create filename in
+let output_file ~content ~path =
+  let outc = Out_channel.create path in
   Exn.protect
-    ~f:(fun () -> Out_channel.fprintf outc "%s\n" str)
+    ~f:(fun () -> Out_channel.fprintf outc "%s\n" content)
     ~finally:(fun () -> Out_channel.close outc)
 
 let output_html ~path ~doc =

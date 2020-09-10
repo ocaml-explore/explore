@@ -1,6 +1,6 @@
 open Cmdliner
 
-let cmds = [ Build.cmd; Serve.cmd; New.cmd; Lint.cmd ]
+let cmds = [ Build.cmd; Serve.cmd; New.cmd; Lint.cmd; Time.cmd ]
 
 let setup_std_outputs : unit = Fmt_tty.setup_std_outputs ()
 

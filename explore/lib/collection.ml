@@ -66,7 +66,9 @@ let output ~path ~title yaml =
     Format.flush_str_formatter ()
   in
   Unix.mkdir (path ^ dirname) 0o777;
-  Files.output_file ("---\n" ^ yaml ^ "\n---\n") (path ^ dirname ^ "/index.md")
+  Files.output_file
+    ~content:("---\n" ^ yaml ^ "\n---\n")
+    ~path:(path ^ dirname ^ "/index.md")
 
 module Workflow = struct
   type resource = { title : string; description : string; url : string }
