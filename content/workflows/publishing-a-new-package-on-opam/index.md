@@ -12,6 +12,7 @@ users:
   - Application Developer
 tools:
   - Dune-release
+  - opam-publish
   - Dune
 ---
 

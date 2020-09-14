@@ -548,10 +548,14 @@ module Tool = struct
   let to_html_with_workflows workflows t =
     let details =
       let class_ = fst (lifecycle_to_string_priority t.data.lifecycle) in
+      let repo =
+        [%html
+          "<span class='details'><a href=" t.data.repo ">Repository</a></span>"]
+      in
       [%html
         "<div>Meta-data: <span class='details'>License: "
           [ Html.txt (license_to_string t.data.license) ]
-          "</span><span class=" [ "details"; class_ ] ">Lifecycle: "
+          "</span>" [ repo ] "<span class=" [ "details"; class_ ] ">Lifecycle: "
           [ Html.txt class_ ] "</span></div>"]
       |> Utils.elt_to_string
     in
