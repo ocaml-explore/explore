@@ -12,11 +12,10 @@ let time_span days =
   | Some t -> t
   | None -> failwith "Number of days incorrect"
 
-let run fail span =
+let run fail all span =
+  let dir = if all then "content" else "content/workflows" in
   let md_files =
-    List.filter
-      (fun f -> Filename.extension f = ".md")
-      (Files.all_files "content")
+    List.filter (fun f -> Filename.extension f = ".md") (Files.all_files dir)
   in
   let pp_good path =
     Fmt.(pf stdout "[%a] %s\n" (styled `Green string)) "Up to date" path
@@ -66,6 +65,14 @@ let fail =
   in
   Arg.(value & flag & info ~doc ~docv [ "f"; "fail" ])
 
+let all =
+  let docv = "ALL" in
+  let doc =
+    "Without this flag set, outdated will only check the workflows directory \
+     seeing as these are the most important to keep up to date"
+  in
+  Arg.(value & flag & info ~doc ~docv [ "a"; "all" ])
+
 let info =
   let doc =
     "Check all files to see which are outdated based on their last update \
@@ -73,4 +80,4 @@ let info =
   in
   Term.info ~doc "outdated"
 
-let cmd = (Term.(const run $ fail $ span), info)
+let cmd = (Term.(const run $ fail $ all $ span), info)
