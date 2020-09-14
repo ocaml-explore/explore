@@ -18,10 +18,12 @@ jobs:
       run: opam exec -- dune build 
     - name: Install
       run: opam exec -- dune install 
-    - name: Run tests 
+    - name: Run tests 🧪
       run: opam exec -- dune runtest
     - name: Build Site 🔨
       run: opam exec -- explore build 
+    - name: Check for outdated 🕰
+      run: opam exec -- explore outdated -f 
     - name: Move static content 
       run: cp -r ./static/* ./content
     - name: Deploy Preview with Netlify
