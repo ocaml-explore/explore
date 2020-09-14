@@ -74,11 +74,40 @@ module Workflow = struct
   type resource = { title : string; description : string; url : string }
   [@@deriving yaml]
 
+  type topic =
+    | Starter of bool [@name "starter"]
+    | Environment of bool [@name "environment"]
+    | Coding of bool [@name "coding"]
+    | Testing of bool [@name "testing"]
+    | Publishing of bool [@name "publishing"]
+    | Misc of bool [@name "misc"]
+  [@@deriving yaml]
+
+  let compare a b =
+    let priority = function
+      | Starter _ -> 0
+      | Environment _ -> 1
+      | Coding _ -> 2
+      | Testing _ -> 3
+      | Publishing _ -> 4
+      | Misc _ -> 5
+    in
+    Int.compare (priority a) (priority b)
+
+  let topic_from_string general = function
+    | "starter" -> Starter general
+    | "env" | "environment" -> Environment general
+    | "coding" -> Coding general
+    | "testing" -> Testing general
+    | "publishing" -> Publishing general
+    | _ -> Misc general
+
   type workflow = {
     title : string;
     date : string;
     authors : string list;
     description : string;
+    topic : topic option;
     tools : string list option;
     users : string list option;
     libraries : string list option;
@@ -108,6 +137,9 @@ module Workflow = struct
       ask "Title of the workflow" None >>= fun title ->
       ask "Description of the workflow" None >>= fun description ->
       ask "Author of the workflow" None >>= fun author ->
+      ask "Topic of the workflow" (Some "misc") >>= fun topic ->
+      ask "Does the workflow generalise well (true/false)?" (Some "false")
+      >>= fun general ->
       ask "Platform tools used by the workflow e.g. dune, dune-release"
         (Some "")
       >>= fun tools ->
@@ -118,6 +150,7 @@ module Workflow = struct
       >>= fun users ->
       let date = Utils.get_time () in
       let tools = split_drop tools in
+      let topic = topic_from_string (bool_of_string general) topic in
       let libraries = split_drop libraries in
       let users = split_drop users in
       Ok
@@ -127,6 +160,7 @@ module Workflow = struct
           description;
           authors = [ author ];
           tools;
+          topic = Some topic;
           libraries;
           users;
           resources = None;
@@ -228,15 +262,52 @@ let link typ s =
 let to_html_with_workflows_generic :
       'a. Workflow.t list -> 'a info_getter -> 'a -> string -> Tyxml.Html.doc =
  fun related info t link ->
-  let path_and_title =
+  let lst =
     Core.List.map
       ~f:(fun w ->
         ( "/" ^ fst (Core.Filename.split (Files.drop_first_dir ~path:w.path)),
+          w.data.topic,
           w.data.title,
           w.data.description ))
       related
   in
-  let workflow_comp = Components.make_ordered_index_list path_and_title in
+  let topic = function None -> Workflow.Misc true | Some s -> s in
+  let sections =
+    [
+      ( [%html "<div><h3>" [ Html.txt "Starter" ] "</h3></div>"],
+        Core.List.filter
+          ~f:(fun (_, t, _, _) -> 0 = Workflow.compare (Starter true) (topic t))
+          lst );
+      ( [%html "<div><h3>" [ Html.txt "Environment" ] "</h3></div>"],
+        Core.List.filter
+          ~f:(fun (_, t, _, _) ->
+            0 = Workflow.compare (Environment true) (topic t))
+          lst );
+      ( [%html "<div><h3>" [ Html.txt "Coding" ] "</h3></div>"],
+        Core.List.filter
+          ~f:(fun (_, t, _, _) -> 0 = Workflow.compare (Coding true) (topic t))
+          lst );
+      ( [%html "<div><h3>" [ Html.txt "Testing" ] "</h3></div>"],
+        Core.List.filter
+          ~f:(fun (_, t, _, _) -> 0 = Workflow.compare (Testing true) (topic t))
+          lst );
+      ( [%html "<div><h3>" [ Html.txt "Publishing" ] "</h3></div>"],
+        Core.List.filter
+          ~f:(fun (_, t, _, _) ->
+            0 = Workflow.compare (Publishing true) (topic t))
+          lst );
+      ( [%html "<div><h3>" [ Html.txt "Misc" ] "</h3></div>"],
+        Core.List.filter
+          ~f:(fun (_, t, _, _) -> 0 = Workflow.compare (Misc true) (topic t))
+          lst );
+    ]
+  in
+  let sections =
+    List.map
+      (fun (s, lst) -> (s, List.map (fun (a, _, b, c) -> (a, b, c)) lst))
+      sections
+  in
+  let workflow_comp = Components.make_sectioned_ordered_list sections in
   let td =
     Components.make_omd_title_date ~title:(info.title t) ~date:(info.date t)
   in
@@ -247,17 +318,14 @@ let to_html_with_workflows_generic :
   in
   let omd = td @ Omd.of_string (info.body t) in
   let toc = Toc.(to_html (toc omd)) in
-  let workflows = [%html "<h3>" [ Html.txt "Related Workflows" ] "</h3>"] in
+  let workflows = [%html "<h2>" [ Html.txt "Related Workflows" ] "</h2>"] in
   let content =
-    if Core.List.is_empty path_and_title then
+    if Core.List.is_empty sections then
       [ Html.Unsafe.data Omd.(to_html (Toc.transform omd)); edit ]
     else
-      [
-        Html.Unsafe.data Omd.(to_html (Toc.transform omd));
-        workflows;
-        workflow_comp;
-        edit;
-      ]
+      [ Html.Unsafe.data Omd.(to_html (Toc.transform omd)); workflows ]
+      @ workflow_comp
+      @ [ edit ]
   in
   Components.wrap_body
     ~toc:(Some [ toc ])

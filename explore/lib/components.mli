@@ -32,6 +32,13 @@ val make_ordered_index_list :
     each element to form an ordered list of links to [path] with the text
     [title] and a description. *)
 
+val make_sectioned_ordered_list :
+  ([< Html_types.div_content_fun > `Ol `PCDATA ] Tyxml.Html.elt
+  * (string * string * string) list)
+  list ->
+  [> `Div | `Span ] Tyxml.Html.elt list
+(** Creates a [make_order_index_list] separate by user-defined sections *)
+
 val make_omd_title_date : title:string -> date:string -> Omd.doc
 (** [make_omd_title_date title date] produces a heading 1 and italicized
     paragraph for the title and date respectively *)

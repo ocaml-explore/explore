@@ -4,6 +4,9 @@ authors:
 title: Finding Answers to your Questions
 date: 2020-07-27 09:35:49
 description: Find answers, whether you are just starting out, have complicated theoretical questions or want to know more about building OCaml projects
+topic: 
+  starter: 
+    - true
 users:
   - Beginner
   - Teacher

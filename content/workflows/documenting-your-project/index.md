@@ -7,6 +7,9 @@ description: Write maintainable and useful documentation for your library
 users:
   - Library Authors
   - Application Developers
+topic: 
+  publishing: 
+    - true
 tools:
   - Mdx
   - Dune-release

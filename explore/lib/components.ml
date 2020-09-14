@@ -151,10 +151,29 @@ let make_ordered_index_list lst =
   in
   [%html
     {|
-      <ol>
-        |} (List.map ~f:to_elt lst) {|
-      </ol>
-    |}]
+        <ol>
+          |}
+      (List.map ~f:to_elt lst)
+      {|
+        </ol>
+      |}]
+
+let make_sectioned_ordered_list lst =
+  let section (d, lst) =
+    if List.is_empty lst then [%html "<span></span>"]
+    else
+      [%html
+        {|
+    <div> |}
+          [ d ]
+          {|
+      |}
+          [ make_ordered_index_list lst ]
+          {|
+    </div>
+  |}]
+  in
+  List.map ~f:section lst
 
 let emit_page filename html =
   let outc = Out_channel.create filename in

@@ -7,6 +7,9 @@ description: Learn how to navigate and read OCaml projects to help you use and
   understand other projects
 tools:
   - Utop
+topic: 
+  starter: 
+    - true
 resources:
   - url: https://www.craigfe.io/posts/the-intf-trick
     title: The _intf trick

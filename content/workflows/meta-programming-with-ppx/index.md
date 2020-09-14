@@ -7,6 +7,9 @@ description: Automate code-generation with meta-programming
 users:
   - Library Authors
   - Application Developer
+topic: 
+  coding: 
+    - true
 tools:
   - ppxlib
   - dune

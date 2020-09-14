@@ -17,11 +17,20 @@ end
 module Workflow : sig
   type resource = { title : string; description : string; url : string }
 
+  type topic =
+    | Starter of bool
+    | Environment of bool
+    | Coding of bool
+    | Testing of bool
+    | Publishing of bool
+    | Misc of bool
+
   type workflow = {
     title : string;
     date : string;
     authors : string list;
     description : string;
+    topic : topic option;
     tools : string list option;
     users : string list option;
     libraries : string list option;

@@ -4,6 +4,9 @@ authors:
 title: Getting Started
 date: 2020-07-27 09:35:49
 description: Write and run OCaml code quickly
+topic: 
+  starter: 
+    - true
 users: 
   - Beginner
   - Teacher
