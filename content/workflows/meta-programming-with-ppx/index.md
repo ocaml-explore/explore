@@ -325,7 +325,7 @@ Again, it is worthwhile thinking how you might go about this in code. For empty 
 
 <!-- $MDX file=examples/ppx_hashtbl/ppx/ppx_hashtbl.ml,part=0 -->
 ```ocaml
-let rec expand ~ctxt expr =
+let expand ~ctxt expr =
   let loc = Expansion_context.Extension.extension_point_loc ctxt in
   match expr with
   | [%expr []] -> [%expr Hashtbl.create 10]

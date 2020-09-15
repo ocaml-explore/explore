@@ -18,7 +18,7 @@ let rec handle_list ~loc = function
 
 [@@@part "0"]
 
-let rec expand ~ctxt expr =
+let expand ~ctxt expr =
   let loc = Expansion_context.Extension.extension_point_loc ctxt in
   match expr with
   | [%expr []] -> [%expr Hashtbl.create 10]
