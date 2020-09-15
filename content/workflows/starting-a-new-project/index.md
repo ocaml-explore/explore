@@ -6,6 +6,9 @@ authors:
 description: Build the scaffolding for your solution to a problem
 tools:
 - Dune
+topic: 
+  starter: 
+    - true
 users:
 - library authors
 libraries: 
