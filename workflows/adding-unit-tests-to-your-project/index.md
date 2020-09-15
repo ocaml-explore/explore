@@ -4,11 +4,14 @@ date: 2020-09-07 11:52:40 +00:00
 authors:
 - Patrick Ferris
 description: Write tests to check the functionality of your code using Alcotest
+topic: 
+  testing: 
+    - true
 tools:
 - Dune
 users:
-- Library Authors
-- Application Developers
+  - Library Authors
+  - Application Developers
 libraries:
 - Alcotest 
 ---
