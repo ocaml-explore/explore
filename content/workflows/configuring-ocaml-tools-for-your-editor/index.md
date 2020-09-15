@@ -9,9 +9,12 @@ users:
   - Teacher
   - Library Authors
   - Application Developers
+topic: 
+  starter: 
+    - true
 tools:
   - Merlin
-  - Visual Studio Code
+  - lsp-server
 resources: 
   - url: https://github.com/ocaml/merlin/wiki/vim-from-scratch
     title: Vim from Scratch

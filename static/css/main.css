@@ -136,7 +136,7 @@ img {
 }
 
 .index-div {
-  padding: 0.8rem;
+  padding: 0rem 0.8rem;
   margin: 0.8rem;
   border: thin solid grey;
   border-radius: 2px;
@@ -158,15 +158,52 @@ img {
   background: white;
 }
 
+main h2, main h3 {
+  margin-top: 3rem;
+}
+
 main h1, main h2 {
-  border-bottom: 1px solid gray;
-  padding-bottom: .67em;
+  /* border-bottom: 1px solid gray; */
+  /* padding-bottom: .22rem; */
+  margin-bottom: 1.5rem
 }
 
 /* === COMPONENTS === */
 
 .ordered-list {
   margin-bottom: .5em;
+}
+
+.details {
+  margin: .5em;
+  padding: .5em;
+  border: solid thin lightgray;
+  border-radius: 2px;
+}
+
+.details-tools {
+  margin: .3em;
+  padding: .3em;
+}
+
+#edit {
+  margin-top: 3em;
+}
+
+.incubate {
+  background-color: #b3eeeb;
+}
+
+.active {
+  background-color: #c2e39e;
+}
+
+.sustain {
+  background-color: #EDCD97;
+}
+
+.deprecate {
+  background-color: #C68677;
 }
 
 /* === TOC === */

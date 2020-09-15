@@ -50,5 +50,5 @@ pin-depends: [
   ["omd.dev" "git+https://github.com/ocaml/omd"]
   ["jekyll-format.dev" "git+https://github.com/patricoferris/jekyll-format#fields-to-yaml"]
   ["bechamel.dev" "git+https://github.com/dinosaure/bechamel#f1b3db0115af3854422697134a1555e3c07a19f5"]
-  ["ppx_deriving_yaml.dev" "git+https://github.com/patricoferris/ppx_deriving_yaml#b7b503099741192a04416a449ac7a81eb6fcf4c4"]
+  ["ppx_deriving_yaml.dev" "git+https://github.com/patricoferris/ppx_deriving_yaml#5b333ff646daa30d8a9fedb2604946d721fe1a07"]
 ]

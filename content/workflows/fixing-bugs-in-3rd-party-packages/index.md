@@ -8,6 +8,9 @@ users:
   - Library Authors
 tools:
   - Dune
+topic: 
+  misc: 
+    - true
 resources: 
   - url: http://www.dra27.uk/blog/platform/2018/08/15/dune-vendoring.html
     title: The Joys of Dune Vendoring 

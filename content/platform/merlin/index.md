@@ -3,14 +3,15 @@ title: Merlin
 date: 2020-08-05 11:49:15 
 description: Brining IDE features to editors like Vim and Emacs
 repo: https://github.com/ocaml/merlin
-license: MIT
+license: 
+  MIT: []
+lifecycle: 
+  ACTIVE: []
 ---
 
 ## Overview
 
-[Merlin](https://github.com/ocaml/merlin) is a tool for providing IDE features for OCaml with support for Vim and Emacs. If you want to set up either of these editors for a modern OCaml editting experience be sure to check out the related workflows section. 
-
-## Key Concepts
+[Merlin](https://github.com/ocaml/merlin) is a tool for providing IDE features for OCaml with support for Vim and Emacs. If you want to set up either of these editors for a modern OCaml editing experience be sure to check out the related workflows section. 
 
 ### Installation 
 

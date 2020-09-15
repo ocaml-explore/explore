@@ -74,11 +74,40 @@ module Workflow = struct
   type resource = { title : string; description : string; url : string }
   [@@deriving yaml]
 
+  type topic =
+    | Starter of bool [@name "starter"]
+    | Environment of bool [@name "environment"]
+    | Coding of bool [@name "coding"]
+    | Testing of bool [@name "testing"]
+    | Publishing of bool [@name "publishing"]
+    | Misc of bool [@name "misc"]
+  [@@deriving yaml]
+
+  let compare a b =
+    let priority = function
+      | Starter _ -> 0
+      | Environment _ -> 1
+      | Coding _ -> 2
+      | Testing _ -> 3
+      | Publishing _ -> 4
+      | Misc _ -> 5
+    in
+    Int.compare (priority a) (priority b)
+
+  let topic_from_string general = function
+    | "starter" -> Starter general
+    | "env" | "environment" -> Environment general
+    | "coding" -> Coding general
+    | "testing" -> Testing general
+    | "publishing" -> Publishing general
+    | _ -> Misc general
+
   type workflow = {
     title : string;
     date : string;
     authors : string list;
     description : string;
+    topic : topic option;
     tools : string list option;
     users : string list option;
     libraries : string list option;
@@ -108,6 +137,9 @@ module Workflow = struct
       ask "Title of the workflow" None >>= fun title ->
       ask "Description of the workflow" None >>= fun description ->
       ask "Author of the workflow" None >>= fun author ->
+      ask "Topic of the workflow" (Some "misc") >>= fun topic ->
+      ask "Does the workflow generalise well (true/false)?" (Some "false")
+      >>= fun general ->
       ask "Platform tools used by the workflow e.g. dune, dune-release"
         (Some "")
       >>= fun tools ->
@@ -118,6 +150,7 @@ module Workflow = struct
       >>= fun users ->
       let date = Utils.get_time () in
       let tools = split_drop tools in
+      let topic = topic_from_string (bool_of_string general) topic in
       let libraries = split_drop libraries in
       let users = split_drop users in
       Ok
@@ -127,6 +160,7 @@ module Workflow = struct
           description;
           authors = [ author ];
           tools;
+          topic = Some topic;
           libraries;
           users;
           resources = None;
@@ -171,7 +205,26 @@ module Workflow = struct
     let td =
       Components.make_omd_title_date ~title:t.data.title ~date:t.data.date
     in
-    let omd = td @ Omd.of_string t.body in
+    let tools =
+      match t.data.tools with
+      | Some ts ->
+          let spans =
+            List.map
+              (fun t ->
+                let link = "/platform/" ^ Files.title_to_dirname t in
+                [%html
+                  "<span class='details-tools'><a href=" link ">" [ Html.txt t ]
+                    "</a></span>"])
+              ts
+          in
+          [%html "<div><p>Platform tools: " spans "</p></div>"]
+      | None -> Tyxml.Html.span []
+    in
+    let tools =
+      Format.(fprintf str_formatter "%a\n\n" (Tyxml.Html.pp_elt ()) tools);
+      Format.flush_str_formatter ()
+    in
+    let omd = td @ Omd.of_string (tools ^ t.body) in
     let toc = Toc.(to_html (toc omd)) in
     Components.wrap_body
       ~toc:(Some [ toc ])
@@ -199,33 +252,80 @@ type 'a info_getter = {
   body : 'a -> string;
 }
 
+let link typ s =
+  "https://github.com/ocaml-explore/explore/tree/trunk/content/"
+  ^ typ
+  ^ "/"
+  ^ Files.title_to_dirname s
+  ^ "/index.md"
+
 let to_html_with_workflows_generic :
-      'a. Workflow.t list -> 'a info_getter -> 'a -> Tyxml.Html.doc =
- fun related info t ->
-  let path_and_title =
+      'a. Workflow.t list -> 'a info_getter -> 'a -> string -> Tyxml.Html.doc =
+ fun related info t link ->
+  let lst =
     Core.List.map
       ~f:(fun w ->
         ( "/" ^ fst (Core.Filename.split (Files.drop_first_dir ~path:w.path)),
+          w.data.topic,
           w.data.title,
           w.data.description ))
       related
   in
-  let workflow_comp = Components.make_ordered_index_list path_and_title in
+  let topic = function None -> Workflow.Misc true | Some s -> s in
+  let sections =
+    [
+      ( [%html "<div><h3>" [ Html.txt "Starter" ] "</h3></div>"],
+        Core.List.filter
+          ~f:(fun (_, t, _, _) -> 0 = Workflow.compare (Starter true) (topic t))
+          lst );
+      ( [%html "<div><h3>" [ Html.txt "Environment" ] "</h3></div>"],
+        Core.List.filter
+          ~f:(fun (_, t, _, _) ->
+            0 = Workflow.compare (Environment true) (topic t))
+          lst );
+      ( [%html "<div><h3>" [ Html.txt "Coding" ] "</h3></div>"],
+        Core.List.filter
+          ~f:(fun (_, t, _, _) -> 0 = Workflow.compare (Coding true) (topic t))
+          lst );
+      ( [%html "<div><h3>" [ Html.txt "Testing" ] "</h3></div>"],
+        Core.List.filter
+          ~f:(fun (_, t, _, _) -> 0 = Workflow.compare (Testing true) (topic t))
+          lst );
+      ( [%html "<div><h3>" [ Html.txt "Publishing" ] "</h3></div>"],
+        Core.List.filter
+          ~f:(fun (_, t, _, _) ->
+            0 = Workflow.compare (Publishing true) (topic t))
+          lst );
+      ( [%html "<div><h3>" [ Html.txt "Misc" ] "</h3></div>"],
+        Core.List.filter
+          ~f:(fun (_, t, _, _) -> 0 = Workflow.compare (Misc true) (topic t))
+          lst );
+    ]
+  in
+  let sections =
+    List.map
+      (fun (s, lst) -> (s, List.map (fun (a, _, b, c) -> (a, b, c)) lst))
+      sections
+  in
+  let workflow_comp = Components.make_sectioned_ordered_list sections in
   let td =
     Components.make_omd_title_date ~title:(info.title t) ~date:(info.date t)
   in
+  let edit =
+    [%html
+      "<p id='edit'><span class='details'><a href=" link
+        ">Edit this page on Github</a></span></p>"]
+  in
   let omd = td @ Omd.of_string (info.body t) in
   let toc = Toc.(to_html (toc omd)) in
-  let workflows = [%html "<h3>" [ Html.txt "Related Workflows" ] "</h3>"] in
+  let workflows = [%html "<h2>" [ Html.txt "Related Workflows" ] "</h2>"] in
   let content =
-    if Core.List.is_empty path_and_title then
-      [ Html.Unsafe.data Omd.(to_html (Toc.transform omd)) ]
+    if Core.List.is_empty sections then
+      [ Html.Unsafe.data Omd.(to_html (Toc.transform omd)); edit ]
     else
-      [
-        Html.Unsafe.data Omd.(to_html (Toc.transform omd));
-        workflows;
-        workflow_comp;
-      ]
+      [ Html.Unsafe.data Omd.(to_html (Toc.transform omd)); workflows ]
+      @ workflow_comp
+      @ [ edit ]
   in
   Components.wrap_body
     ~toc:(Some [ toc ])
@@ -273,6 +373,7 @@ module User = struct
       Core.List.map
         ~f:(fun t ->
           ( "/" ^ fst (Core.Filename.split (Files.drop_first_dir ~path:t.path)),
+            [],
             t.data.title,
             t.data.description ))
         ts
@@ -296,14 +397,56 @@ module User = struct
         date = (fun t -> t.data.date);
       }
     in
-    to_html_with_workflows_generic workflows info t
+    let url = link "users" t.data.title in
+    to_html_with_workflows_generic workflows info t url
 end
+
+type license = [ `MIT | `ISC | `LGPL of float | `BSD of int ] [@@deriving yaml]
+
+type lifecycle = [ `INCUBATE | `ACTIVE | `SUSTAIN | `DEPRECATE ]
+[@@deriving yaml]
+
+let license_from_string s : license =
+  match String.lowercase_ascii s with
+  | "mit" -> `MIT
+  | "isc" -> `ISC
+  | "lgplv2" -> `LGPL 2.0
+  | "lgplv2.1" -> `LGPL 2.1
+  | "bsd2" -> `BSD 2
+  | "bsd3" -> `BSD 3
+  | s ->
+      Fmt.(pf stdout "%a %s" (styled `Red string) "[Decoding license failed]" s);
+      failwith ""
+
+let license_to_string : license -> string = function
+  | `MIT -> "MIT"
+  | `ISC -> "ISC"
+  | `LGPL f -> "LGPLv" ^ string_of_float f
+  | `BSD i -> string_of_int i ^ " Clause BSD"
+
+let lifecycle_from_string s : lifecycle =
+  match String.lowercase_ascii s with
+  | "incubate" -> `INCUBATE
+  | "active" -> `ACTIVE
+  | "sustain" -> `SUSTAIN
+  | "deprecate" -> `DEPRECATE
+  | s ->
+      Fmt.(
+        pf stdout "%a %s" (styled `Red string) "[Decoding lifecycle failed]" s);
+      failwith "Error"
+
+let lifecycle_to_string_priority : lifecycle -> string * int = function
+  | `INCUBATE -> ("incubate", 0)
+  | `ACTIVE -> ("active", 1)
+  | `SUSTAIN -> ("sustain", 2)
+  | `DEPRECATE -> ("deprecate", 3)
 
 module Tool = struct
   type tool = {
     title : string;
     repo : string;
-    license : string;
+    license : license;
+    lifecycle : lifecycle;
     date : string;
     description : string;
   }
@@ -332,8 +475,11 @@ module Tool = struct
       ask "Description of the user" None >>= fun description ->
       ask "Repository of the tool" None >>= fun repo ->
       ask "License of the tool" None >>= fun license ->
+      ask "Lifecyle stage of the tool" None >>= fun lifecycle ->
+      let lifecycle = lifecycle_from_string lifecycle in
+      let license = license_from_string license in
       let date = Utils.get_time () in
-      Ok { title; description; date; repo; license }
+      Ok { title; description; date; repo; license; lifecycle }
     in
     match user_input () with
     | Ok t -> output ~title:t.title ~path:content_path (tool_to_yaml t)
@@ -347,28 +493,83 @@ module Tool = struct
       workflows
 
   let build_index title description ts =
+    let ts =
+      List.sort
+        (fun a b ->
+          Int.compare
+            (snd (lifecycle_to_string_priority a.data.lifecycle))
+            (snd (lifecycle_to_string_priority b.data.lifecycle)))
+        ts
+    in
     let lst =
       Core.List.map
         ~f:(fun t ->
+          let typ = fst (lifecycle_to_string_priority t.data.lifecycle) in
           ( "/" ^ fst (Core.Filename.split (Files.drop_first_dir ~path:t.path)),
+            [ typ ],
             t.data.title,
-            t.data.description ))
+            "[" ^ license_to_string t.data.license ^ "] " ^ t.data.description
+          ))
         ts
     in
+    let incubate =
+      "New tools that fill a gap in the ecosystem but are not quite ready for \
+       wide-scale release and adoption."
+    in
+    let active =
+      "The work-horse tools that are used daily with strong backwards \
+       compatibility guarentees from the community."
+    in
+    let sustain =
+      "Tools that will not likely see any major feature added but can be used \
+       reliably even if not being actively developed."
+    in
+    let deprecate = "Tools that are gradually being phased out of use." in
+    let p str = [ [%html "<p>" [ Html.txt str ] "</p>"] ] in
+    let sections =
+      [
+        ( [%html
+            "<div><h2>" [ Html.txt "Incubate" ] "</h2>" (p incubate) "</div>"],
+          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "incubate" ]) lst );
+        ( [%html "<div><h2>" [ Html.txt "Active" ] "</h2>" (p active) "</div>"],
+          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "active" ]) lst );
+        ( [%html "<div><h2>" [ Html.txt "Sustain" ] "</h2>" (p sustain) "</div>"],
+          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "sustain" ]) lst );
+        ( [%html
+            "<div><h2>" [ Html.txt "Deprecate" ] "</h2>" (p deprecate) "</div>"],
+          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "deprecate" ]) lst );
+      ]
+    in
     Components.wrap_body ~toc:None ~title ~description
-      ~body:[ Components.make_title title; Components.make_index_list lst ]
+      ~body:
+        ([ Components.make_title title ]
+        @ Components.make_sectioned_list sections)
 
   let to_html_with_workflows workflows t =
+    let details =
+      let class_ = fst (lifecycle_to_string_priority t.data.lifecycle) in
+      let repo =
+        [%html
+          "<span class='details'><a href=" t.data.repo ">Repository</a></span>"]
+      in
+      [%html
+        "<div>Meta-data: <span class='details'>License: "
+          [ Html.txt (license_to_string t.data.license) ]
+          "</span>" [ repo ] "<span class=" [ "details"; class_ ] ">Lifecycle: "
+          [ Html.txt class_ ] "</span></div>"]
+      |> Utils.elt_to_string
+    in
     let info : t info_getter =
       {
         path = (fun t -> t.path);
         title = (fun t -> t.data.title);
         description = (fun t -> t.data.description);
-        body = (fun t -> t.body);
+        body = (fun t -> details ^ t.body);
         date = (fun t -> t.data.date);
       }
     in
-    to_html_with_workflows_generic workflows info t
+    let url = link "platform" t.data.title in
+    to_html_with_workflows_generic workflows info t url
 end
 
 module Library = struct
@@ -421,6 +622,7 @@ module Library = struct
       Core.List.map
         ~f:(fun t ->
           ( "/" ^ fst (Core.Filename.split (Files.drop_first_dir ~path:t.path)),
+            [],
             t.data.title,
             t.data.description ))
         ts
@@ -438,5 +640,6 @@ module Library = struct
         date = (fun t -> t.data.date);
       }
     in
-    to_html_with_workflows_generic workflows info t
+    let url = link "libraries" t.data.title in
+    to_html_with_workflows_generic workflows info t url
 end

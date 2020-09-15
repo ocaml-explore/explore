@@ -44,6 +44,13 @@ let handle_error = function
   | Ok _ -> ()
   | Error (`MalformedCollection e) -> failwith e
 
+let license : Collection.license Alcotest.testable =
+  Alcotest.testable
+    (fun ppf -> function `MIT -> Fmt.string ppf "MIT"
+      | `ISC -> Fmt.string ppf "ISC" | `LGPL f -> Fmt.pf ppf "LGPLv%f" f
+      | `BSD i -> Fmt.pf ppf "%i Clause BSD" i)
+    Stdlib.( = )
+
 let test_tool () =
   let open Rresult in
   let path = "adding-unit-tests-to-your-project.md" in
@@ -61,7 +68,7 @@ let test_tool () =
             "Dune is a build tool that has been widely adopted in the OCaml \
              world"
             v.data.description;
-          Alcotest.(check string) "same license" "MIT" v.data.license;
+          Alcotest.(check license) "same license" `MIT v.data.license;
           Alcotest.(check (list string))
             "same workflows"
             [ "Adding Unit Tests to your Project" ]
