@@ -98,7 +98,7 @@ type db = person list [@@deriving yojson]
 Which must be compiled with an appropriate dune file.
 
 <!-- $MDX file=examples/yojson/dune -->
-```dune
+```
 (executable
  (name json)
  (libraries core yojson)
