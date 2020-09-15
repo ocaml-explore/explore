@@ -1,0 +1,23 @@
+(lang dune 2.7)
+
+(name numbers)
+
+(generate_opam_files true)
+
+(source
+ (github alicesmith/numbers))
+
+(license ISC)
+
+(authors "Alice Smith")
+
+(maintainers "alice@example.com")
+
+(package
+ (name numbers)
+ (synopsis "A library for useful number functions")
+ (description
+   "This library provides useful number functions and duplicates all of them to have a Zarith version as well")
+ (depends
+  (alcotest :with-test)
+  zarith))

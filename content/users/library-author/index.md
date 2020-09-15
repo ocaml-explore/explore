@@ -4,7 +4,7 @@ date: 2020-07-27 09:35:49
 workflows: 
   - Finding Answers to your Questions
   - Configuring OCaml Tools for your Editor
-  - Initialising a New Library
+  - Starting a new Project
   - Navigating OCaml Projects
   - Adding Unit Tests to your Project
   - Keeping your Code Clean
