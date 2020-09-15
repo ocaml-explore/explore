@@ -35,7 +35,7 @@ let () = print_endline "Hello World"
 This can be built with `dune build`, provided the `js_of_ocaml` package is installed (to get the cross-compiler) and the following dune file: 
 
 <!-- $MDX file=examples/hello-world-js/dune -->
-```dune
+```
 (executable
  (name main)
  (modes js))
