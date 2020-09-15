@@ -13,7 +13,7 @@ jobs:
         ref: trunk
     - uses: avsm/setup-ocaml@v1.1.0
       with:
-        ocaml-version: "4.10.0"
+        ocaml-version: "4.11.0"
     - run: opam pin add explore.dev -n .
     - name: External Dependencies
       run: opam depext -y explore
