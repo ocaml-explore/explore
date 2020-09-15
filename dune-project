@@ -35,6 +35,7 @@
   tyxml
   omd
   yaml
+  memtrace
   ptime
   calendar
   tyxml-ppx
