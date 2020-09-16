@@ -150,19 +150,29 @@
           </li>
          </ul>
          <ul class="toc">
-          <li class="toc-li">
+          <li>
            <a class="toc-link toc-item-2" href="#recommended-workflow">
             Recommended Workflow
            </a>
-          </li>
-         </ul>
-         <ul class="toc">
-          <li>
-           <a class="toc-link toc-item-2" href="#alternatives">Alternatives
-           </a>
            <ul class="toc">
             <li class="toc-li">
-             <a class="toc-link toc-item-3" href="#bucklescript">Bucklescript
+             <a class="toc-link toc-item-3"
+              href="#cross-compiling-to-javascript">
+              Cross compiling to Javascript
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#working-with-json">
+              Working with JSON
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#event-driven-programming">
+              Event-driven programming
              </a>
             </li>
            </ul>
@@ -187,12 +197,13 @@
                                                      
     <main id="main"> 
      <h1 id="running-ocaml-in-your-browser">Running OCaml in your Browser</h1>
-<p><em>Last Updated: 05, August 2020 at 15:57:05</em></p>
+<p><em>Last Updated: 08, September 2020 at 15:00:08</em></p>
 <div><p>Platform tools: <span class="details-tools"><a href="/platform/dune">Dune</a></span></p></div>
 <h2 id="overview">Overview</h2>
-<p>OCaml byte-code can be compiled to Javascript to run in your browser using the <code>js_of_ocaml</code> compiler linked in the libraries tag. This allows you to write statically type-checked OCaml code to run in a website rather than dynamically typed Javascript - this gives you more guarantees over what errors you will get at runtime.</p>
+<p>OCaml byte-code can be compiled to Javascript to run in your browser using the <a href="https://github.com/ocsigen/js_of_ocaml"><code>js_of_ocaml</code></a> compiler. This allows you to write statically type-checked OCaml code to run in a browser, rather than dynamically typed Javascript leading to safer code at runtime.</p>
+<p>This workflow introduces the key concepts to writing OCaml for the browser, manipulating JSON and programming in an event-driven way which is common for web applications.</p>
 <h2 id="recommended-workflow">Recommended Workflow</h2>
-<h3>Js_of_ocaml</h3>
+<h3 id="cross-compiling-to-javascript">Cross compiling to Javascript</h3>
 <p>Dune has built-in support for compiling byte-code to Javascript. Consider a &quot;hello-world&quot; example:</p>
 <!-- $MDX file=examples/hello-world-js/main.ml -->
 <pre><code class="language-ocaml">let () = print_endline &quot;Hello World&quot;
@@ -204,7 +215,7 @@
  (modes js))
 </code></pre>
 <p>This will output your main file into a Javascript file called <code>main.bc.js</code>. To get this running in your browser you can then create an <code>index.html</code> file in the same <code>_build/default</code> folder and include the JS file in a script tag: <code>&lt;script src=&quot;main.bc.js&gt;&lt;/script&gt;</code>. This is the quickest way to get started. If you had node installed you could also run it using <code>node _build/default/main.bc.js</code>.</p>
-<p>Although Javascript has many features in common with functional-styled programming, it primarily works using objects and mutable data. To make the transition from OCaml to Javascript easier, there is a <a href="https://ocsigen.org/js_of_ocaml/3.1.0/manual/ppx">PPX</a> to make objects using the OCaml syntax. Once installed, you can make objects fairly simply, make sure you add <code>(preprocess (pps js_of_ocaml-ppx))</code> to your dune file.</p>
+<p>Although Javascript has many features in common with functional-styled programming, it primarily works using objects and mutable data. To make the transition from OCaml to Javascript easier, there is a <a href="https://ocsigen.org/js_of_ocaml/3.1.0/manual/ppx">ppx</a> to make objects using the OCaml syntax. There is a <a href="/workflows/meta-programming-with-ppx">separate workflow</a> if you are unfamiliar with OCaml's meta-programming capabilities with ppx. Once installed, you can make objects fairly simply. Make sure you preprocess your files by adding <code>(preprocess (pps js_of_ocaml-ppx))</code> to your dune file.</p>
 <!-- $MDX file=examples/ppx/dune -->
 <pre><code>(executable
  (name main)
@@ -227,12 +238,102 @@
   person##set &quot;Bob&quot;;
   print_endline person##get
 </code></pre>
-<h2 id="alternatives">Alternatives</h2>
-<h3 id="bucklescript">Bucklescript</h3>
-<p>An alternative is to use Bucklescript to compile your OCaml code to Javascript. At this point you will have to leave dune behind you and venture into the world of Bucklescript and <code>npm</code> - <a href="https://discuss.ocaml.org/t/js-of-ocaml-vs-bucklescript/2293/7">this post on discuss OCaml</a> might be worthwhile reading to find out which is best for you.</p>
-<p><a href="https://bucklescript.github.io/">BuckleScript · A faster, simpler and more robust take on JavaScript.</a></p>
+<p>Here we use the ppx in conjunction with OCaml's object system to create Javascript objects. By tagging properties (<code>val name</code>) with attributes you can change the semantics of how they are used. With <code>[@@readwrite]</code> we force <code>name</code> to be readable and writable.</p>
+<pre><code class="language-sh">$ dune build
+$ grep -A3 &quot;person=&quot; _build/default/main.bc.js
+     person=
+      {&quot;name&quot;:t8,
+       &quot;set&quot;:caml_js_wrap_meth_callback(t9),
+       &quot;get&quot;:caml_js_wrap_meth_callback(t10)},
+</code></pre>
+<h3 id="working-with-json">Working with JSON</h3>
+<p><a href="https://www.json.org/json-en.html">Javascript Object Notation</a> (JSON) is a data format that is very commonly used for web applications and exchanging information over the internet. There is a very close relationship between OCaml types and JSON structures. The two main types being objects (similar to OCaml records) and arrays (similar to OCaml lists or arrays). There are a few OCaml libraries for working with JSON including <a href="https://github.com/dbuenzli/jsonm">jsonm</a> (and the simplified <a href="https://github.com/mirage/ezjsonm">ezjsonm</a>) and <a href="https://github.com/ocaml-community/yojson">yojson</a>.</p>
+<p>Yojson is perhaps the friendliest interface for working with JSON. There is also a <a href="https://github.com/ocaml-ppx/ppx_deriving_yojson">ppx_deriving_yojson</a> library which will automatically generate the encoding (<code>to_yojson</code>) and decoding (<code>of_yojson</code>) functions for your OCaml types. Here's an example:</p>
+<!-- $MDX file=examples/yojson/json.ml,part=0 -->
+<pre><code class="language-ocaml">type person = { name : string; age : int } [@@deriving yojson]
+
+type db = person list [@@deriving yojson]
+</code></pre>
+<p>Which must be compiled with an appropriate dune file.</p>
+<!-- $MDX file=examples/yojson/dune -->
+<pre><code>(executable
+ (name json)
+ (libraries core yojson)
+ (preprocess
+  (pps ppx_deriving_yojson)))
+</code></pre>
+<p>This produces the functions <code>person_to_yojson</code> and <code>person_of_yojson</code> to convert between types (similarly for <code>db</code>). With a small main function we can read a JSON file converting the content to Yojson before converting to the underlying OCaml types. After this it converts those types back to Yojson and then prints them (of course you could then print these in JSON to a file).</p>
+<!-- $MDX file=examples/yojson/json.ml,part=1 -->
+<pre><code class="language-ocaml">let () =
+  let db_string = In_channel.read_all &quot;db.json&quot; in
+  let db = Yojson.Safe.from_string db_string in
+  match db_of_yojson db with
+  | Ok t -&gt; Yojson.Safe.pp Format.std_formatter (db_to_yojson t)
+  | Error s -&gt; failwith s
+</code></pre>
+<p>The JSON file.</p>
+<!-- $MDX file=examples/yojson/db.json -->
+<pre><code class="language-json">[
+  {
+    &quot;name&quot;: &quot;Alice&quot;,
+    &quot;age&quot;: 42
+  },
+  {
+    &quot;name&quot;: &quot;Bob&quot;,
+    &quot;age&quot;: 24
+  }
+]
+</code></pre>
+<p>And the output of the program.</p>
+<pre><code class="language-sh">$ dune exec ./json.exe 
+`List ([`Assoc ([(&quot;name&quot;, `String (&quot;Alice&quot;)); (&quot;age&quot;, `Int (42))]);
+         `Assoc ([(&quot;name&quot;, `String (&quot;Bob&quot;)); (&quot;age&quot;, `Int (24))])])
+</code></pre>
+<h3 id="event-driven-programming">Event-driven programming</h3>
+<p>A lot of web development is based on events and more specifically user interaction with the HTML Document Object Model (DOM). Js_of_ocaml offers a solution to writing OCaml programs that interact with DOM and trigger events on user input.</p>
+<p>One of the simplest programs is to log some message whenever a button is pressed. To do this we need to:</p>
+<ol>
+<li>Find the button in the HTML DOM.
+</li>
+<li>Add some function to the <code>onClick</code> handler that we want to be called whenever the button is clicked.
+</li>
+<li>Register all of this once the window has loaded (otherwise the elements won't be there).
+</li>
+</ol>
+<!-- $MDX file=examples/event/event.ml,part=0 -->
+<pre><code class="language-ocaml">open Js_of_ocaml
+open Lwt.Infix
+module Events = Js_of_ocaml_lwt.Lwt_js_events
+module Html = Dom_html
+
+let add_handler id =
+  let btn = Html.getElementById id in
+  btn##.onclick :=
+    Html.handler (fun _ -&gt;
+        print_endline &quot;Clicked!&quot;;
+        Js._false)
+</code></pre>
+<p>After opening some important modules and creating shorter aliases to others, the first function we define is <code>add_handler</code>. This takes an (HTML) element id and adds a simple function to the <code>onClick</code> handler. This is built using the <code>handler</code> function which returns a <code>Js</code> value of <code>true</code> or <code>false</code>. Returning <code>false</code> suppresses the default behaviour.</p>
+<!-- $MDX file=examples/event/event.ml,part=1 -->
+<pre><code class="language-ocaml">let rec key_listener key =
+  Events.keydown key &gt;&gt;= fun event -&gt;
+  if event##.keyCode = 32 then Lwt.return (print_endline &quot;Key Pressed!&quot;)
+  else key_listener key
+</code></pre>
+<p>The <code>key_listener</code> example is a little more complex as it uses Lwt to provide asynchronous functions using promises. Here we are listening to the <code>keydown</code> event and checking if the <code>keyCode</code> matches the &quot;space&quot; key (32) and printing <code>&quot;Key Pressed!&quot;</code> if it does. Otherwise we recursively wait for the next key down event.</p>
+<!-- $MDX file=examples/event/event.ml,part=2 -->
+<pre><code class="language-ocaml">let onload _ =
+  add_handler &quot;button&quot;;
+  Js._false
+
+let () =
+  Html.window##.onload := Html.handler onload;
+  Lwt.async (fun () -&gt; key_listener Html.document)
+</code></pre>
+<p>The final part to our small JS program is to load everything we need. We add a handler that is called when the <code>Html.window</code> loads. We also call the <code>key_listener</code> function asynchronously.</p>
 <h2 id="real-world-examples">Real World Examples</h2>
-<p>Jane Street have written a library for building dynamic webapps that uses <code>js_of_ocaml</code> extensively: <a href="https://github.com/janestreet/incr_dom">incr_dom</a>. There are some great <a href="https://github.com/janestreet/incr_dom/tree/master/example">examples</a> to get started with.</p>
+<p>Whilst programming in pure <code>js_of_ocaml</code> is very much a possibility, it is also nice to use frameworks which can help build more complex and performant web applications. One such framework is <a href="https://github.com/janestreet/bonsai">bonsai</a>. It uses Jane Street's <code>Incremental</code> and <code>Incr_dom</code> library under the hood to make DOM re-rendering faster. They provide a good set of <a href="https://github.com/janestreet/bonsai/tree/master/examples">examples</a> to get you started.</p>
+<p>There is also Ocsigen's <a href="https://ocsigen.org/eliom/6.6/manual/intro">Eliom</a> framework for building web and mobile applications. Their <a href="https://ocsigen.org/eliom/6.6/manual/clientserver-applications">client-server</a> example introduces a lot of the key ideas behind their framework.</p>
 
     </main>
                      
