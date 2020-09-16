@@ -1,0 +1,5 @@
+(executable
+ (name json)
+ (libraries core yojson)
+ (preprocess
+  (pps ppx_deriving_yojson)))
