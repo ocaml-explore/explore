@@ -39,6 +39,7 @@
   memtrace
   tyxml-ppx
   mdx
+  owl
   ppx_jane
   ezjsonm
   js_of_ocaml-ppx

@@ -13,6 +13,7 @@ workflows:
   - Publishing a Package on Opam
   - Releasing New Versions of your Project on Opam
   - Fuzz Testing your Project
+  - Writing Scientific Computing Applications
   - Incorporating non-OCaml Code into your Project
   - Meta-programming with PPX 
   - Profiling your Project 

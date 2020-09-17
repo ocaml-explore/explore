@@ -1,7 +1,7 @@
 ---
 authors:
   - Patrick Ferris
-title: Teaching and Data Science
+title: Teaching OCaml
 date: 2020-07-27 09:35:49
 description: Setup Jupyter Notebooks with OCaml
 topic: 
@@ -10,8 +10,6 @@ topic:
 users:
   - Teacher
   - Beginner 
-libraries: 
-  - Owl
 ---
 
 ## Overview
