@@ -225,11 +225,27 @@ module Workflow = struct
       Format.flush_str_formatter ()
     in
     let omd = td @ Omd.of_string (tools ^ t.body) in
+    let body =
+      [
+        [%html
+          {|
+      <div class='container'>
+        <div class='row'>
+          <div class='span1'></div>
+          <div class='span10'>
+            |}
+            ([ Html.Unsafe.data (Omd.to_html (Toc.transform omd)) ] @ resources)
+            {|
+          </div>
+        </div>
+      </div>
+    |}];
+      ]
+    in
     let toc = Toc.(to_html (toc omd)) in
     Components.wrap_body
       ~toc:(Some [ toc ])
-      ~title:t.data.title ~description:t.data.description
-      ~body:([ Html.Unsafe.data (Omd.to_html (Toc.transform omd)) ] @ resources)
+      ~title:t.data.title ~description:t.data.description ~body
 end
 
 module type Collection = sig
@@ -317,7 +333,7 @@ let to_html_with_workflows_generic :
         ">Edit this page on Github</a></span></p>"]
   in
   let omd = td @ Omd.of_string (info.body t) in
-  let toc = Toc.(to_html (toc omd)) in
+  let _toc = Toc.(to_html (toc omd)) in
   let workflows = [%html "<h2>" [ Html.txt "Related Workflows" ] "</h2>"] in
   let content =
     if Core.List.is_empty sections then
@@ -327,9 +343,25 @@ let to_html_with_workflows_generic :
       @ workflow_comp
       @ [ edit ]
   in
-  Components.wrap_body
-    ~toc:(Some [ toc ])
-    ~title:(info.title t) ~description:(info.description t) ~body:content
+  let body =
+    [
+      [%html
+        {|
+    <div class='container'>
+      <div class='row'>
+        <div class='span1'></div>
+        <div class='span10'>
+          |}
+          content
+          {|
+        </div>
+      </div>
+    </div>
+  |}];
+    ]
+  in
+  Components.wrap_body ~toc:None ~title:(info.title t)
+    ~description:(info.description t) ~body
 
 module User = struct
   type user = {

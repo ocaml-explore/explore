@@ -31,12 +31,11 @@ let v ~path ~content =
 let to_html t =
   let td = Components.make_omd_title_date ~title:t.title ~date:t.updated in
   let omd = td @ Omd.of_string t.body in
-  let toc = Toc.(to_html (toc omd)) in
+  let toc = Toc.toc omd in
+  let toc = if List.length toc > 3 then Some [ Toc.to_html toc ] else None in
   let md = Omd.(to_html (Toc.transform omd)) in
   let page = [%html [ Tyxml.Html.Unsafe.data md ]] in
-  Components.wrap_body
-    ~toc:(Some [ toc ])
-    ~title:t.title ~description:t.description ~body:page
+  Components.wrap_body ~toc ~title:t.title ~description:t.description ~body:page
 
 let get_body t = t.body
 

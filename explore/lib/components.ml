@@ -1,7 +1,7 @@
 open Tyxml
 open Core
 
-let nav_bar () =
+let _nav_bar () =
   [%html {|
     <div class="pure-g">
       <div class="pure-u-1-3">
@@ -59,7 +59,7 @@ let nav_bar () =
 let make_title title = [%html "<h1>" [ Html.txt title ] "</h1>"]
 
 let wrap_body ~toc ~title ~description ~body =
-  let toc = match toc with None -> [] | Some t -> t in
+  let _toc = match toc with None -> [] | Some t -> t in
   [%html
     {|
   <html lang="en">
@@ -79,6 +79,7 @@ let wrap_body ~toc ~title ~description ~body =
       <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.0/build/menus-core.css" />
       <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.0/build/menus-dropdown.css" />
       <link rel=stylesheet href="/css/main.css"/>
+      <link rel=stylesheet href="/css/bootstrap.css"/>
       <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css">
       <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script>
@@ -87,22 +88,42 @@ let wrap_body ~toc ~title ~description ~body =
     </head>
     <body>
       <header>
-        <a class="skip-to-content" href="#main"> Skip to main content </a>|}
-        [ nav_bar () ]
-        {|
+        |}
+        (* [ nav_bar () ] *)
+        {|<nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container-fluid">
+            <button type="button" class="btn btn-navbar"
+        onclick="toggleVisibilityMenu('menu-items')">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="/"
+         ><img src="/img/colour-logo-white.svg"
+         class="svg" alt="OCaml"
+         /><img src="/img/colour-logo-white.png"
+          class="png" alt="OCaml" /></a>
+          <div id="menu-items" class="nav-collapse collapse">
+          </div>
+          <ul class="nav">
+            <li><a href="/platform">Tools</a></li>
+            <li><a href="/users">Users</a></li>
+            <li><a href="/libraries">Libraries</a></li>
+          </ul>
+            </div>
+          </div>
+      </nav>
       </header>
-        <div class="pure-g">
-          <div class="pure-u-1-12 pure-u-md-1-4">
-            <div class="pure-hidden-xs pure-hidden-sm pure-hidden-md toc-container sticky">|}
-              toc
+            <main id="main">
+              <div class='container'>
+                <div class='row'>
+                  <div class='span12'>|}
+                body
           {|</div>
           </div>
-          <div class="pure-u-5-6 pure-u-md-1-2">
-            <main id="main"> |}
-              body
-          {|</main>
           </div>
-        </div>
+        </main>
     </body>
   </html>
 |}] [@@ocamlformat "disable"]
