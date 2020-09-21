@@ -2,21 +2,25 @@
 authors:
   - Patrick Ferris
 title: Teaching OCaml
-date: 2020-07-27 09:35:49
-description: Setup Jupyter Notebooks with OCaml
+date: 2020-09-21 10:21:03
+description: Teach OCaml using Jupyter notebooks or online resources
 topic: 
   starter: 
     - true
 users:
   - Teacher
   - Beginner 
+resources: 
+  - url: https://kcsrk.info/ocaml/prolog/jupyter/notebooks/2020/01/19/OCaml-Prolog-Jupyter/
+    title: KC's Paradigms of Programming Languages
+    description: KC explains his setup for using Jupyter notebooks to teach a course on paradigms of programming languages using OCaml and Prolog. 
 ---
 
 ## Overview
 
-Jupyter notebooks combine an interactive read-evaluate-print-loop (REPL) with markdown text (with support for LATEX) to offer a unique solution for people wanting to teach, explore OCaml or perform more data-centric operations (ML models etc.) 
+There are lots of reasons to teach OCaml (it's a great language, it is multi-paradigm, it's great for introducing more theoretical aspects of programming languages) and there are lots of ways to teach it. Before jumping into more complex solutions, two resources currently available may be all you need. OCamlpro's [try ocaml](https://try.ocamlpro.com/) is a great way to introduce people to things like syntax or modules. The OCaml Software Foundation's [learn-ocaml](http://ocaml.hackojo.org/) is a much more complex platform for building essentially a course on OCaml. 
 
-From a learning point-of-view, students are more concerned with *syntax* and *concepts* rather than tooling (in the beginning). Much like `utop` the REPL format is great for learning, but with **jupyter** you can also write notes, explain algorithms etc. 
+The solution this workflow describes using Jupyter notebooks which combines an interactive read-evaluate-print-loop (REPL) with markdown text (with support for LATEX) to offer a unique solution for people wanting to teach or explore OCaml. This is based largely on [KC Sivaramakrishnan's experiences](https://kcsrk.info/ocaml/prolog/jupyter/notebooks/2020/01/19/OCaml-Prolog-Jupyter/) when teaching a paradigms of programming languages course. 
 
 ## Recommended Workflow
 
@@ -36,25 +40,20 @@ $ jupyter kernelspec install [ --user ] --name ocaml-jupyter "$(opam var share)/
 
 Further documentation can be found at in the [OCaml Jupyter repository](https://github.com/akabe/ocaml-jupyter). 
 
-### Presentation tools
+### Using Docker 
 
-For teachers or presenters you can use the [RISE](https://rise.readthedocs.io/en/stable/) tool to present your code and text in the browser from a running OCaml Jupyer Notebook. It will generate interactive slides from the code and text blocks in your notebook. 
+Docker is a tool for running containers, isolated, light-weight environments for running code in a reproducible and uniform manner with great support on MacOS and Linux. This can provide a nice way to abstract the nitty-gritty details of setting up an OCaml environment for many students. 
 
-## Alternatives
+[OCaml-teaching](https://github.com/patricoferris/ocaml-teaching) is a solution building on [KC's docker images](https://github.com/kayceesrk/cs3100_f19/blob/gh-pages/_docker/dockerfile). It offers an environment with preconfigured editors (vim and emacs), preinstalled Jupyter notebook and opam installed. The repository also contains an example of using [nbgrader](https://nbgrader.readthedocs.io/en/stable/) to provide an environment for writing assignments and auto-grading them.
 
-### Using Docker to run a Notebook
+To try this out for yourself, with Docker installed, you can run: 
 
-Using the link below, a jupyter notebook can be created inside a docker container and connected to a port so users can begin coding fairly quickly. This involves a second level of indirection in installing docker. 
-
-- *Limitations - the dockerfiles exposed here are very data-science oriented (i.e. large images with many preinstalled packages) and only go up to OCaml 4.07.*
-
-```bash
-docker run -it -p 8888:8888 akabe/ocaml-jupyter-datascience -v $PWD:/notebooks akabe/ocaml-jupyter-datascience
-# Go to http://localhost:8888/?token=<token>
+```
+$ docker run -it -p 8888:8888 -v=$(pwd):/notebooks patricoferris/ocaml-teaching:4.10 
 ```
 
-[akabe/docker-ocaml-jupyter-datascience](https://github.com/akabe/docker-ocaml-jupyter-datascience)
+Then navigate to `https://localhost:8888` to explore OCaml in a Jupyter notebook that persists to the current directory.
 
-## Real World Examples
+### Presentation tools
 
-[](https://kcsrk.info/ocaml/prolog/jupyter/notebooks/2020/01/19/OCaml-Prolog-Jupyter/)
+For teachers or presenters you can use the [RISE](https://rise.readthedocs.io/en/stable/) tool to present your code and text in the browser from a running OCaml Jupyter Notebook. It will generate interactive slides from the code and text blocks in your notebook. OCaml-teaching comes with this preconfigured. 
