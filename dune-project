@@ -18,6 +18,12 @@
 (maintainers "pf341@patricoferris.com")
 
 (package
+ (name explore-cli)
+ (synopsis "Explore OCaml Sources")
+ (description "Build tool, scripts and content for the Explore OCaml site")
+ (depends core httpaf httpaf-lwt-unix fmt ptime calendar))
+
+(package
  (name explore)
  (synopsis "Explore OCaml Sources")
  (description "Build tool, scripts and content for the Explore OCaml site")
@@ -26,16 +32,11 @@
   (ocaml
    (= 4.11.0))
   core
-  httpaf
-  httpaf-lwt-unix
-  fmt
   bechamel
   tyxml
   omd
   yaml
   memtrace
-  ptime
-  calendar
   tyxml-ppx
   mdx
   ppx_jane
