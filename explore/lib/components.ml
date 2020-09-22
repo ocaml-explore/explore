@@ -108,7 +108,6 @@ let wrap_body ~toc ~title ~description ~body =
           </div>
           <ul class="nav">
             <li><a href="/platform">Tools</a></li>
-            <li><a href="/users">Users</a></li>
             <li><a href="/libraries">Libraries</a></li>
           </ul>
             </div>

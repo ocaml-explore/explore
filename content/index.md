@@ -5,11 +5,11 @@ date: 2020-07-27 09:35:49
 ---
 
 <div class="container">
-    <p>Check the <a href="/pages/about">about</a> page for more information on Explore OCaml and the <a href="/pages/opam">opam page</a> if you are unfamiliar with the OCaml Package Manager. Otherwise, choose the user that best matches you and explore the workflows.</p>
+    <p>Welcome to Explore OCaml, a centralise source for getting things done in the OCaml programming language. Check the <a href="/pages/about">about</a> page for more information on Explore OCaml and the <a href="/pages/opam">opam page</a> if you are unfamiliar with the OCaml Package Manager as it will come up a lot. Otherwise, choose the user that best matches you and explore the workflows.</p>
     <div class="row">
       <section class="span4 condensed">
         <h1 class="ruled"><a href="/users/beginner">Beginners</a></h1>
-        <p>If you are just getting started on learning the OCaml language, there are several resources to get you going. The beginner workflows will get you familiar with where you can find answers to common questions, find interactive playgrounds, and hook into possibly familiar learning mechanisms such as Jupyter notebooks.</p>
+        <p>Are you just starting out and want to learn the OCaml language? There are several resources to get you going! The beginner workflows will get you familiar with where you can find answers to common questions, find interactive playgrounds, and hook into possibly familiar learning mechanisms such as Jupyter notebooks.</p>
       </section>
       <section class="span4 condensed">
          <h1 class="ruled"><a href="/users/application-developers">Application Developers</a></h1>
@@ -17,21 +17,21 @@ date: 2020-07-27 09:35:49
       </section>
       <section class="span4 condensed">
         <h1 class="ruled"><a href="/users/distribution-manager">Distribution Managers</a></h1>
-        <p>If you are maintaining OCaml on a particular operating system, you will be juggling the various quirks of OCaml applications and libraries with hundreds of other programming languages and build systems. The Distribution Manager workflows collect tools that operate over the opam repository metadata and provide mechanisms to programmatically translate them to your own distribution.</p>
+        <p>Maintaining OCaml on a particular operating system means juggling the various quirks of OCaml applications and libraries with hundreds of other programming languages and build systems. The Distribution Manager workflows collect tools that operate over the opam repository metadata and provide mechanisms to programmatically translate them to your own distribution.</p>
       </section>
     </div>
      <div class="row">
       <section class="span4 condensed">
         <h1 class="ruled"><a href="/users/teacher">Teachers</a></h1>
-        <p>If you are teaching OCaml to a class, then you will need to support the installation of the tools on a variety of platforms, and hook into grading systems. The teaching workflows will cover that, and also link to projects that exist to support your efforts.</p>
+        <p>Teaching OCaml to a class necessitates supporting the installation of the tools on a variety of platforms, and hooking into grading systems. Not to mention a good setup for yourself. The teaching workflows will cover that, and also link to projects that exist to support your efforts.</p>
       </section>
       <section class="span4 condensed">
         <h1 class="ruled"><a href="/users/library-author">Library Authors</a></h1>
-        <p>If you want to break up your application into reusable chunks, then you will create OCaml libraries. As a Library Author, you will learn how to partition your source code into multiple libraries, to write unit tests and documentation, to apply auto-formatting, and eventually publish them publicly to the central opam repository.</p>
+        <p>Library authors want to share code as reusable chunks. As a Library Author, you will learn how to partition your source code into multiple libraries, to write unit tests and documentation, to apply auto-formatting, and eventually publish them publicly to the central opam repository.</p>
       </section>
       <section class="span4 condensed">
         <h1 class="ruled"><a href="/users/end-user">End Users</a></h1>
-        <p> If you are an End User that simply wants to install an OCaml application as fast as possible on your platform, read on about how to do that. Beyond the standard opam client, there are also several domain-specific ones that may be more useful to you, such as the opam2nix binary distributor or the esy client that supports npm-like description files.</p>
+        <p> To install an OCaml application as fast as possible on your platform, read on about the end user workflows can enable just that. Beyond the standard opam client, there are also several domain-specific ones that may be more useful to you, such as the opam2nix binary distributor or the esy client that supports npm-like description files.</p>
       </section>
     </div>
   </div>

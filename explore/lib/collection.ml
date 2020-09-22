@@ -560,22 +560,26 @@ module Tool = struct
     let p str = [ [%html "<p>" [ Html.txt str ] "</p>"] ] in
     let sections =
       [
+        ( [%html "<div><h2>" [ Html.txt "Active" ] "</h2>" (p active) "</div>"],
+          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "active" ]) lst
+          |> List.map (fun (a, _, b, c) -> (a, b, c)) );
         ( [%html
             "<div><h2>" [ Html.txt "Incubate" ] "</h2>" (p incubate) "</div>"],
-          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "incubate" ]) lst );
-        ( [%html "<div><h2>" [ Html.txt "Active" ] "</h2>" (p active) "</div>"],
-          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "active" ]) lst );
+          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "incubate" ]) lst
+          |> List.map (fun (a, _, b, c) -> (a, b, c)) );
         ( [%html "<div><h2>" [ Html.txt "Sustain" ] "</h2>" (p sustain) "</div>"],
-          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "sustain" ]) lst );
+          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "sustain" ]) lst
+          |> List.map (fun (a, _, b, c) -> (a, b, c)) );
         ( [%html
             "<div><h2>" [ Html.txt "Deprecate" ] "</h2>" (p deprecate) "</div>"],
-          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "deprecate" ]) lst );
+          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "deprecate" ]) lst
+          |> List.map (fun (a, _, b, c) -> (a, b, c)) );
       ]
     in
     Components.wrap_body ~toc:None ~title ~description
       ~body:
         ([ Components.make_title title ]
-        @ Components.make_sectioned_list sections)
+        @ Components.make_sectioned_ordered_list sections)
 
   let to_html_with_workflows workflows t =
     let details =
