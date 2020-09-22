@@ -24,9 +24,7 @@
  (depends
   (alcotest :with-test)
   (ocaml
-   (and
-    (>= 4.10.0)
-    (< 4.11.0)))
+   (= 4.11.0))
   core
   httpaf
   httpaf-lwt-unix
@@ -35,6 +33,7 @@
   tyxml
   omd
   yaml
+  memtrace
   ptime
   calendar
   tyxml-ppx
