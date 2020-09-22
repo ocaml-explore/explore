@@ -1,8 +1,6 @@
 open Owl.Dense
 module IntArr = Ndarray.Generic
 
-let random_walk ?(mini = -10) ?(maxi = 10) _x = mini + Random.int (maxi - mini)
-
 let () =
   let open Owl.Arr in
   let arr1 = Ndarray.Generic.ones Int64 [| 5; 5 |] in
