@@ -384,7 +384,14 @@ module User = struct
   let get_workflows t (workflows : Workflow.t list) =
     List.map
       (fun tt ->
-        List.find (fun (w : Workflow.t) -> tt = w.data.title) workflows)
+        try List.find (fun (w : Workflow.t) -> tt = w.data.title) workflows
+        with Not_found ->
+          failwith
+            ("[Workflow Error] Could not find `"
+            ^ tt
+            ^ "' for `"
+            ^ t.data.title
+            ^ "'"))
       t.data.workflows
 
   let to_html_with_workflows workflows t =
