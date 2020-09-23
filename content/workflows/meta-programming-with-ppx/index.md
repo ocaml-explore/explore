@@ -315,6 +315,32 @@ And a special dune file to mark our code as a ppx deriver, preprocess our files 
   (pps ppxlib.metaquot)))
 ```
 
+Here is an example using the deriver. 
+
+<!-- $MDX file=examples/ppx_stringify/example/main.ml -->
+```ocaml
+type i_list = int list [@@deriving stringify]
+
+type b_list = bool list [@@deriving stringify]
+
+type i_list_list = int list list [@@deriving stringify]
+
+let () =
+  let i_lst = [ 1; 2; 3 ] in
+  let b_lst = [ true; false; true ] in
+  let i_lst_lst = [ [ 1; 2; 3 ]; [ 4; 5; 6 ] ] in
+  print_endline (i_list_stringify i_lst);
+  print_endline (b_list_stringify b_lst);
+  print_endline (i_list_list_stringify i_lst_lst)
+```
+
+```sh dir=examples/ppx_stringify/
+$ dune exec -- ./example/main.exe
+[1;2;3;]
+[true;false;true;]
+[[1;2;3;];[4;5;6;];]
+```
+
 ### Writing a Ppx Extension Rewriter 
 
 Instead of adding new nodes to an AST, we will now focus on rewriting them. The example we will use is turning association lists into hashtables. If you followed the deriver example there are many shared concepts. At the heart of this ppx will be a function `expand : Ppxlib.expression -> Ppxlib.expression`. 
@@ -396,6 +422,11 @@ And here it is in use!
 let () =
   let tbl = [%hashtbl [ ("Hello", 1) ]] in
   print_int (Hashtbl.find tbl "Hello")
+```
+
+```sh dir=examples/ppx_hashtbl/
+$ dune exec -- ./example/main.exe
+1
 ```
 
 ## Real World Examples
