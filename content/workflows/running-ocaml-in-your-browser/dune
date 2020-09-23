@@ -41,3 +41,15 @@
  (name runtest)
  (deps
   (alias ppx)))
+
+(rule
+ (alias types)
+ (deps
+  (source_tree ./examples/types))
+ (action
+  (run dune build @all @runtest --root ./examples/types)))
+
+(alias
+ (name runtest)
+ (deps
+  (alias types)))
