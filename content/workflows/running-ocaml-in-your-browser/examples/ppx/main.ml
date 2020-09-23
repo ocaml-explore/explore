@@ -1,13 +1,11 @@
-let () =
-  let person =
+let person =
     object%js (self)
       val name = "Alice" [@@readwrite]
-
-      method set str = self##.name := str
-
       method get = self##.name
+      method set str = self##.name := str
     end
-  in
+
+let () = 
   print_endline person##get;
   person##set "Bob";
   print_endline person##get

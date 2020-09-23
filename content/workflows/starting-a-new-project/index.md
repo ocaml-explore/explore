@@ -1,6 +1,6 @@
 ---
 title: Starting a new Project
-date: 2020-09-15 09:17:40 +00:00
+date: 2020-09-23 10:51:38 +00:00
 authors:
 - Patrick Ferris
 description: Build the scaffolding for your solution to a problem
@@ -10,6 +10,7 @@ topic:
   starter: 
     - true
 users:
+- beginner
 - library authors
 libraries: 
 resources:
@@ -49,6 +50,16 @@ Success: initialized library component named numbers
 $ cat dune 
 (library
  (name numbers))
+```
+
+### Using Libraries 
+
+Opam allows you to install libraries from the [opam-repository](https://github.com/ocaml/opam-repository). If you run `opam install irmin` this will build the [irmin](https://irmin.io/) library for you in the global switch directory (somewhere like `~/.opam/<switch>/lib/irmin`) or in the local directory (`./_opam`). Once installed whenever you add a library to your dune file, dune will be able to build your code to include that library. 
+
+```
+(executable
+  (name main)
+  (libraries irmin))
 ```
 
 ### Generating an Opam File 
@@ -122,6 +133,10 @@ build: [
 ]
 dev-repo: "git+https://github.com/alicesmith/numbers.git"
 ```
+
+Adding dependencies is not automatic in OCaml. For example, you might have `zarith` already installed and your dune file might add it in a `libraries` field, but you need to add it to your `dune-project`'s description of the opam file. This means other people who might not have it installed will get it whenever they try and install your library.
+
+The `:with-test` flag tells opam that unless specified this dependency does not need to be installed in order to use the package. Another similar flag is `:with-doc` for documentation only dependencies. 
 
 Note that sometimes you need an escape-hatch as the specification in `dune-project` for opam files is not as flexible as an opam file - for this you should use the [templates](https://dune.readthedocs.io/en/stable/opam.html#opam-template) to include things like `pin-depends` to add unreleased packages. 
 
