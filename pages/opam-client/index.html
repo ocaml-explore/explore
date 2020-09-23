@@ -213,7 +213,7 @@
 </li>
 </ul>
 <p><img src="/images/opam.v1.png" alt="opam client diagram" /></p>
-<p>A simplfied diagram of some of the key features in opam</p>
+<p>A simplified diagram of some of the key features in opam.</p>
 <h2 id="key-concepts">Key Concepts</h2>
 <h3 id="switches">Switches</h3>
 <p>In the official documentation switches are described as (<code>opam switch --help</code>):</p>
@@ -226,17 +226,16 @@ the compiler available at once.</p>
 <p>Switches can either be local or system-wide. The former is usually installed alongside your code is an <code>_opam</code> directory whilst the latter exists in <code>~/.opam</code>. Local switches are similar to <em>node_modules</em> in the NodeJS ecosystem.</p>
 <h3 id="repositories">Repositories</h3>
 <p>Opam repositories are the source of truth for what <code>opam</code> can and cannot install. If the repostory doesn't have package <code>X</code> with an opam file, then it won't be installed. The default repository is where most people will begin and end their journey with repositories. This is where you can publish new releases of your libraries and others can update and upgrade to these versions.</p>
-<p>This is held on Github:</p>
-<p><a href="https://github.com/ocaml/opam-repository">ocaml/opam-repository</a></p>
+<p>This is held on Github: <a href="https://github.com/ocaml/opam-repository">ocaml/opam-repository</a></p>
 <p>Note in the diagram above, in the unselected switch, there are two repositories. There is no limit on the number you can have and when installing libraries <code>opam</code> will check each for a folder that matches what you are looking for. The above is an example of what you would have to do to start cross-compiling. If you are interested check:</p>
 <h3 id="updating-&amp;-upgrading">Updating &amp; Upgrading</h3>
 <p>Hopefully with the explanation of repositories it is a little clearer what updating and upgrading means. When you install and opam switch you get a local cloned copy of the opam repository. As you code this will remain unchanged even as library authors publish new releases.</p>
-<p>To get the newer (and hopefully better!) code you will essentially have to <code>git pull</code> the latest opam repostiory (<code>opam update</code>) and then tell opam to install the latests version of libraries (<code>opam upgrade</code>). By supplying a single package to these commands you won't update and upgrade everything.</p>
+<p>To get the newer (and hopefully better!) code you will essentially have to <code>git pull</code> the latest opam repository (<code>opam update</code>) and then tell opam to install the latests version of libraries (<code>opam upgrade</code>). By supplying a single package to these commands you won't update and upgrade everything.</p>
 <p>Within your library opam file you can specify constraints on version numbers to ensure your code works correctly. A major version change say <code>irmin.1.0.0</code> to <code>irmin.2.0.0</code> would likely break your code.</p>
 <h3 id="pinning">Pinning</h3>
 <p>Pinning is a method for overriding the opam repository. In the diagram our repository has a version of <code>alcotest</code> at <code>1.1.0</code> - under normal circumstances this is what will be installed and used to build libraries that depend on it.</p>
 <p>But say we want to add a new feature or fix some code in <code>alcotest</code> and then try building some libraries that use it, do we have to release a new version or manually change the opam repository? No. You can run <code>opam pin add alcotest . --kind=path</code> from within the <code>alcotest</code> library.</p>
-<p>It is important to know that opam is git-based when it comes to source code hence the need to specify <code>--kind=path</code> otherwise it will try and use the latest commit and you don't want to commit everytime you want to try to change something.</p>
+<p>It is important to know that opam is git-based when it comes to source code hence the need to specify <code>--kind=path</code> otherwise it will try and use the latest commit and you don't want to commit every time you want to try to change something.</p>
 <h3 id="source-and-show">Source and Show</h3>
 <p>Source and show are very useful commands for library authors. Source downloads the latest code attached to the version of a given library.</p>
 <p>Show allows you to see the metadata associated with a library. You can even print the opam file with: <code>opam show &lt;library&gt; --raw</code></p>

@@ -4,7 +4,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta charset="utf-8"/>
   <meta name="description"
-   content="Use js_of_ocaml to run OCaml code in the browser"/>
+   content="Use js_of_ocaml to run OCaml code in the browser and interoperate with Javascript libraries from OCaml"
+   />
   <link rel="stylesheet"
    href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
    />
@@ -164,6 +165,14 @@
            </ul>
            <ul class="toc">
             <li class="toc-li">
+             <a class="toc-link toc-item-3"
+              href="#interoperating-with-javascript">
+              Interoperating with Javascript
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li class="toc-li">
              <a class="toc-link toc-item-3" href="#working-with-json">
               Working with JSON
              </a>
@@ -197,7 +206,7 @@
                                                      
     <main id="main"> 
      <h1 id="running-ocaml-in-your-browser">Running OCaml in your Browser</h1>
-<p><em>Last Updated: 08, September 2020 at 15:00:08</em></p>
+<p><em>Last Updated: 23, September 2020 at 13:48:05</em></p>
 <div><p>Platform tools: <span class="details-tools"><a href="/platform/dune">Dune</a></span></p></div>
 <h2 id="overview">Overview</h2>
 <p>OCaml byte-code can be compiled to Javascript to run in your browser using the <a href="https://github.com/ocsigen/js_of_ocaml"><code>js_of_ocaml</code></a> compiler. This allows you to write statically type-checked OCaml code to run in a browser, rather than dynamically typed Javascript leading to safer code at runtime.</p>
@@ -215,7 +224,8 @@
  (modes js))
 </code></pre>
 <p>This will output your main file into a Javascript file called <code>main.bc.js</code>. To get this running in your browser you can then create an <code>index.html</code> file in the same <code>_build/default</code> folder and include the JS file in a script tag: <code>&lt;script src=&quot;main.bc.js&gt;&lt;/script&gt;</code>. This is the quickest way to get started. If you had node installed you could also run it using <code>node _build/default/main.bc.js</code>.</p>
-<p>Although Javascript has many features in common with functional-styled programming, it primarily works using objects and mutable data. To make the transition from OCaml to Javascript easier, there is a <a href="https://ocsigen.org/js_of_ocaml/3.1.0/manual/ppx">ppx</a> to make objects using the OCaml syntax. There is a <a href="/workflows/meta-programming-with-ppx">separate workflow</a> if you are unfamiliar with OCaml's meta-programming capabilities with ppx. Once installed, you can make objects fairly simply. Make sure you preprocess your files by adding <code>(preprocess (pps js_of_ocaml-ppx))</code> to your dune file.</p>
+<h3 id="interoperating-with-javascript">Interoperating with Javascript</h3>
+<p>Although Javascript has many features in common with functional-styled programming, it primarily works using objects and mutable data. To make the transition from OCaml to Javascript easier, there is a <a href="https://ocsigen.org/js_of_ocaml/3.1.0/manual/ppx">ppx</a> to make objects using the OCaml syntax and access methods and properties. There is a <a href="/workflows/meta-programming-with-ppx">separate workflow</a> if you are unfamiliar with OCaml's meta-programming capabilities with ppx. Once installed, you can make objects fairly simply. Make sure you preprocess your files by adding <code>(preprocess (pps js_of_ocaml-ppx))</code> to your dune file.</p>
 <!-- $MDX file=examples/ppx/dune -->
 <pre><code>(executable
  (name main)
@@ -224,28 +234,52 @@
  (modes js))
 </code></pre>
 <!-- $MDX file=examples/ppx/main.ml -->
-<pre><code class="language-ocaml">let () =
-  let person =
+<pre><code class="language-ocaml">let person =
     object%js (self)
       val name = &quot;Alice&quot; [@@readwrite]
-
-      method set str = self##.name := str
-
       method get = self##.name
+      method set str = self##.name := str
     end
-  in
+
+let () = 
   print_endline person##get;
   person##set &quot;Bob&quot;;
   print_endline person##get
 </code></pre>
 <p>Here we use the ppx in conjunction with OCaml's object system to create Javascript objects. By tagging properties (<code>val name</code>) with attributes you can change the semantics of how they are used. With <code>[@@readwrite]</code> we force <code>name</code> to be readable and writable.</p>
-<pre><code class="language-sh">$ dune build
-$ grep -A3 &quot;person=&quot; _build/default/main.bc.js
-     person=
-      {&quot;name&quot;:t8,
-       &quot;set&quot;:caml_js_wrap_meth_callback(t9),
-       &quot;get&quot;:caml_js_wrap_meth_callback(t10)},
+<p>A common desire is to call pre-existing Javascript functions, constructors and variables from OCaml. The recommended way to do this is to add as much type safety as you can. Consider this snippet of Javascript that we pretend is being provided by a library.</p>
+<!-- $MDX file=examples/types/lib.js -->
+<pre><code class="language-javascript">// A simple person object 
+class Person {
+  constructor(name) {
+    this.name = name
+  }
+
+  printName = () =&gt; {
+    console.log(this.name)
+  }
+}
 </code></pre>
+<p>We want to (a) define a matching class type for this object, (b) construct a new object using the <code>Person</code> constructor and (c) call the <code>printName</code> function. First, the class type. We use OCaml's built-in object system to do this.</p>
+<!-- $MDX file=examples/types/main.ml,part=0 -->
+<pre><code class="language-ocaml">(* Defining the Person object type *)
+class type person =
+  object
+    val name : Js.js_string Js.prop
+
+    method printName : unit -&gt; unit Js.meth
+  end
+</code></pre>
+<p>In order to interact directly with Javascript we must provide the <code>Js</code> types for methods and properties. Here <code>name</code> is a <code>Js.js_string</code> property and <code>printName</code> takes a <code>unit</code> and returns one. The next step is to bind the constructor.</p>
+<!-- $MDX file=examples/types/main.ml,part=1 -->
+<pre><code class="language-ocaml">let person : (Js.js_string Js.t -&gt; person Js.t) Js.constr =
+  Js.Unsafe.js_expr &quot;Person&quot;
+
+let () =
+  let v = new%js person (Js.string &quot;Alice&quot;) in
+  v##printName ()
+</code></pre>
+<p>The <code>person</code> function has type <code>(Js.js_string Js.t -&gt; person Js.t)</code> as we must provide a Javascript string in order to fulfill the original constructor and in return we get our person object. <code>Js.t</code> is the type of Javascript objects. In order to call the constructor we use the ppx syntax with <code>new%js &lt;constructor&gt; &lt;arguments&gt;</code>. Finally we use the ppx syntax again (<code>##</code>) to call the <code>printName</code> function.</p>
 <h3 id="working-with-json">Working with JSON</h3>
 <p><a href="https://www.json.org/json-en.html">Javascript Object Notation</a> (JSON) is a data format that is very commonly used for web applications and exchanging information over the internet. There is a very close relationship between OCaml types and JSON structures. The two main types being objects (similar to OCaml records) and arrays (similar to OCaml lists or arrays). There are a few OCaml libraries for working with JSON including <a href="https://github.com/dbuenzli/jsonm">jsonm</a> (and the simplified <a href="https://github.com/mirage/ezjsonm">ezjsonm</a>) and <a href="https://github.com/ocaml-community/yojson">yojson</a>.</p>
 <p>Yojson is perhaps the friendliest interface for working with JSON. There is also a <a href="https://github.com/ocaml-ppx/ppx_deriving_yojson">ppx_deriving_yojson</a> library which will automatically generate the encoding (<code>to_yojson</code>) and decoding (<code>of_yojson</code>) functions for your OCaml types. Here's an example:</p>

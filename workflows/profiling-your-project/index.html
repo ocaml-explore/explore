@@ -186,6 +186,20 @@
           <li><a class="toc-link toc-item-2" href="#memory">Memory</a>
            <ul class="toc">
             <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#statmemprof-profiling">
+              Statmemprof Profiling
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#spacetime-profiling">
+              Spacetime Profiling
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li class="toc-li">
              <a class="toc-link toc-item-3" href="#garbage-collection">
               Garbage Collection
              </a>
@@ -392,6 +406,43 @@ let () =
 <pre><code class="language-sh">dune exec -- ./bench.exe | bechamel-html &gt; index.html
 </code></pre>
 <h2 id="memory">Memory</h2>
+<h3 id="statmemprof-profiling">Statmemprof Profiling</h3>
+<p>As of OCaml version <em>4.11</em> the compiler now supports a statistical memory profiler. This is accessible through the <code>Gc</code> module. Jane Street have developed tooling around the instrumentation of the profiler some of which is <a href="https://github.com/janestreet/memtrace">publicly available</a>.</p>
+<p>There library, <code>memtrace</code>, makes it incredibly simple to add profiling to your projects. Again we'll use the <code>alloc</code> sandmark test.</p>
+<!-- $MDX file=examples/statmemprof/main.ml -->
+<pre><code class="language-ocaml">Memtrace.trace_if_requested ~context:&quot;alloc&quot; ()
+
+let iterations = (try int_of_string(Array.get Sys.argv 1) with _ -&gt; 10_000)
+
+type a_mutable_record = { an_int : int; mutable a_string : string ; a_float: float } 
+
+let rec create f n =
+  match n with 
+  | 0 -&gt; ()
+  | _ -&gt; let _ = f() in
+  create f (n-1)
+
+let () = for _ = 0 to iterations do
+  Sys.opaque_identity create (fun () -&gt; { an_int = 5; a_string = &quot;foo&quot;; a_float = 0.1 }) 1000
+done
+</code></pre>
+<p>The only change is a call to <code>Memtrace.trace_if_requested</code>.</p>
+<pre><code class="language-sh">$ dune build 
+$ MEMTRACE=mem _build/default/main.exe
+$ memtrace_dump_trace mem | head -5
+0000001454 0000000000 alloc 1 len=3    0: $2266518312 Dune__exe__Main@main.ml:14:2-93 Dune__exe__Main.create@main.ml:10:17-20 Dune__exe__Main.(fun)@main.ml:14:40-87
+0000001612 0000000000 collect
+0000002231 0000000001 alloc 1 len=3    4: $2266518312 Dune__exe__Main@main.ml:14:2-93 Dune__exe__Main.create@main.ml:10:17-20 Dune__exe__Main.(fun)@main.ml:14:40-87
+0000002244 0000000001 collect
+0000003806 0000000002 alloc 1 len=3    4: $2266518312 Dune__exe__Main@main.ml:14:2-93 Dune__exe__Main.create@main.ml:10:17-20 Dune__exe__Main.(fun)@main.ml:14:40-87
+$ memtrace_hotspots mem | head -5
+Trace for ./profiling-your-project/examples/statmemprof/_build/default/main.exe [76154]:
+   34 samples of  0.3 GB allocations
+
+ 0.3 GB (100.0%) at Dune__exe__Main.(fun) (main.ml:14:40-87)
+</code></pre>
+<p>More internal tooling that Jane Street use should be <a href="https://github.com/janestreet/memtrace/blob/master/README.md">available soon</a>.</p>
+<h3 id="spacetime-profiling">Spacetime Profiling</h3>
 <p>To enable memory profiling (much like with fuzzing) you need to install specific variants of the OCaml compiler - in particular it must have <code>+spacetime</code> in its package name.</p>
 <p>Spacetime monitors the OCaml heap - this is where values are stored if they are not represented as unboxed integers. You can set the interval you want spacetime to monitor at by issuing:</p>
 <pre><code class="language-bash">ocamlopt -o &lt;executable&gt; somefile.ml

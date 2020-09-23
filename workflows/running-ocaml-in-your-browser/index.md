@@ -2,8 +2,8 @@
 authors:
   - Patrick Ferris
 title: Running OCaml in your Browser
-date: 2020-09-08 15:00:09
-description: Use js_of_ocaml to run OCaml code in the browser
+date: 2020-09-23 13:48:06
+description: Use js_of_ocaml to run OCaml code in the browser and interoperate with Javascript libraries from OCaml
 topic: 
   coding: 
     - false
@@ -43,7 +43,9 @@ This can be built with `dune build`, provided the `js_of_ocaml` package is insta
 
 This will output your main file into a Javascript file called `main.bc.js`. To get this running in your browser you can then create an `index.html` file in the same `_build/default` folder and include the JS file in a script tag: `<script src="main.bc.js></script>`. This is the quickest way to get started. If you had node installed you could also run it using `node _build/default/main.bc.js`. 
 
-Although Javascript has many features in common with functional-styled programming, it primarily works using objects and mutable data. To make the transition from OCaml to Javascript easier, there is a [ppx](https://ocsigen.org/js_of_ocaml/3.1.0/manual/ppx) to make objects using the OCaml syntax. There is a [separate workflow](/workflows/meta-programming-with-ppx) if you are unfamiliar with OCaml's meta-programming capabilities with ppx. Once installed, you can make objects fairly simply. Make sure you preprocess your files by adding `(preprocess (pps js_of_ocaml-ppx))` to your dune file. 
+### Interoperating with Javascript 
+
+Although Javascript has many features in common with functional-styled programming, it primarily works using objects and mutable data. To make the transition from OCaml to Javascript easier, there is a [ppx](https://ocsigen.org/js_of_ocaml/3.1.0/manual/ppx) to make objects using the OCaml syntax and access methods and properties. There is a [separate workflow](/workflows/meta-programming-with-ppx) if you are unfamiliar with OCaml's meta-programming capabilities with ppx. Once installed, you can make objects fairly simply. Make sure you preprocess your files by adding `(preprocess (pps js_of_ocaml-ppx))` to your dune file. 
 
 <!-- $MDX file=examples/ppx/dune -->
 ```
@@ -56,16 +58,14 @@ Although Javascript has many features in common with functional-styled programmi
 
 <!-- $MDX file=examples/ppx/main.ml -->
 ```ocaml
-let () =
-  let person =
+let person =
     object%js (self)
       val name = "Alice" [@@readwrite]
-
-      method set str = self##.name := str
-
       method get = self##.name
+      method set str = self##.name := str
     end
-  in
+
+let () = 
   print_endline person##get;
   person##set "Bob";
   print_endline person##get
@@ -73,14 +73,48 @@ let () =
 
 Here we use the ppx in conjunction with OCaml's object system to create Javascript objects. By tagging properties (`val name`) with attributes you can change the semantics of how they are used. With `[@@readwrite]` we force `name` to be readable and writable. 
 
-```sh dir=examples/ppx
-$ dune build
-$ grep -A3 "person=" _build/default/main.bc.js
-     person=
-      {"name":t8,
-       "set":caml_js_wrap_meth_callback(t9),
-       "get":caml_js_wrap_meth_callback(t10)},
+A common desire is to call pre-existing Javascript functions, constructors and variables from OCaml. The recommended way to do this is to add as much type safety as you can. Consider this snippet of Javascript that we pretend is being provided by a library. 
+
+<!-- $MDX file=examples/types/lib.js -->
+```javascript
+// A simple person object 
+class Person {
+  constructor(name) {
+    this.name = name
+  }
+
+  printName = () => {
+    console.log(this.name)
+  }
+}
 ```
+
+We want to (a) define a matching class type for this object, (b) construct a new object using the `Person` constructor and (c) call the `printName` function. First, the class type. We use OCaml's built-in object system to do this.
+
+<!-- $MDX file=examples/types/main.ml,part=0 -->
+```ocaml
+(* Defining the Person object type *)
+class type person =
+  object
+    val name : Js.js_string Js.prop
+
+    method printName : unit -> unit Js.meth
+  end
+```
+
+In order to interact directly with Javascript we must provide the `Js` types for methods and properties. Here `name` is a `Js.js_string` property and `printName` takes a `unit` and returns one. The next step is to bind the constructor.
+
+<!-- $MDX file=examples/types/main.ml,part=1 -->
+```ocaml
+let person : (Js.js_string Js.t -> person Js.t) Js.constr =
+  Js.Unsafe.js_expr "Person"
+
+let () =
+  let v = new%js person (Js.string "Alice") in
+  v##printName ()
+```
+
+The `person` function has type `(Js.js_string Js.t -> person Js.t)` as we must provide a Javascript string in order to fulfill the original constructor and in return we get our person object. `Js.t` is the type of Javascript objects. In order to call the constructor we use the ppx syntax with `new%js <constructor> <arguments>`. Finally we use the ppx syntax again (`##`) to call the `printName` function. 
 
 ### Working with JSON 
 

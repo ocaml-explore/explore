@@ -170,6 +170,13 @@
            </ul>
            <ul class="toc">
             <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#using-libraries">
+              Using Libraries
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li class="toc-li">
              <a class="toc-link toc-item-3" href="#generating-an-opam-file">
               Generating an Opam File
              </a>
@@ -201,7 +208,7 @@
                                                      
     <main id="main"> 
      <h1 id="starting-a-new-project">Starting a new Project</h1>
-<p><em>Last Updated: 15, September 2020 at 09:17:40</em></p>
+<p><em>Last Updated: 23, September 2020 at 10:51:38</em></p>
 <div><p>Platform tools: <span class="details-tools"><a href="/platform/dune">Dune</a></span></p></div>
 <h2 id="overview">Overview</h2>
 <p>Starting a new coding project is exciting. This excitement shouldn't be taken away by hard-to-understand (or worse, broken) tooling. There's no correct way to set up your OCaml project, but what follows is a fairly common structure that works for a majority of programs. Along the way we'll be using dune as the the build tool and <a href="/pages/opam">opam</a> as the package manager.</p>
@@ -224,6 +231,12 @@ Success: initialized library component named numbers
 $ cat dune 
 (library
  (name numbers))
+</code></pre>
+<h3 id="using-libraries">Using Libraries</h3>
+<p>Opam allows you to install libraries from the <a href="https://github.com/ocaml/opam-repository">opam-repository</a>. If you run <code>opam install irmin</code> this will build the <a href="https://irmin.io/">irmin</a> library for you in the global switch directory (somewhere like <code>~/.opam/&lt;switch&gt;/lib/irmin</code>) or in the local directory (<code>./_opam</code>). Once installed whenever you add a library to your dune file, dune will be able to build your code to include that library.</p>
+<pre><code>(executable
+  (name main)
+  (libraries irmin))
 </code></pre>
 <h3 id="generating-an-opam-file">Generating an Opam File</h3>
 <p>The next step is to generate your <a href="/pages/opam-file">opam file</a>. An opam file unlocks the power of the opam package manager and often other parts of the OCaml Platform tooling. It is always recommended to have one, even if you have no intention of publishing the code to the central opam repository. There are three ways you can do this:</p>
@@ -295,6 +308,8 @@ build: [
 ]
 dev-repo: &quot;git+https://github.com/alicesmith/numbers.git&quot;
 </code></pre>
+<p>Adding dependencies is not automatic in OCaml. For example, you might have <code>zarith</code> already installed and your dune file might add it in a <code>libraries</code> field, but you need to add it to your <code>dune-project</code>'s description of the opam file. This means other people who might not have it installed will get it whenever they try and install your library.</p>
+<p>The <code>:with-test</code> flag tells opam that unless specified this dependency does not need to be installed in order to use the package. Another similar flag is <code>:with-doc</code> for documentation only dependencies.</p>
 <p>Note that sometimes you need an escape-hatch as the specification in <code>dune-project</code> for opam files is not as flexible as an opam file - for this you should use the <a href="https://dune.readthedocs.io/en/stable/opam.html#opam-template">templates</a> to include things like <code>pin-depends</code> to add unreleased packages.</p>
 <h3 id="next-steps">Next steps</h3>
 <p>The simple project above should be enough to get you started with building OCaml projects outlining the most important features like directory structure, dune files and opam files. There are multiple next steps you can take, here are just a few:</p>
