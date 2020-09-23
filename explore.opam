@@ -12,16 +12,11 @@ depends: [
   "alcotest" {with-test}
   "ocaml" {= "4.11.0"}
   "core"
-  "httpaf"
-  "httpaf-lwt-unix"
-  "fmt"
   "bechamel"
   "tyxml"
   "omd"
   "yaml"
   "memtrace"
-  "ptime"
-  "calendar"
   "tyxml-ppx"
   "mdx"
   "ppx_jane"
