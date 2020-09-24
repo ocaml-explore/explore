@@ -32,6 +32,8 @@
   (ocaml
    (= 4.11.0))
   core
+  (dune-release
+   (= 1.4.0))
   bechamel
   tyxml
   omd
