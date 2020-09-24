@@ -16,8 +16,7 @@
 (package
  (name numbers)
  (synopsis "A library for useful number functions")
- (description
-   "This library provides useful number functions and duplicates all of them to have a Zarith version as well")
+ (description "This library provides useful number functions")
  (depends
   (alcotest :with-test)
   (yaml
