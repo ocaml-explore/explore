@@ -20,4 +20,5 @@
    "This library provides useful number functions and duplicates all of them to have a Zarith version as well")
  (depends
   (alcotest :with-test)
-  yaml))
+  (yaml
+   (= 2.1.0))))
