@@ -2,7 +2,7 @@
 authors:
   - Patrick Ferris
 title: Publishing a Package on Opam
-date: 2020-07-27 09:35:49
+date: 2020-09-25 13:25:15
 description: Share your libraries or applications with the community
 topic: 
   publishing: 
@@ -75,7 +75,7 @@ Now with your documentation and archive somewhere accessible, the last step is t
 
 Note that all the commands have a very thorough and helpful `--help` page to explain in detail what they do. In summary, if everything is set up correctly you can run. 
 
-``` 
+```
 $ dune-release lint 
 # Update CHANGES with new release version
 $ dune-release tag 
@@ -89,3 +89,27 @@ $ dune-release opam submit
 There is also [this helpful graphic](/images/dune-release.png) to remind you of the process. 
 
 ### For Everyone Else 
+
+If you are not using dune and Github then the easiest way to publish your code is using `opam-publish`. The idea is very similar in terms of tagging your git repository, generating an archive and making a pull request to the central opam repository. 
+
+The first thing you should probably try is `opam install .` from your repository. This is to ensure you have a well formatted opam file. If this installs successfully then you are good to move on. 
+
+In your version control system (VCS) you need to tag a commit with a version ready for release. The command for git is: 
+
+```
+# Tag the commit with a version number
+$ git tag -a v.1.2.0 
+# Push upstream -- this generates an archive on Github
+$ git push origin v1.2.0
+```
+
+From here the `opam publish` command can take over and make the pull request for you. Note that the first time you use it you will have to provide credentials in order to integrate it with the code hosting service you use. 
+
+```
+# For Github users 
+$ opam publish 
+# For non-Github users 
+$ opam publish <url-of-archive> .
+```
+
+Opam-publish doesn't have the same documentation capabilities -- be sure the read up [on managing documentation](/workflows/documenting-your-project) for your project. 
