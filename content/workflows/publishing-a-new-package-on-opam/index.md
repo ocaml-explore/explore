@@ -63,8 +63,29 @@ $ dune-release lint
 [ OK ] Skipping doc field linting, no doc field found
 ```
 
-One of the more important documents is the `CHANGES` file. This specifies what parts of codebase have changed (new functionality, bug fixes etc.) since the last version. Not only is this important for users of your package, the `dune-release` tool can use it to automatically tag the latest commit with the correct version. The [Irmin CHANGES](https://github.com/mirage/irmin/blob/master/CHANGES.md#220-2020-06-26) file is a good example. 
+One of the more important documents is the `CHANGES` file. This specifies what parts of codebase have changed (new functionality, bug fixes etc.) since the last version. Not only is this important for users of your package, the `dune-release` tool can use it to automatically tag the latest commit with the correct version. The [Irmin CHANGES](https://github.com/mirage/irmin/blob/master/CHANGES.md#220-2020-06-26) file is a good example you can base your own file off of. 
 
-Licensing your software is also important. The [open source initiative](https://opensource.org/licenses) details their approved list. Another fairly common license is [ISC](https://en.wikipedia.org/wiki/ISC_license).
+Licensing your software is also important. The [open source initiative](https://opensource.org/licenses) details their approved list. Another fairly common license is [ISC](https://en.wikipedia.org/wiki/ISC_license). 
+
+Once `dune-release lint` is happy and you are ready to release your software, you need to tag it. This is as simple as running `dune-release tag`. As mentioned before, with a correctly formatted CHANGES file this will be automatic. Otherwise, dune-release will not find the change log and you need to manually specify the version number (e.g. `dune-release tag v.1.2.0`). You can use the `-d` flag to delete tags if you want to change something. 
+
+The next step is to generate the archive -- this can be done by running `dune-release distrib`. Finally you can publish the release of your code to Github with `dune-release publish distrib` and if you want to push your documentation to Github pages then run `dune-release publish doc`. 
+
+Now with your documentation and archive somewhere accessible, the last step is to generate the opam repository specific opam file and make a pull request to the central opam repository. To generate an opam file run `dune-release opam pkg` and to make the pull request. 
+
+Note that all the commands have a very thorough and helpful `--help` page to explain in detail what they do. In summary, if everything is set up correctly you can run. 
+
+```bash 
+$ dune-release lint 
+# Update CHANGES with new release version
+$ dune-release tag 
+# You can run the next commands with just dune-release
+$ dune-release distrib
+$ dune-release publish 
+$ dune-release opam pkg 
+$ dune-release opam submit 
+```
+
+There is also [this helpful graphic](/images/dune-release.png) to remind you of the process. 
 
 ### For Everyone Else 
