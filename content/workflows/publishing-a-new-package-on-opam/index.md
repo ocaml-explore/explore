@@ -71,7 +71,7 @@ Once `dune-release lint` is happy and you are ready to release your software, yo
 
 The next step is to generate the archive -- this can be done by running `dune-release distrib`. Finally you can publish the release of your code to Github with `dune-release publish distrib` and if you want to push your documentation to Github pages then run `dune-release publish doc`. 
 
-Now with your documentation and archive somewhere accessible, the last step is to generate the opam repository specific opam file and make a pull request to the central opam repository. To generate an opam file run `dune-release opam pkg` and to make the pull request. 
+Now with your documentation and archive somewhere accessible, the last step is to generate the opam repository specific opam file and make a pull request to the central opam repository. To generate an opam file run `dune-release opam pkg` and to make the pull request `dune-release opam submit`.  
 
 Note that all the commands have a very thorough and helpful `--help` page to explain in detail what they do. In summary, if everything is set up correctly you can run. 
 
