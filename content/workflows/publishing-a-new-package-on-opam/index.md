@@ -38,7 +38,7 @@ How you tag, produce the archive, generate the slightly different opam file and 
 
 ### Opam Continuous Integration 
 
-Whenever you make a pull-request to add your latest package information to the central opam repository a series of continuous integration tools are run to check your code build, installs and how it impacts reverse dependencies (those tools that depend on your package). [TravisCI](https://travis-ci.com/) is used to check if your new release will install on a variety of platforms including MacOS and FreeBSD. [Camelus](https://github.com/ocaml-opam/Camelus) reports on a variety of problems to help ease the burden on maintainers like linting the file and checking what new packages have become available (or not) as a result of the PR. 
+Whenever you make a pull-request to add your latest package information to the central opam repository a series of continuous integration tools are run to check your code build, installs and how it impacts reverse dependencies (those tools that depend on your package). [TravisCI](https://travis-ci.com/) is used to check if your new release will install on a variety of platforms including MacOS, FreeBSD and arm64. [Camelus](https://github.com/ocaml-opam/Camelus) reports on a variety of problems to help ease the burden on maintainers like linting the file and checking what new packages have become available (or not) as a result of the PR. 
 
 Finally, a tool called [DataKit-CI](https://github.com/moby/datakit/tree/master/ci) does the heavy lifting and checks more platforms and the reverse dependencies. For those interested, there is a new CI tool based on [ocurrent](https://github.com/ocurrent/ocurrent) pipelines [coming soon](https://www.youtube.com/watch?v=HjcCUZ9i-ug).
 
@@ -75,7 +75,7 @@ Now with your documentation and archive somewhere accessible, the last step is t
 
 Note that all the commands have a very thorough and helpful `--help` page to explain in detail what they do. In summary, if everything is set up correctly you can run. 
 
-```bash 
+``` 
 $ dune-release lint 
 # Update CHANGES with new release version
 $ dune-release tag 
