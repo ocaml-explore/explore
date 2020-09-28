@@ -214,8 +214,7 @@
 <h3 id="writing-documentation-using-odoc">Writing Documentation using Odoc</h3>
 <p>OCaml has a tool, <a href="/libraries/odoc">odoc</a>, for generating documentation from comments in the code that start with a double asterisk <code>(** my nice comment *)</code>.</p>
 <p>The full documentation for the syntax of documentation comments can be found <a href="https://caml.inria.fr/pub/docs/manual-ocaml/ocamldoc.html#s%3Aocamldoc-comments">here</a>. The recommended place for documentation strings are in the interface (<code>.mli</code>) files. Here is a small example for a library which offers a, very limited, selection of functions on numbers.</p>
-<!-- $MDX file=examples/doc/src/numbers.mli -->
-<pre><code class="language-ocaml">(** {1 Types} *)
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/documenting-your-project/examples/doc/src/numbers.mli">Source Code</a></p></div><pre><code class="language-ocaml">(** {1 Types} *)
 
 type err = [ `Undefined of string ]
 (** The type of number errors *)
@@ -227,7 +226,7 @@ val fact : int -&gt; (int, err) Result.t
     factorial}). If [n] is less than [0] then it returns an [Error err] where
     the errors are {!err} *)
 </code></pre>
-<p>The parts of the documentation strings in square brackets like <code>[fact n]</code> will be formatted as code in the documentation site. Another useful feature is the <code>{{: &lt;link&gt;} &lt;text&gt;}</code> constructor for making links to external resources. The comments with <code>{1 &lt;header&gt;}</code> indicate level one headers.</p>
+</div><p>The parts of the documentation strings in square brackets like <code>[fact n]</code> will be formatted as code in the documentation site. Another useful feature is the <code>{{: &lt;link&gt;} &lt;text&gt;}</code> constructor for making links to external resources. The comments with <code>{1 &lt;header&gt;}</code> indicate level one headers.</p>
 <p>You can cross reference other types, functions and modules using the <code>{! &lt;value&gt;}</code> syntax. This is being used to link back to the <code>err</code> type. For large projects this can help moving around the interface that is exposed to your users.</p>
 <h3 id="generating-documentation">Generating Documentation</h3>
 <p>If you are already using opam and dune then the hardest part to generating documentation is actually writing it. From the root of your project it is as simple as:</p>

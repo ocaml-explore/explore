@@ -206,8 +206,7 @@
 val add_one : int -&gt; int = &lt;fun&gt;
 </code></pre>
 <p>We can actually print the Parsetree using the OCaml compiler from the command line: <code>ocamlopt -dparsetree file.ml</code>. What follows is the Parsetree component for the <code>add_one</code> function. The <code>pexp</code> function takes a <code>Parsetree.expression_desc</code> and creates a <code>Parsetree.expression</code> by filling in details like attributes and location with dummy information to make the example more readable. <code>ppat</code> and <code>pvb</code> are similar functions for those types.</p>
-<!-- $MDX file=examples/parsetree/main.ml,part=1 -->
-<pre><code class="language-ocaml">let (p : structure) =
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/meta-programming-with-ppx/examples/parsetree/main.ml">Source Code</a></p></div><pre><code class="language-ocaml">let (p : structure) =
   [
     {
       pstr_desc =
@@ -247,7 +246,7 @@ val add_one : int -&gt; int = &lt;fun&gt;
     };
   ]
 </code></pre>
-<p>If the tree structure does not reveal itself from the code, this greatly simplified diagram should help.</p>
+</div><p>If the tree structure does not reveal itself from the code, this greatly simplified diagram should help.</p>
 <p><img src="/images/parsetree.png" alt="The OCaml AST for let add_one x = x + 1" /></p>
 <p>Manipulating the tree structure is much simpler than working with text. A ppx works on these structures allowing you to access the information and perform transformations from one tree to another.</p>
 <h2 id="recommended-workflow">Recommended Workflow</h2>
@@ -255,8 +254,7 @@ val add_one : int -&gt; int = &lt;fun&gt;
 <p>Dune comes with ppx support which makes it very easy to start using different ppx libraries to meta-program in OCaml. In this example we will define a new type of person and try to use it with the <code>Core.Hashtbl</code> module.</p>
 <p>The Core implementation of a <a href="https://github.com/janestreet/base/blob/master/src/hashtbl_intf.ml#L425">hashtable expects</a> an <code>'a Key.t</code> which should be a first-class module with hash, compare and s-expression functions. This is very common for Jane Street modules so they made ppxes to auto-generate such functions from type signatures.</p>
 <p>To generate these functions we label it with a type deriving attribute.</p>
-<!-- $MDX file=examples/ppx_jane/main.ml -->
-<pre><code class="language-ocaml">open Core
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/meta-programming-with-ppx/examples/ppx_jane/main.ml">Source Code</a></p></div><pre><code class="language-ocaml">open Core
 
 module Person = struct 
   type t = {
@@ -271,15 +269,14 @@ let () =
     Hashtbl.add_exn tbl ~key:alice ~data:&quot;1234&quot;; 
     print_string (Hashtbl.find_exn tbl alice)
 </code></pre>
-<p>The dune file will be:</p>
-<!-- $MDX file=examples/ppx_jane/dune -->
-<pre><code>(executable
+</div><p>The dune file will be:</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/meta-programming-with-ppx/examples/ppx_jane/dune">Source Code</a></p></div><pre><code>(executable
  (name main)
  (libraries core)
  (preprocess
   (pps ppx_jane)))
 </code></pre>
-<p>The <code>[@@deriving...]</code> attribute tells the compiler to insert new nodes derived from the type. For example, consider deriving the compare function.</p>
+</div><p>The <code>[@@deriving...]</code> attribute tells the compiler to insert new nodes derived from the type. For example, consider deriving the compare function.</p>
 <pre><code class="language-ocaml">type t = { id : int } [@@deriving compare]
 </code></pre>
 <p>To see what the compiler is actually compiling we can add <code>(ocamlopt_flags (:standard -dsource))</code> to our dune file's executable stanza to print the actual compiled source code. With this, a simplified version of what we get is:</p>

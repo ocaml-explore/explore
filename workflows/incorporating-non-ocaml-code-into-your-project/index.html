@@ -235,29 +235,26 @@ type poly = [ `Int | `String ]
 <pre><code class="language-ocaml">external &lt;ocaml-name&gt; : &lt;type-of-function&gt; = &quot;&lt;c-function-name&gt;&quot;
 </code></pre>
 <p>The C function will take OCaml values as arguments (which will be encoded using the data representation previously described). For example if we want to have an external C <code>add</code> function the C file would be.</p>
-<!-- $MDX file=examples/c-from-ocaml/add.c -->
-<pre><code class="language-c">#include &lt;caml/mlvalues.h&gt;
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/incorporating-non-ocaml-code-into-your-project/examples/c-from-ocaml/add.c">Source Code</a></p></div><pre><code class="language-c">#include &lt;caml/mlvalues.h&gt;
 
 value add_c(value a, value b)
 {
   return Val_long(Long_val(a) + (Long_val(b)));
 }
 </code></pre>
-<p>To access the code in OCaml we define an external <code>add</code> function and give it proper OCaml types within our <code>main.ml</code> file.</p>
-<!-- $MDX file=examples/c-from-ocaml/main.ml -->
-<pre><code class="language-ocaml">external add : int -&gt; int -&gt; int = &quot;add_c&quot;
+</div><p>To access the code in OCaml we define an external <code>add</code> function and give it proper OCaml types within our <code>main.ml</code> file.</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/incorporating-non-ocaml-code-into-your-project/examples/c-from-ocaml/main.ml">Source Code</a></p></div><pre><code class="language-ocaml">external add : int -&gt; int -&gt; int = &quot;add_c&quot;
 
 let () = print_int (add 10 10)
 </code></pre>
-<p>Finally we compile everything using dune and the <em>foreign_stubs</em> optional field.</p>
-<!-- $MDX file=examples/c-from-ocaml/dune -->
-<pre><code>(executable
+</div><p>Finally we compile everything using dune and the <em>foreign_stubs</em> optional field.</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/incorporating-non-ocaml-code-into-your-project/examples/c-from-ocaml/dune">Source Code</a></p></div><pre><code>(executable
  (name main)
  (foreign_stubs
   (language c)
   (names add)))
 </code></pre>
-<h3 id="interacting-with-ocaml-from-c">Interacting with OCaml from C</h3>
+</div><h3 id="interacting-with-ocaml-from-c">Interacting with OCaml from C</h3>
 <p>Sometimes you might want to do the inverse and access parts on an <a href="https://ocaml.org/releases/4.10/htmlman/intfc.html">OCaml program from a C program</a>. This still suffers from the data represenation shuffling that might need to take place. There are two main ways that you may want to call OCaml from C. Either as callbacks (OCaml calls C which calls OCaml) or just directly from a main C program. The latter requires you to initialise the OCaml code by calling <code>caml_main</code>.</p>
 <p>In order for C to find OCaml functions you need to register them as callbacks using <code>Callback.register</code>. This <a href="https://github.com/patricoferris/ocaml-c-example">small example</a> calls a fibonacci function written in OCaml from C. Note the additional C compiler parameters in the Makefile for linking in the standard library and only producing an object OCaml file.</p>
 <h2 id="real-world-examples">Real World Examples</h2>

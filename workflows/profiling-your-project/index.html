@@ -259,8 +259,7 @@ L101:
 <h3 id="benchmarking-with-perf">Benchmarking with Perf</h3>
 <p><a href="https://perf.wiki.kernel.org/index.php/Main_Page">Perf</a> is a performance analysing tool for Linux. It is Linux only because it relies on non-standard system calls (<code>perf_event_open</code>). With perf you can inspect your program to see where it is spending the most time computing without any instrumentation to your code.</p>
 <p>Take the following small program from the <a href="https://github.com/ocaml-bench/sandmark/blob/77ec0e5f85a21b7e5ae46939e17a8a022740fb61/benchmarks/simple-tests/alloc.ml">sandmark test suite</a>. It explicitly allocates lots of values to heap and uses <code>Sys.opaque_identity</code> to ensure the calls don't get optimised away.</p>
-<!-- $MDX file=examples/perf/src/main.ml,part=1 -->
-<pre><code class="language-ocaml">let iterations = try int_of_string Sys.argv.(1) with _ -&gt; 1_000_000
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/profiling-your-project/examples/perf/src/main.ml">Source Code</a></p></div><pre><code class="language-ocaml">let iterations = try int_of_string Sys.argv.(1) with _ -&gt; 1_000_000
 
 type a_mutable_record = { an_int : int; mutable a_string : string ; a_float: float } 
 
@@ -274,7 +273,7 @@ let () = for _ = 0 to iterations do
   Sys.opaque_identity create (fun () -&gt; { an_int = 5; a_string = &quot;foo&quot;; a_float = 0.1 }) 1000
 done
 </code></pre>
-<p>We can run this program under perf to analyse which functions are being called and what proportion of the program's total execution time they each take up.</p>
+</div><p>We can run this program under perf to analyse which functions are being called and what proportion of the program's total execution time they each take up.</p>
 <pre><code class="language-sh">perf record --call-graph dwarf -i -e cycles:u -- _build/default/main.exe
 </code></pre>
 <p>Here we tell perf to record what's happening with our program. It does this by sampling to see the state of the program every so often including things like the call stack. This is the chain of functions (callers) calling other functions (callees). We pass the <code>--call-graph dwarf</code> parameter to tell perf that it should use that method of inspecting the stack instead of frame pointers. <code>-i</code> tells child tasks to <strong>not</strong> inherit counters. Finally, <code>-e cycles:u</code> tells perf we are only interested in things happening in user space not kernel space.</p>
@@ -311,8 +310,7 @@ done
 <p>Bechamel works by taking tests with inputs, a decision on some configuration parameters and tools to analyse the output. It tries to be platform agnostic by abstracting the tools you use to perform calculations -- for example, you just need a monotonic clock to time executions.</p>
 <p>The first part of writing a benchmark is thinking of what test you are going to run. Unlike unit tests, this isn't about functionality but instead about performance. It's a good idea to vary the inputs. Take, for example, the <a href="https://github.com/avsm/ocaml-yaml/blob/master/lib/yaml.ml#L182"><code>Yaml.of_string</code></a> function. We want to benchmark its performance over increasingly longer or more complex strings of correct yaml.</p>
 <p>To benchmark this function we can generate some random Yaml strings using the Yaml library.</p>
-<!-- $MDX file=examples/bechamel/bench.ml,part=1 -->
-<pre><code class="language-ocaml">let gen_random_yaml_strings n d =
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/profiling-your-project/examples/bechamel/bench.ml">Source Code</a></p></div><pre><code class="language-ocaml">let gen_random_yaml_strings n d =
   let gen_str () = `String (random_string 100) in
   let gen_bool () = if Random.int 2 = 1 then `Bool true else `Bool false in
   let gen_float () = `Float (Random.float 100.) in
@@ -331,9 +329,8 @@ done
   Yaml.pp Format.str_formatter (gen_o d ());
   Format.flush_str_formatter ()
 </code></pre>
-<p>From here a small list of increasingly longer yaml strings can be generated. We will use the <code>Bechamel.Test.make_indexed</code> function later which expects a list of arguments to give to our testing function, so we'll package up the indices along with the inputs.</p>
-<!-- $MDX file=examples/bechamel/bench.ml,part=2 -->
-<pre><code class="language-ocaml">let inputs =
+</div><p>From here a small list of increasingly longer yaml strings can be generated. We will use the <code>Bechamel.Test.make_indexed</code> function later which expects a list of arguments to give to our testing function, so we'll package up the indices along with the inputs.</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/profiling-your-project/examples/bechamel/bench.ml">Source Code</a></p></div><pre><code class="language-ocaml">let inputs =
   List.init 6 (fun i -&gt; (i, gen_random_yaml_strings ((i + 1) * 10) 2))
 
 let args, inputs = List.split inputs
@@ -343,21 +340,19 @@ let of_string inputs i =
   Bechamel.Staged.stage (fun () -&gt;
       match Yaml.of_string v with Ok t -&gt; t | Error _ -&gt; assert false)
 </code></pre>
-<p>Note as well that if <code>Yaml.of_string</code> returns an error then we just panic and fail since there's something wrong with our random yaml generator -- the idea is this should never happen.</p>
+</div><p>Note as well that if <code>Yaml.of_string</code> returns an error then we just panic and fail since there's something wrong with our random yaml generator -- the idea is this should never happen.</p>
 <p><code>make_indexed</code> expects our testing function to be of the form <code>(int -&gt; (unit -&gt; 'a) Staged.t)</code> which can be constructed with the <code>Bechamel.Staged.stage</code> function.</p>
-<!-- $MDX file=examples/bechamel/bench.ml,part=3 -->
-<pre><code class="language-ocaml">let tests =
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/profiling-your-project/examples/bechamel/bench.ml">Source Code</a></p></div><pre><code class="language-ocaml">let tests =
   let test_of_string =
     Bechamel.Test.make_indexed ~name:&quot;of_string&quot; ~args
       (of_string (Array.of_list inputs))
   in
   Bechamel.Test.make_grouped ~name:&quot;yaml&quot; [ test_of_string ]
 </code></pre>
-<p>We make our indexed test where <code>of_string</code> is a partially evaluated function in the sense that it now has its inputs and the framework can just supply it with the indices that we pass using the labelled arguments <code>args</code>.</p>
+</div><p>We make our indexed test where <code>of_string</code> is a partially evaluated function in the sense that it now has its inputs and the framework can just supply it with the indices that we pass using the labelled arguments <code>args</code>.</p>
 <p>Finally we wrap this test up into a group, you could imagine testing many more functions, but here there is only one element.</p>
 <p>Now the testing is in place we need to focus on the backend of our benchmarking -- what do we care about, how are we going to analyse it and the output format.</p>
-<!-- $MDX file=examples/bechamel/bench.ml,part=4 -->
-<pre><code class="language-ocaml">let benchmark () =
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/profiling-your-project/examples/bechamel/bench.ml">Source Code</a></p></div><pre><code class="language-ocaml">let benchmark () =
   let open Bechamel in
   let ols =
     Bechamel.Analyze.ols ~bootstrap:0 ~r_square:true
@@ -373,7 +368,7 @@ let of_string inputs i =
   List.map (fun instance -&gt; Analyze.all ols instance raw_res) instances
   |&gt; fun r -&gt; (Analyze.merge ols instances r, raw_res)
 </code></pre>
-<p>The first thing is <a href="https://en.wikipedia.org/wiki/Ordinary_least_squares">ordinary least squares</a> (OLS), a type of linear regression that bechamel provides to help smooth the noise in the results.</p>
+</div><p>The first thing is <a href="https://en.wikipedia.org/wiki/Ordinary_least_squares">ordinary least squares</a> (OLS), a type of linear regression that bechamel provides to help smooth the noise in the results.</p>
 <p>Instances in bechamel are measurements we can look at. They are based largely on execution time and <a href="#garbage-collection">garbage collection statistics</a>.</p>
 <p>The last piece of the puzzle is to combine everything we have so far into a <a href="https://github.com/dinosaure/bechamel/blob/702fd1685f40f9aea630624a31592412bf397631/lib/benchmark.ml#L48">benchmark</a>. We pass a benchmark configuration with:</p>
 <ul>
@@ -385,8 +380,7 @@ let of_string inputs i =
 <p>The test will run until one of the limits are exceeded. Other parameters include GC stabilisation and the method for sampling. GC stablisation performs a series of <a href="https://caml.inria.fr/pub/docs/manual-ocaml/libref/Gc.html"><code>Gc.compact</code></a> operations to try to minimise the discrepancies between runs by emptying and compacting the heap.</p>
 <p>Once we have the raw results from our benchmark, we need to analyse it using OLS. For each instance from our <code>instances</code> we analyse the results before merging them into a one single hashtable.</p>
 <p>The last piece is to make our entry point for the benchmark executable and use one of the output backends to make our results readable. Here we will use the <a href="https://github.com/dinosaure/bechamel/tree/702fd1685f40f9aea630624a31592412bf397631/lib/js">JS</a> backend combined later with the <a href="https://d3js.org/">D3-based</a> HTML renderer.</p>
-<!-- $MDX file=examples/bechamel/bench.ml,part=5 -->
-<pre><code class="language-ocaml">let nothing _ = Ok ()
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/profiling-your-project/examples/bechamel/bench.ml">Source Code</a></p></div><pre><code class="language-ocaml">let nothing _ = Ok ()
 
 let () =
   Random.self_init ();
@@ -401,7 +395,7 @@ let () =
   | Ok () -&gt; ()
   | Error (`Msg err) -&gt; failwith err
 </code></pre>
-<p>The most important part is the emit function which let's us indicate where we wish the results to go (<code>~dst</code>), what we are plotting (<code>~x_label</code> and <code>~y_label</code>). Since we are using <code>Channel stdout</code> this is of type <code>(out_channel -&gt; unit or_error) dst</code> so we just provide the <code>nothing</code> function to return <code>Ok ()</code>.</p>
+</div><p>The most important part is the emit function which let's us indicate where we wish the results to go (<code>~dst</code>), what we are plotting (<code>~x_label</code> and <code>~y_label</code>). Since we are using <code>Channel stdout</code> this is of type <code>(out_channel -&gt; unit or_error) dst</code> so we just provide the <code>nothing</code> function to return <code>Ok ()</code>.</p>
 <p>We can now execute the benchmark and pipe the results to the bechamel HTML generator. You can see the results generated <a href="./examples/bechamel/index.html">here</a>.</p>
 <pre><code class="language-sh">dune exec -- ./bench.exe | bechamel-html &gt; index.html
 </code></pre>
@@ -409,8 +403,7 @@ let () =
 <h3 id="statmemprof-profiling">Statmemprof Profiling</h3>
 <p>As of OCaml version <em>4.11</em> the compiler now supports a statistical memory profiler. This is accessible through the <code>Gc</code> module. Jane Street have developed tooling around the instrumentation of the profiler some of which is <a href="https://github.com/janestreet/memtrace">publicly available</a>.</p>
 <p>There library, <code>memtrace</code>, makes it incredibly simple to add profiling to your projects. Again we'll use the <code>alloc</code> sandmark test.</p>
-<!-- $MDX file=examples/statmemprof/main.ml -->
-<pre><code class="language-ocaml">Memtrace.trace_if_requested ~context:&quot;alloc&quot; ()
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/profiling-your-project/examples/statmemprof/main.ml">Source Code</a></p></div><pre><code class="language-ocaml">Memtrace.trace_if_requested ~context:&quot;alloc&quot; ()
 
 let iterations = (try int_of_string(Array.get Sys.argv 1) with _ -&gt; 10_000)
 
@@ -426,7 +419,7 @@ let () = for _ = 0 to iterations do
   Sys.opaque_identity create (fun () -&gt; { an_int = 5; a_string = &quot;foo&quot;; a_float = 0.1 }) 1000
 done
 </code></pre>
-<p>The only change is a call to <code>Memtrace.trace_if_requested</code>.</p>
+</div><p>The only change is a call to <code>Memtrace.trace_if_requested</code>.</p>
 <pre><code class="language-sh">$ dune build 
 $ MEMTRACE=mem _build/default/main.exe
 $ memtrace_dump_trace mem | head -5
@@ -480,15 +473,14 @@ prof_spacetime serve -p spacetime-&lt;id&gt;.p
  custom_minor_ratio = 100; custom_minor_max_size = 8192}
 </code></pre>
 <p>A small allocation example can help show how you can use these statistics to determine how allocation-heavy your program is.</p>
-<!-- $MDX file=examples/gc/main.ml,part=0 -->
-<pre><code class="language-ocaml">let alloc n =
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/profiling-your-project/examples/gc/main.ml">Source Code</a></p></div><pre><code class="language-ocaml">let alloc n =
   let lst_lst = List.init n (fun i -&gt; List.init i (fun j -&gt; string_of_int j)) in
   let lst_lst =
     List.map (fun lst -&gt; List.map (fun s -&gt; &quot;Hello &quot; ^ s) lst) lst_lst
   in
   lst_lst
 </code></pre>
-<p>Running <code>alloc 10</code> and collecting GC statistics with <code>Gc.print_stat ()</code> shows that there were no minor or major heap collections. Changing that to <code>alloc 1000</code> gives <code>23</code> minor heap and <code>5</code> major heap collections. There is a brilliant chapter in <a href="https://dev.realworldocaml.org/garbage-collector.html">Real World OCaml</a> that goes into garbage collection in much more detail.</p>
+</div><p>Running <code>alloc 10</code> and collecting GC statistics with <code>Gc.print_stat ()</code> shows that there were no minor or major heap collections. Changing that to <code>alloc 1000</code> gives <code>23</code> minor heap and <code>5</code> major heap collections. There is a brilliant chapter in <a href="https://dev.realworldocaml.org/garbage-collector.html">Real World OCaml</a> that goes into garbage collection in much more detail.</p>
 <h2 id="alternatives">Alternatives</h2>
 <h3>Performance with <code>gprof</code></h3>
 <p><em><strong>Note: gprof is only supported up to version 4.08.0 of the OCaml compiler. Additionally, because of the required linking options with Clang and MacOS you may encounter the following error &quot;<strong>the clang compiler does not support -pg option on versions of OS X 10.9 and later</strong>&quot;</strong></em></p>
