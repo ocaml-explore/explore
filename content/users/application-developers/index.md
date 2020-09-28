@@ -11,7 +11,6 @@ workflows:
   - Setting up Continuous Integration
   - Fixing Bugs in 3rd Party Packages
   - Publishing a Package on Opam
-  - Releasing New Versions of your Project on Opam
   - Fuzz Testing your Project
   - Incorporating non-OCaml Code into your Project
   - Meta-programming with PPX 
