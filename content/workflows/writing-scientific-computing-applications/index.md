@@ -57,7 +57,6 @@ R4  2  2  2  2  2
 
 The `Generic` module offers a lot of predefined functionality such as computing gaussian matrices. 
 
-
 ```ocaml
 ```
 

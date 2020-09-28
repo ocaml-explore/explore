@@ -17,7 +17,7 @@ libraries:
 resources: 
   - url: https://rwmj.wordpress.com/2009/08/04/ocaml-internals/
     title: A Beginners Guide to OCaml Internals
-    description: A series of great articles explaining the internal respresentation of values in OCaml, useful for understanding things like memory profiling and GC.
+    description: A series of great articles explaining the internal representation of values in OCaml, useful for understanding things like memory profiling and GC.
   - url: https://caml.inria.fr/pub/docs/oreilly-book/html/book-ora114.html
     title: Communication between C and Objective Caml 
     description: A chapter on how C and OCaml talk to each other with some useful diagrams too
@@ -27,19 +27,17 @@ resources:
 
 Sometimes OCaml just can't do what lower level languages can do or you want to use pre-existing code written in C or Rust from OCaml. 
 
-## Recommended Workflow
-
 ### OCaml Internals 
 
 Programming languages must have a representation of data at runtime, for example how should OCaml represent `type camel = Dromedary of int` in memory? When you interface between two languages much of the battle is converting in-and-out of each programming language's internal data represenation. A [detailed introduction](https://caml.inria.fr/pub/docs/manual-ocaml/intfc.html#s%3Ac-ocaml-datatype-repr) of OCaml's internal data representation is given in the manual, what follows is a brief summary.
 
 OCaml has a uniform memory representation where everything is a word-sized value. These can either be immediates (represented as unboxed integers) or non-immediates (pointers to a block stored in the OCaml or the C heap). Boxing is the process of wrapping additional meta-data around a value much like IP packets and their header. 
 
-![OCaml runtime data represenation](/images/data-repr.jpg)
+![OCaml runtime data representation](/images/data-repr.jpg)
 
-To distinguish between immediates and non-immediates (pointers), OCaml uses a tag bit in the least significant bit as a flag. When it is set to 1 this indicates an immediate, otherwise it should be interpretted as a pointer. This means on a 32-bit machine OCaml integers can only be 31-bit. The runtime value of the number `7` in OCaml is actually `15`. The conversion function can be seen [here](https://github.com/ocaml/ocaml/blob/trunk/runtime/caml/mlvalues.h#L75) in the OCaml compiler.
+To distinguish between immediates and non-immediates (pointers), OCaml uses a tag bit in the least significant bit as a flag. When it is set to 1 this indicates an immediate, otherwise it should be interpreted as a pointer. This means on a 32-bit machine OCaml integers can only be 31-bit. The runtime value of the number `7` in OCaml is actually `15`. The conversion function can be seen [here](https://github.com/ocaml/ocaml/blob/trunk/runtime/caml/mlvalues.h#L75) in the OCaml compiler.
 
-Integers are not the only values represented as immediates. Normal and polymorphic variants with constant constructors are represented as immediates, the latter as a hash of the constructor name. The built-in boolen values are also immediates i.e. true is `1` (which in OCaml is `3`) and false is `0` (`1` in OCaml).
+Integers are not the only values represented as immediates. Normal and polymorphic variants with constant constructors are represented as immediates, the latter as a hash of the constructor name. The built-in boolean values are also immediates i.e. true is `1` (which in OCaml is `3`) and false is `0` (`1` in OCaml).
 
 ```ocaml env=types
 # type vehicle = Car | Bicycle of string | Truck 
@@ -50,7 +48,7 @@ type poly = [ `Int | `String ]
 - : bool = true
 ```
 
-Variants with non-constant constructors are heap allocated as blocks (only the non-constant ones). Blocks in the heap start with a one-word header, either 32 or 64-bit depending on thearchitecture, which contains information about the length of the value (22 or 54 bits), 2 bits for a colour which is used in garbage collection and 8 bits for a multi-purpose tag byte to indicate what the block is. The type unsafe `Obj` module lets you inspect the runtime information of values. 
+Variants with non-constant constructors are heap allocated as blocks (only the non-constant ones). Blocks in the heap start with a one-word header, either 32 or 64-bit depending on the architecture, which contains information about the length of the value (22 or 54 bits), 2 bits for a colour which is used in garbage collection and 8 bits for a multi-purpose tag byte to indicate what the block is. The type unsafe `Obj` module lets you inspect the runtime information of values. 
 
 ```ocaml env=types
 # Obj.tag (Obj.repr Car)
@@ -66,6 +64,8 @@ Variants with non-constant constructors are heap allocated as blocks (only the n
 # Obj.tag (Obj.repr (fun x -> x)) 
 - : int = 247
 ```
+
+## Recommended Workflow
 
 ### Interacting with C from OCaml 
 
