@@ -73,7 +73,7 @@ module Mark :
 
 If you have a good [environment setup](/workflows/configuring-ocaml-tools-for-your-editor) then this can also help discovering APIs. 
 
-### Debugging with dune 
+## Debugging with dune 
 
 Dune is a widely used declarative build-tool for OCaml projects. You can use it in two ways to help debug and explore your projects. Make sure you have dune installed (`opam install dune`). 
 
@@ -153,7 +153,7 @@ Here we create a [rule](https://dune.readthedocs.io/en/stable/dune-files.html#ru
 
 Another trick is that if your library is built with dune, then you can load it into utop by running the `dune utop` command. Dune takes care of the building of the library (finding external libraries, interpreting the multiple files etc.) and then loads utop. 
 
-### Debugging with ocamldebug
+## Debugging with ocamldebug
 
 The OCaml compiler comes with a tool for debugging your OCaml programs. It only works for code compiled to bytecode so you will need to build your program using that. For executables this means adding a `(modes byte exe)` to the dune file. 
 
