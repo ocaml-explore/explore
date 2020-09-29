@@ -40,6 +40,7 @@
   tyxml-ppx
   mdx
   owl
+  owl-plplot
   ppx_jane
   ezjsonm
   js_of_ocaml-ppx
