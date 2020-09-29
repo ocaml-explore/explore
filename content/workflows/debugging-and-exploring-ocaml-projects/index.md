@@ -1,6 +1,6 @@
 ---
 title: Debugging and Exploring OCaml Projects
-date: 2020-09-29 11:46:59 +00:00
+date: 2020-09-29 15:16:14 +00:00
 authors:
 - Patrick Ferris
 description: Learn how to effectively debug your OCaml projects and explore packages
@@ -134,7 +134,8 @@ Then we can create a small example using the library.
 $ cat examples/dune 
 (executable
  (name printing)
- (libraries numbers))
+ (libraries numbers)
+ (modes byte exe))
 
 (rule
  (alias examples)
@@ -152,5 +153,21 @@ Here we create a [rule](https://dune.readthedocs.io/en/stable/dune-files.html#ru
 
 Another trick is that if your library is built with dune, then you can load it into utop by running the `dune utop` command. Dune takes care of the building of the library (finding external libraries, interpreting the multiple files etc.) and then loads utop. 
 
-### Debugging with ocamldebugger 
+### Debugging with ocamldebug
+
+The OCaml compiler comes with a tool for debugging your OCaml programs. It only works for code compiled to bytecode so you will need to build your program using that. For executables this means adding a `(modes byte exe)` to the dune file. 
+
+```sh dir=examples/debug
+$ cat dune
+(executable
+ (name main)
+ (modes byte exe))
+$ dune build main.bc 
+$ ocamldebug _build/default/main.bc
+	OCaml Debugger version 4.11.0
+
+(ocd)
+```
+
+From here you can `step` through your program, `goto` time points, set `break` points at functions and inspect variables. The full specification of `ocamldebug` can be found [in the manual](https://caml.inria.fr/pub/docs/manual-ocaml/debugger.html). Do note that the bytecode can be slow in comparison to assembly programs. You can also use [gdb](https://www.gnu.org/software/gdb/) with OCaml.
 

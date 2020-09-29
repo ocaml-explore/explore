@@ -1,6 +1,7 @@
 (executable
  (name printing)
- (libraries numbers))
+ (libraries numbers)
+ (modes byte exe))
 
 (rule
  (alias examples)
