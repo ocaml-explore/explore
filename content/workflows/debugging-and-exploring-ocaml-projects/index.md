@@ -75,7 +75,82 @@ If you have a good [environment setup](/workflows/configuring-ocaml-tools-for-yo
 
 ### Debugging with dune 
 
+Dune is a widely used declarative build-tool for OCaml projects. You can use it in two ways to help debug and explore your projects. Make sure you have dune installed (`opam install dune`). 
+
+In a fresh directory (maybe an `examples` directory) you can run:
+
+```sh dir=examples/example
+$ dune init exec example --libs batteries
+Success: initialized executable component named example
+```
+
+Which will make sure dune is installed and then creates a new dune executable project. 
+
+```sh dir=examples/example
+$ ls 
+_build
+dune
+example.ml
+```
+
+From here you can run dune exec -- ./example.exe which will print "Hello World" as that is the default example it adds. But if you look inside the dune file you’ll see an executable stanza:
+
+```sh dir=examples/example
+$ cat dune 
+(executable
+ (name example)
+ (libraries batteries))
+$ dune exec -- ./example.exe 
+Info: Creating file dune-project with this contents:
+| (lang dune 2.7)
+Hello, World!
+```
+
+`(name example)` is the entry-point and `(libraries batteries)` specifies the other packages you want to use. The `_build` directory is used by dune. If you run dune build this will put the executable in `_build/default/example.exe`. Now you have all the power of dune if you need it but also adding more packages, changing them, adding more .ml files etc. is straightforward.
+
+If you are building a library that already uses dune, you can include the name of it in the `(libraries ...)` field and write examples using the library. This can help with debugging and can also help with documentation. For example, consider we made a simple library called numbers. 
+
+```sh dir=examples/library
+$ cat lib/dune 
+(library
+ (name numbers))
+$ cat lib/numbers.ml
+module Float = struct
+  type t = float
+
+  let print : t -> unit = print_float
+end
+
+module Int = struct
+  type t = int
+
+  let print : t -> unit = print_int
+end
+```
+
+Then we can create a small example using the library. 
+
+```sh dir=examples/library
+$ cat examples/dune 
+(executable
+ (name printing)
+ (libraries numbers))
+
+(rule
+ (alias examples)
+ (deps printing.exe)
+ (action
+  (run ./printing.exe)))
+$ cat examples/printing.ml
+let () = Numbers.Int.print 10
+$ dune build @examples
+    printing alias examples/examples
+10
+```
+
+Here we create a [rule](https://dune.readthedocs.io/en/stable/dune-files.html#rule) in our `dune` file to alias to `examples` which will build and run the `printing` example. We call this with `dune build @examples`. 
+
+Another trick is that if your library is built with dune, then you can load it into utop by running the `dune utop` command. Dune takes care of the building of the library (finding external libraries, interpreting the multiple files etc.) and then loads utop. 
+
 ### Debugging with ocamldebugger 
-
-
 

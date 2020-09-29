@@ -7,7 +7,7 @@ workflows:
   - Navigating OCaml Projects
   - Teaching and Data Science
   - Configuring OCaml Tools for your Editor
-  - Starting a New Project
+  - Starting a new Project
   - Debugging and Exploring OCaml Projects
 description: Learn the syntax and language features.
 ---

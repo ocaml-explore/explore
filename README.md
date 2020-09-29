@@ -18,6 +18,14 @@ The simplest way to get started is to run `explore serve <optional-port>` from t
 
 If you are making changes to the explore CLI or build tool, then you will need to run `dune build && dune install` to make sure it builds and updates for you. 
 
+## Deleting all of the generated HTML files 
+
+From the root of the project run:
+
+```
+find ./content -name "*.html" -type f -delete
+```
+
 ## Content and Tests 
 
 The recommend way to create a new workflow is from the command-line. Once `explore` is installed you can run `explore new workflow` this will setup a small workflow wizard to guide you through adding the mandatory information for generating a new workflow. If you give the workflow a title of `Building multiple packages` it will be added under `content/workflows/building-multiple-packages/index.md`. 
