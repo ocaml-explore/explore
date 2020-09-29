@@ -1,0 +1,3 @@
+(executable
+ (name linear)
+ (libraries owl owl-plplot))

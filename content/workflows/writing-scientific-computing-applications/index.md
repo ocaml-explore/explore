@@ -64,7 +64,7 @@ There are some useful functions like `Owl.Dataset.download_all` to be able to do
 For using different datasets probably the most common format is comma-separated values (CSVs). Owl comes with utility functions to make using CSVs easy. Consider this small dataset: 
 
 <!-- $MDX file=examples/data/data.csv -->
-```csv
+```
 language,url,kind
 OCaml,https://ocaml.org,multiparadigm
 Haskell,https://www.haskell.org/,functional
@@ -113,3 +113,55 @@ R0  Haskell https://www.haskell.org/ functional
 The [dataframe module](https://ocaml.xyz/book/dataframe.html) is very useful for exploring the data and is similar to the same structure found in the very popular [python pandas](https://pandas.pydata.org/docs/reference/frame.html) library.
 
 In the example you can see different functions being used like the `.%()` which extracts a row and column based on the index and label provided. The `filter_map_row` shows how one might go about cleaning data by removing unwanted rows (for example those with N/A values).
+
+### Basic Scientific Computing Tasks and Plotting 
+
+As a final, small example to give you a taste of doing scientific computing in OCaml we'll compute a simple linear regression. We'll define a simple function `f` that is really a straight line (`mx + c`) with a little randomness thrown in. Then we'll try and find the parameters `m` and `c` that best fit the function using linear regression. 
+
+Again, the [owl book](https://ocaml.xyz/book/regression.html) has a brilliant chapter on different forms of regression and treats the topic much more rigorously. 
+
+A linear regression involves trying to model a function by taking a linear combination of variables, in this example we keep it simple with only one independent variable as well as a constant parameter. We can then construct a "cost function" for determining how wrong our model is compared to our training data and try to minimise that error using standard methods like gradient descent, all of which Owl generously provides.
+
+<!-- $MDX file=examples/linear/linear.ml,part=1 -->
+```ocaml
+let () =
+  (* The parameters we will try to guess *)
+  let m = 3.7 in
+  let c = 0.5 in
+  let h = Plot.create "linreg.png" in
+  (* The function with some randomness *)
+  let f = f ~randomness:20. m c in
+  let line m c x = (m *. x) +. c in
+  Plot.set_title h
+    ( "Linear Regression for y = " ^ string_of_float m ^ "x + "
+    ^ string_of_float c );
+  Plot.set_font_size h 8.;
+  Plot.set_pen_size h 3.;
+  (* Generating training and plotting data *)
+  let xs_train, xs_plot =
+    (Mat.linspace (-5.) 20. 1000, Mat.linspace (-5.) 20. 40)
+  in
+  let ys_train, ys_plot = (Mat.map f xs_train, Mat.map f xs_plot) in
+  (* Scatter plot the plotting data *)
+  Plot.scatter ~h ~spec:[ Marker "o" ] xs_plot ys_plot;
+  (* Use the built-in linear regression (on doubles) *)
+  let c, m = Linalg.D.linreg xs_train ys_train in
+  (* Our guess *)
+  let guess = line m c in
+  Plot.plot_fun ~h ~spec:[ RGB (255, 165, 0) ] guess (-5.) 20.;
+  Plot.set_font_size h 6.;
+  Plot.(
+    text ~h
+      ~spec:[ RGB (255, 165, 0) ]
+      (-3.)
+      (guess 10. -. 0.2)
+      ( "y = "
+      ^ string_of_float (round3dp m)
+      ^ "x + "
+      ^ string_of_float (round3dp c) ));
+  Plot.output h
+```
+
+We use the plotting functionality that Owl provides opening `Owl_plot`. 
+
+![Linear Regression example](/workflows/writing-scientific-computing-applications/examples/linear/linreg.png)
