@@ -22,11 +22,11 @@ Programming is one part technical, another part creative and the rest is about d
 
 ## Explore using utop 
 
-If you are looking for trying out packages installed using opam (like batteries in your example) then the universal toplevel (utop) for OCaml is a great tool to get familiar with. It can be installed also using opam: 
+If you are looking for trying out packages installed using opam (like `ocaml-yaml`) then the universal toplevel (utop) for OCaml is a great tool to get familiar with. It can be installed also using opam: 
 
 ```
 $ opam install utop 
-$ opam install batteries
+$ opam install yaml
 $ utop 
 ```
 
@@ -80,7 +80,7 @@ Dune is a widely used declarative build-tool for OCaml projects. You can use it 
 In a fresh directory (maybe an `examples` directory) you can run:
 
 ```sh dir=examples/example
-$ dune init exec example --libs batteries
+$ dune init exec example --libs yaml
 Success: initialized executable component named example
 ```
 
