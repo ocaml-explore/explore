@@ -1,0 +1,10 @@
+(executable
+ (name printing)
+ (libraries numbers)
+ (modes byte exe))
+
+(rule
+ (alias examples)
+ (deps printing.exe)
+ (action
+  (run ./printing.exe)))

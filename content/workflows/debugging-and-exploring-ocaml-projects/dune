@@ -1,0 +1,5 @@
+(mdx
+ (files index.md)
+ (preludes prelude.ml))
+
+(data_only_dirs examples)
