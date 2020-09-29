@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+ <head><title>Debugging and Exploring OCaml Projects</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8"/>
+  <meta name="description"
+   content="Learn how to effectively debug your OCaml projects and explore packages"
+   />
+  <link rel="stylesheet"
+   href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
+   />
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/base.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-dropdown.css"/>
+  <link rel="stylesheet" href="/css/main.css"/>
+  <link rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
+   />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js">
+  </script>
+  <script
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"
+   >
+  </script>
+  <script charset="UTF-8"
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/ocaml.min.js"
+   >
+  </script><script>hljs.initHighlightingOnLoad();</script>
+ </head>
+ <body>
+             
+  <header>
+                  
+   <a class="skip-to-content" href="#main"> Skip to main content </a>
+   <div class="pure-g">
+                             
+    <div class="pure-u-1-3">
+                                    
+     <a class="title-link" href="/">
+                                              
+      <h2 style="text-align: center">Explore OCaml</h2>
+                                                               
+     </a>
+               
+    </div>
+                
+    <div class="pure-u-1-3"></div>
+                                          
+    <nav class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
+     
+               
+     <ul class="flex-row flex-center nav-ul">
+      <li class="nav-button">
+                                           
+       <a href="/platform">
+                                           Tools 
+                                         </a>
+       
+                   
+      </li>
+      <li class="nav-button">
+                                           
+       <a href="/users">
+                                        Users
+                                      </a>
+       
+                   
+      </li>
+      <li class="nav-button">
+                                           
+       <a href="/libraries">
+                                            Libraries
+                                          </a>
+       
+                   
+      </li>
+     </ul>
+                  
+    </nav>
+                  
+    <nav class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu
+     pure-menu-horizontal flex-col flex-vert pure-u-1-3">
+                                                                   
+     <ul class="pure-menu-list" style="text-align: center">
+      <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+       
+                   <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
+       
+                   
+       <ul class="pure-menu-children mob-menu-list">
+        <li class="pure-menu-item mob-menu-item">
+                                                                   
+         <a href="/platform">
+                                                 Tools 
+                                               </a>
+         
+                         
+        </li>
+        <li class="pure-menu-item mob-menu-item">
+                                                                   
+         <a href="/users">
+                                              Users
+                                            </a>
+         
+                         
+        </li>
+        <li class="pure-menu-item mob-menu-item">
+                                                                   
+         <a href="/libraries">
+                                                Libraries
+                                                
+         </a>
+                             
+        </li>
+       </ul>
+                        
+      </li>
+     </ul>
+                  
+    </nav>
+              
+   </div>
+               
+  </header>
+                   
+  <div class="pure-g">
+                                
+   <div class="pure-u-1-12 pure-u-md-1-4">
+                                                      
+    <div class="pure-hidden-xs pure-hidden-sm pure-hidden-md toc-container
+     sticky">
+     <ul class="toc">
+      <li>
+       <ul class="toc">
+        <li>
+         <a class="toc-link toc-item-1"
+          href="#debugging-and-exploring-ocaml-projects">
+          Debugging and Exploring OCaml Projects
+         </a>
+         <ul class="toc">
+          <li class="toc-li">
+           <a class="toc-link toc-item-2" href="#overview">Overview</a>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li>
+           <a class="toc-link toc-item-2" href="#explore-using-utop">
+            Explore using utop
+           </a>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#discovering-apis">
+              Discovering APIs
+             </a>
+            </li>
+           </ul>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li class="toc-li">
+           <a class="toc-link toc-item-2" href="#debugging-with-dune">
+            Debugging with dune
+           </a>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li class="toc-li">
+           <a class="toc-link toc-item-2" href="#debugging-with-ocamldebug">
+            Debugging with ocamldebug
+           </a>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </div>
+                    
+   </div>
+                   
+   <div class="pure-u-5-6 pure-u-md-1-2">
+                                                     
+    <main id="main"> 
+     <h1 id="debugging-and-exploring-ocaml-projects">Debugging and Exploring OCaml Projects</h1>
+<p><em>Last Updated: 29, September 2020 at 15:16:13</em></p>
+<div><p>Platform tools: <span class="details-tools"><a href="/platform/utop">utop</a></span><span class="details-tools"><a href="/platform/dune">dune</a></span></p></div>
+<h2 id="overview">Overview</h2>
+<p>Programming is one part technical, another part creative and the rest is about debugging and exploring code. This workflow will introduce a few good ways to help you debug programs, test libraries and explore other packages.</p>
+<h2 id="explore-using-utop">Explore using utop</h2>
+<p>If you are looking for trying out packages installed using opam (like <code>ocaml-yaml</code>) then the universal toplevel (utop) for OCaml is a great tool to get familiar with. It can be installed also using opam:</p>
+<pre><code>$ opam install utop 
+$ opam install yaml
+$ utop 
+</code></pre>
+<p>Once in a utop session you can pull in packages that you have installed to explore them. To do this use the <code>#require</code> directive which is specific to the toplevel (it won’t work in OCaml files being compiled with something like dune).</p>
+<pre><code class="language-ocaml"># #require &quot;yaml&quot;;;
+# open Yaml;;
+# of_string &quot;hello: world&quot;;;
+- : value res = Result.Ok (`O [(&quot;hello&quot;, `String &quot;world&quot;)])
+</code></pre>
+<p>If you want to open your own file then you will need to use the <code>#use</code> directive - again this is specific to the toplevel and cannot be used in a standard <code>.ml</code> file.</p>
+<pre><code>#use &quot;myfile.ml&quot;
+</code></pre>
+<p>If your example is more complicated and uses multiple files (modules) to do what it needs to do then I recommend reading on to the <a href="#debugging-with-dune">dune solution</a> which offers greater flexibility.</p>
+<h3 id="discovering-apis">Discovering APIs</h3>
+<p>One of the most common things you might want to do is to discover the API of a particular package. The nice thing about utop is that it will interpret and print almost anything that you evaluate. So if you are trying to use a function but can't remember the parameters then just evaluate the function and read the type signature which should provide hints.</p>
+<pre><code class="language-ocaml"># Yaml.of_string;;
+- : string -&gt; value res = &lt;fun&gt;
+# #require &quot;core&quot;;;
+# Core.List.map;;
+- : 'a list -&gt; f:('a -&gt; 'b) -&gt; 'b list = &lt;fun&gt;
+</code></pre>
+<p>You can also use the <code>#show</code> directive to see what functions and modules a certain module offers.</p>
+<pre><code class="language-ocaml"># #show Yaml.Stream.Mark;;
+module Mark :
+  sig
+    type t = { index : int; line : int; column : int; }
+    val t_of_sexp : Sexplib0.Sexp.t -&gt; t
+    val sexp_of_t : t -&gt; Sexplib0.Sexp.t
+  end
+</code></pre>
+<p>If you have a good <a href="/workflows/configuring-ocaml-tools-for-your-editor">environment setup</a> then this can also help discovering APIs.</p>
+<h2 id="debugging-with-dune">Debugging with dune</h2>
+<p>Dune is a widely used declarative build-tool for OCaml projects. You can use it in two ways to help debug and explore your projects. Make sure you have dune installed (<code>opam install dune</code>).</p>
+<p>In a fresh directory (maybe an <code>examples</code> directory) you can run:</p>
+<pre><code class="language-sh">$ dune init exec example --libs yaml
+Success: initialized executable component named example
+</code></pre>
+<p>Which will make sure dune is installed and then creates a new dune executable project.</p>
+<pre><code class="language-sh">$ ls 
+_build
+dune
+example.ml
+</code></pre>
+<p>From here you can run dune exec -- ./example.exe which will print &quot;Hello World&quot; as that is the default example it adds. But if you look inside the dune file you’ll see an executable stanza:</p>
+<pre><code class="language-sh">$ cat dune 
+(executable
+ (name example)
+ (libraries yaml))
+$ dune exec -- ./example.exe 
+Info: Creating file dune-project with this contents:
+| (lang dune 2.7)
+Hello, World!
+</code></pre>
+<p><code>(name example)</code> is the entry-point and <code>(libraries yaml)</code> specifies the other packages you want to use. The <code>_build</code> directory is used by dune. If you run dune build this will put the executable in <code>_build/default/example.exe</code>. Now you have all the power of dune if you need it but also adding more packages, changing them, adding more .ml files etc. is straightforward.</p>
+<p>If you are building a library that already uses dune, you can include the name of it in the <code>(libraries ...)</code> field and write examples using the library. This can help with debugging and can also help with documentation. For example, consider we made a simple library called numbers.</p>
+<pre><code class="language-sh">$ cat lib/dune 
+(library
+ (name numbers))
+$ cat lib/numbers.ml
+module Float = struct
+  type t = float
+
+  let print : t -&gt; unit = print_float
+end
+
+module Int = struct
+  type t = int
+
+  let print : t -&gt; unit = print_int
+end
+</code></pre>
+<p>Then we can create a small example using the library.</p>
+<pre><code class="language-sh">$ cat examples/dune 
+(executable
+ (name printing)
+ (libraries numbers)
+ (modes byte exe))
+
+(rule
+ (alias examples)
+ (deps printing.exe)
+ (action
+  (run ./printing.exe)))
+$ cat examples/printing.ml
+let () = Numbers.Int.print 10
+$ dune build @examples
+    printing alias examples/examples
+10
+</code></pre>
+<p>Here we create a <a href="https://dune.readthedocs.io/en/stable/dune-files.html#rule">rule</a> in our <code>dune</code> file to alias to <code>examples</code> which will build and run the <code>printing</code> example. We call this with <code>dune build @examples</code>.</p>
+<p>Another trick is that if your library is built with dune, then you can load it into utop by running the <code>dune utop</code> command. Dune takes care of the building of the library (finding external libraries, interpreting the multiple files etc.) and then loads utop.</p>
+<h2 id="debugging-with-ocamldebug">Debugging with ocamldebug</h2>
+<p>The OCaml compiler comes with a tool for debugging your OCaml programs. It only works for code compiled to bytecode so you will need to build your program using that. For executables this means adding a <code>(modes byte exe)</code> to the dune file.</p>
+<pre><code class="language-sh">$ cat dune
+(executable
+ (name main)
+ (modes byte exe))
+$ dune build main.bc 
+$ ocamldebug _build/default/main.bc
+	OCaml Debugger version 4.11.0
+
+(ocd)
+</code></pre>
+<p>From here you can <code>step</code> through your program, <code>goto</code> time points, set <code>break</code> points at functions and inspect variables. The full specification of <code>ocamldebug</code> can be found <a href="https://caml.inria.fr/pub/docs/manual-ocaml/debugger.html">in the manual</a>. Do note that the bytecode can be slow in comparison to assembly programs. You can also use <a href="https://www.gnu.org/software/gdb/">gdb</a> with OCaml.</p>
+
+    </main>
+                     
+   </div>
+                 
+  </div>
+            
+          
+        </body>
+</html>
