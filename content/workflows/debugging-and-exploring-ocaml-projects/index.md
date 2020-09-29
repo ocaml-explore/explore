@@ -106,7 +106,7 @@ Info: Creating file dune-project with this contents:
 Hello, World!
 ```
 
-`(name example)` is the entry-point and `(libraries batteries)` specifies the other packages you want to use. The `_build` directory is used by dune. If you run dune build this will put the executable in `_build/default/example.exe`. Now you have all the power of dune if you need it but also adding more packages, changing them, adding more .ml files etc. is straightforward.
+`(name example)` is the entry-point and `(libraries yaml)` specifies the other packages you want to use. The `_build` directory is used by dune. If you run dune build this will put the executable in `_build/default/example.exe`. Now you have all the power of dune if you need it but also adding more packages, changing them, adding more .ml files etc. is straightforward.
 
 If you are building a library that already uses dune, you can include the name of it in the `(libraries ...)` field and write examples using the library. This can help with debugging and can also help with documentation. For example, consider we made a simple library called numbers. 
 
