@@ -99,7 +99,7 @@ From here you can run dune exec -- ./example.exe which will print "Hello World" 
 $ cat dune 
 (executable
  (name example)
- (libraries batteries))
+ (libraries yaml))
 $ dune exec -- ./example.exe 
 Info: Creating file dune-project with this contents:
 | (lang dune 2.7)
