@@ -391,7 +391,11 @@ module User = struct
   let get_workflows t (workflows : Workflow.t list) =
     List.map
       (fun tt ->
-        try List.find (fun (w : Workflow.t) -> tt = w.data.title) workflows
+        try
+          List.find
+            (fun (w : Workflow.t) ->
+              String.lowercase_ascii tt = String.lowercase_ascii w.data.title)
+            workflows
         with Not_found ->
           failwith
             ("[Workflow Error] Could not find `"
