@@ -38,7 +38,7 @@ How you tag, produce the archive, generate the slightly different opam file and 
 
 ### Opam Continuous Integration 
 
-Whenever you make a pull-request to add your latest package information to the central opam repository a series of continuous integration tools are run to check your code build, installs and how it impacts reverse dependencies (those tools that depend on your package). [TravisCI](https://travis-ci.com/) is used to check if your new release will install on a variety of platforms including MacOS, FreeBSD and arm64. [Camelus](https://github.com/ocaml-opam/Camelus) reports on a variety of problems to help ease the burden on maintainers like linting the file and checking what new packages have become available (or not) as a result of the PR. 
+Whenever you make a pull-request to add your latest package information to the central opam repository a series of continuous integration tools are run to check your code builds, installs and how it impacts reverse dependencies (those tools that depend on your package). [TravisCI](https://travis-ci.com/) is used to check if your new release will install on a variety of platforms including MacOS, FreeBSD and arm64. [Camelus](https://github.com/ocaml-opam/Camelus) reports on a variety of problems to help ease the burden on maintainers like linting the file and checking what new packages have become available (or not) as a result of the PR. 
 
 Finally, a tool called [DataKit-CI](https://github.com/moby/datakit/tree/master/ci) does the heavy lifting and checks more platforms and the reverse dependencies. For those interested, there is a new CI tool based on [ocurrent](https://github.com/ocurrent/ocurrent) pipelines [coming soon](https://www.youtube.com/watch?v=HjcCUZ9i-ug).
 
@@ -65,7 +65,7 @@ $ dune-release lint
 
 One of the more important documents is the `CHANGES` file. This specifies what parts of codebase have changed (new functionality, bug fixes etc.) since the last version. Not only is this important for users of your package, the `dune-release` tool can use it to automatically tag the latest commit with the correct version. The [Irmin CHANGES](https://github.com/mirage/irmin/blob/master/CHANGES.md#220-2020-06-26) file is a good example you can base your own file off of. 
 
-Licensing your software is also important. The [open source initiative](https://opensource.org/licenses) details their approved list. Another fairly common license is [ISC](https://en.wikipedia.org/wiki/ISC_license). 
+Licensing your software is also important, but not strictly necessary. The [open source initiative](https://opensource.org/licenses) details their approved list. Another fairly common license is [ISC](https://en.wikipedia.org/wiki/ISC_license). 
 
 Once `dune-release lint` is happy and you are ready to release your software, you need to tag it. This is as simple as running `dune-release tag`. As mentioned before, with a correctly formatted CHANGES file this will be automatic. Otherwise, dune-release will not find the change log and you need to manually specify the version number (e.g. `dune-release tag v.1.2.0`). You can use the `-d` flag to delete tags if you want to change something. 
 
@@ -73,7 +73,7 @@ The next step is to generate the archive -- this can be done by running `dune-re
 
 Now with your documentation and archive somewhere accessible, the last step is to generate the opam repository specific opam file and make a pull request to the central opam repository. To generate an opam file run `dune-release opam pkg` and to make the pull request `dune-release opam submit`.  
 
-Note that all the commands have a very thorough and helpful `--help` page to explain in detail what they do. In summary, if everything is set up correctly you can run. 
+Note that all the commands have a very thorough and instructive `--help` page to explain in detail what they do. In summary, if everything is set up correctly you can run. 
 
 ```
 $ dune-release lint 
@@ -112,4 +112,4 @@ $ opam publish
 $ opam publish <url-of-archive> .
 ```
 
-Opam-publish doesn't have the same documentation capabilities -- be sure the read up [on managing documentation](/workflows/documenting-your-project) for your project. 
+Opam-publish doesn't have the same documentation capabilities as dune-release so be sure the read up [on managing documentation](/workflows/documenting-your-project) for your project. 
