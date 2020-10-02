@@ -1,5 +1,5 @@
 open Tyxml
-open Core
+open Base
 
 let nav_bar () =
   [%html {|

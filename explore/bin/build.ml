@@ -1,4 +1,4 @@
-open Core
+open Base
 open Explore
 
 let build_collection f dir =

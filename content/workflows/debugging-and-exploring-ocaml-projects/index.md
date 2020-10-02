@@ -55,7 +55,7 @@ One of the most common things you might want to do is to discover the API of a p
 # Yaml.of_string;;
 - : string -> value res = <fun>
 # #require "core";;
-# Core.List.map;;
+# Base.List.map;;
 - : 'a list -> f:('a -> 'b) -> 'b list = <fun>
 ```
 

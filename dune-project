@@ -21,7 +21,7 @@
  (name explore-cli)
  (synopsis "Explore OCaml Sources")
  (description "Build tool, scripts and content for the Explore OCaml site")
- (depends core httpaf httpaf-lwt-unix fmt ptime calendar))
+ (depends httpaf httpaf-lwt-unix fmt ptime calendar))
 
 (package
  (name explore)
@@ -31,7 +31,8 @@
   (alcotest :with-test)
   (ocaml
    (= 4.11.0))
-  core
+  base
+  stdio
   bechamel
   tyxml
   omd

@@ -19,7 +19,7 @@ let ask ?(break = false) question default =
 
 let split_drop s =
   List.filter (( <> ) "")
-    Core.String.(split ~on:',' (substr_replace_all ~pattern:", " ~with_:"," s))
+    Base.String.(split ~on:',' (substr_replace_all ~pattern:", " ~with_:"," s))
   |> function
   | [] -> None
   | lst -> Some lst
@@ -197,7 +197,7 @@ module Workflow = struct
         {|
         <ol>
           |}
-          (Core.List.map ~f:to_elt lst)
+          (Base.List.map ~f:to_elt lst)
           {|
         </ol>
       |}]
@@ -277,9 +277,9 @@ let to_html_with_workflows_generic :
       'a. Workflow.t list -> 'a info_getter -> 'a -> string -> Tyxml.Html.doc =
  fun related info t link ->
   let lst =
-    Core.List.map
+    Base.List.map
       ~f:(fun w ->
-        ( "/" ^ fst (Core.Filename.split (Files.drop_first_dir ~path:w.path)),
+        ( "/" ^ fst (Base.Filename.split (Files.drop_first_dir ~path:w.path)),
           w.data.topic,
           w.data.title,
           w.data.description ))
@@ -289,29 +289,29 @@ let to_html_with_workflows_generic :
   let sections =
     [
       ( [%html "<div><h3>" [ Html.txt "Starter" ] "</h3></div>"],
-        Core.List.filter
+        Base.List.filter
           ~f:(fun (_, t, _, _) -> 0 = Workflow.compare (Starter true) (topic t))
           lst );
       ( [%html "<div><h3>" [ Html.txt "Environment" ] "</h3></div>"],
-        Core.List.filter
+        Base.List.filter
           ~f:(fun (_, t, _, _) ->
             0 = Workflow.compare (Environment true) (topic t))
           lst );
       ( [%html "<div><h3>" [ Html.txt "Coding" ] "</h3></div>"],
-        Core.List.filter
+        Base.List.filter
           ~f:(fun (_, t, _, _) -> 0 = Workflow.compare (Coding true) (topic t))
           lst );
       ( [%html "<div><h3>" [ Html.txt "Testing" ] "</h3></div>"],
-        Core.List.filter
+        Base.List.filter
           ~f:(fun (_, t, _, _) -> 0 = Workflow.compare (Testing true) (topic t))
           lst );
       ( [%html "<div><h3>" [ Html.txt "Publishing" ] "</h3></div>"],
-        Core.List.filter
+        Base.List.filter
           ~f:(fun (_, t, _, _) ->
             0 = Workflow.compare (Publishing true) (topic t))
           lst );
       ( [%html "<div><h3>" [ Html.txt "Misc" ] "</h3></div>"],
-        Core.List.filter
+        Base.List.filter
           ~f:(fun (_, t, _, _) -> 0 = Workflow.compare (Misc true) (topic t))
           lst );
     ]
@@ -334,7 +334,7 @@ let to_html_with_workflows_generic :
   let toc = Toc.(to_html (toc omd)) in
   let workflows = [%html "<h2>" [ Html.txt "Related Workflows" ] "</h2>"] in
   let content =
-    if Core.List.is_empty sections then
+    if Base.List.is_empty sections then
       [ Html.Unsafe.data Omd.(to_html (Toc.transform omd)); edit ]
     else
       [ Html.Unsafe.data Omd.(to_html (Toc.transform omd)); workflows ]
@@ -384,9 +384,9 @@ module User = struct
 
   let build_index title description ts =
     let lst =
-      Core.List.map
+      Base.List.map
         ~f:(fun t ->
-          ( "/" ^ fst (Core.Filename.split (Files.drop_first_dir ~path:t.path)),
+          ( "/" ^ fst (Base.Filename.split (Files.drop_first_dir ~path:t.path)),
             [],
             t.data.title,
             t.data.description ))
@@ -527,10 +527,10 @@ module Tool = struct
         ts
     in
     let lst =
-      Core.List.map
+      Base.List.map
         ~f:(fun t ->
           let typ = fst (lifecycle_to_string_priority t.data.lifecycle) in
-          ( "/" ^ fst (Core.Filename.split (Files.drop_first_dir ~path:t.path)),
+          ( "/" ^ fst (Base.Filename.split (Files.drop_first_dir ~path:t.path)),
             [ typ ],
             t.data.title,
             "[" ^ license_to_string t.data.license ^ "] " ^ t.data.description
@@ -555,14 +555,14 @@ module Tool = struct
       [
         ( [%html
             "<div><h2>" [ Html.txt "Incubate" ] "</h2>" (p incubate) "</div>"],
-          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "incubate" ]) lst );
+          Base.List.filter ~f:(fun (_, t, _, _) -> t = [ "incubate" ]) lst );
         ( [%html "<div><h2>" [ Html.txt "Active" ] "</h2>" (p active) "</div>"],
-          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "active" ]) lst );
+          Base.List.filter ~f:(fun (_, t, _, _) -> t = [ "active" ]) lst );
         ( [%html "<div><h2>" [ Html.txt "Sustain" ] "</h2>" (p sustain) "</div>"],
-          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "sustain" ]) lst );
+          Base.List.filter ~f:(fun (_, t, _, _) -> t = [ "sustain" ]) lst );
         ( [%html
             "<div><h2>" [ Html.txt "Deprecate" ] "</h2>" (p deprecate) "</div>"],
-          Core.List.filter ~f:(fun (_, t, _, _) -> t = [ "deprecate" ]) lst );
+          Base.List.filter ~f:(fun (_, t, _, _) -> t = [ "deprecate" ]) lst );
       ]
     in
     Components.wrap_body ~toc:None ~title ~description
@@ -644,9 +644,9 @@ module Library = struct
 
   let build_index title description ts =
     let lst =
-      Core.List.map
+      Base.List.map
         ~f:(fun t ->
-          ( "/" ^ fst (Core.Filename.split (Files.drop_first_dir ~path:t.path)),
+          ( "/" ^ fst (Base.Filename.split (Files.drop_first_dir ~path:t.path)),
             [],
             t.data.title,
             t.data.description ))
