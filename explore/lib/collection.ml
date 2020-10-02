@@ -24,6 +24,13 @@ let split_drop s =
   | [] -> None
   | lst -> Some lst
 
+let link typ s =
+  "https://github.com/ocaml-explore/explore/tree/trunk/content/"
+  ^ typ
+  ^ "/"
+  ^ Files.title_to_dirname s
+  ^ "/index.md"
+
 module type S = sig
   type t
 
@@ -224,6 +231,12 @@ module Workflow = struct
       Format.(fprintf str_formatter "%a\n\n" (Tyxml.Html.pp_elt ()) tools);
       Format.flush_str_formatter ()
     in
+    let edit =
+      [%html
+        "<p id='edit'><span class='details'><a href="
+          (link "workflows" t.data.title)
+          ">Edit this page on Github</a></span></p>"]
+    in
     let omd = td @ Omd.of_string (tools ^ t.body) in
     let toc = Toc.(to_html (toc omd)) in
     Components.wrap_body
@@ -236,7 +249,8 @@ module Workflow = struct
                 (Toc.transform omd
                 |> Utils.code_to_html (Files.title_to_dirname t.data.title)));
          ]
-        @ resources)
+        @ resources
+        @ [ edit ])
 end
 
 module type Collection = sig
@@ -258,13 +272,6 @@ type 'a info_getter = {
   description : 'a -> string;
   body : 'a -> string;
 }
-
-let link typ s =
-  "https://github.com/ocaml-explore/explore/tree/trunk/content/"
-  ^ typ
-  ^ "/"
-  ^ Files.title_to_dirname s
-  ^ "/index.md"
 
 let to_html_with_workflows_generic :
       'a. Workflow.t list -> 'a info_getter -> 'a -> string -> Tyxml.Html.doc =
