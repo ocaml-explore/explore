@@ -9,7 +9,6 @@ homepage: "https://github.com/patricoferris/explore"
 bug-reports: "https://github.com/patricoferris/explore/issues"
 depends: [
   "dune" {>= "2.6"}
-  "core"
   "httpaf"
   "httpaf-lwt-unix"
   "fmt"

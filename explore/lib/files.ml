@@ -1,4 +1,5 @@
-open Core
+open Base
+open Stdio
 
 let all_files root =
   let rec walk acc = function
@@ -28,7 +29,7 @@ let read_file filename =
     ~finally:(fun () -> In_channel.close file)
 
 let title_to_dirname s =
-  Core.(String.lowercase s |> String.substr_replace_all ~pattern:" " ~with_:"-")
+  String.lowercase s |> String.substr_replace_all ~pattern:" " ~with_:"-"
 
 let output_file ~content ~path =
   let outc = Out_channel.create path in

@@ -1,4 +1,3 @@
-(* open Core *)
 open Explore
 module W = Collection.Workflow
 

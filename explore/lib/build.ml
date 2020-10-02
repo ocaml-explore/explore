@@ -1,4 +1,4 @@
-open Core
+open Base
 
 let read_and_build ~build ~check ~dir =
   let files = Files.all_files dir in

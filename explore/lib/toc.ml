@@ -1,4 +1,4 @@
-open Core
+open Base
 open Tyxml
 
 type t = heading list

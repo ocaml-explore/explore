@@ -18,7 +18,7 @@ let extract_file s =
     | _ :: xs -> extract xs
     | [] -> None
   in
-  Core.String.split_on_chars ~on:[ '='; ','; ' ' ] s |> extract
+  Base.String.split_on_chars ~on:[ '='; ','; ' ' ] s |> extract
 
 let code_to_html workflow (bs : Omd.block list) =
   let rec loop (acc : Omd.block list) (bs : Omd.block list) =
