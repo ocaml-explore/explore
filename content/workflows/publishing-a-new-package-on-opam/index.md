@@ -2,7 +2,7 @@
 authors:
   - Patrick Ferris
 title: Publishing a Package on Opam
-date: 2020-09-25 13:25:15
+date: 2020-10-02 13:47:56
 description: Share your libraries or applications with the community
 topic: 
   publishing: 
@@ -46,7 +46,7 @@ Finally, a tool called [DataKit-CI](https://github.com/moby/datakit/tree/master/
 
 ### For Dune Users 
 
-[Dune-release](/platform/dune-release) is a the recommended tool for people using dune and opam. Provided you follow some conventions, most of the hard work is taken care of by `dune-release`. To install it, simply run `opam install dune-release`. 
+[Dune-release](/platform/dune-release) is the recommended tool for people using dune, opam and Github. Provided you follow some conventions, most of the hard work is taken care of by `dune-release`. To install it, simply run `opam install dune-release`. 
 
 A good first step is to run `dune-release lint` at the root of your project. This will check for the conventions that dune-release is expecting and report back on any errors. 
 
@@ -68,6 +68,8 @@ One of the more important documents is the `CHANGES` file. This specifies what p
 Licensing your software is also important, but not strictly necessary. The [open source initiative](https://opensource.org/licenses) details their approved list. Another fairly common license is [ISC](https://en.wikipedia.org/wiki/ISC_license). 
 
 Once `dune-release lint` is happy and you are ready to release your software, you need to tag it. This is as simple as running `dune-release tag`. As mentioned before, with a correctly formatted CHANGES file this will be automatic. Otherwise, dune-release will not find the change log and you need to manually specify the version number (e.g. `dune-release tag v.1.2.0`). You can use the `-d` flag to delete tags if you want to change something. 
+
+The next steps generate the distribution archive, publish documentation, generate the opam package and submit a PR to the opam repository. This is the most common workflow with dune-release and can all be invoked with just `dune-release`. Under the hood this makes a call to `dune-release bistro`. If you want to understand each individual command called, then read on.
 
 The next step is to generate the archive -- this can be done by running `dune-release distrib`. Finally you can publish the release of your code to Github with `dune-release publish distrib` and if you want to push your documentation to Github pages then run `dune-release publish doc`. 
 
