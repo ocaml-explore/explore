@@ -12,7 +12,6 @@ workflows:
   - Documenting your Project
   - Checking Code Coverage
   - Publishing a Package on Opam
-  - Releasing New Versions of your Project on Opam
   - Fixing Bugs in 3rd Party Packages
   - Meta-programming with PPX 
   - Fuzz Testing your Project

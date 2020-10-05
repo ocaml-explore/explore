@@ -145,28 +145,42 @@
           Publishing a Package on Opam
          </a>
          <ul class="toc">
-          <li class="toc-li">
-           <a class="toc-link toc-item-2" href="#overview">Overview</a>
+          <li><a class="toc-link toc-item-2" href="#overview">Overview</a>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#opam-internals">
+              Opam Internals
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3"
+              href="#opam-continuous-integration">Opam Continuous Integration
+             </a>
+            </li>
+           </ul>
           </li>
          </ul>
          <ul class="toc">
-          <li class="toc-li">
+          <li>
            <a class="toc-link toc-item-2" href="#recommended-workflow">
             Recommended Workflow
            </a>
-          </li>
-         </ul>
-         <ul class="toc">
-          <li class="toc-li">
-           <a class="toc-link toc-item-2" href="#alternatives">Alternatives
-           </a>
-          </li>
-         </ul>
-         <ul class="toc">
-          <li class="toc-li">
-           <a class="toc-link toc-item-2" href="#real-world-examples">
-            Real World Examples
-           </a>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#for-dune-users">
+              For Dune Users
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#for-everyone-else">
+              For Everyone Else
+             </a>
+            </li>
+           </ul>
           </li>
          </ul>
         </li>
@@ -181,12 +195,69 @@
                                                      
     <main id="main"> 
      <h1 id="publishing-a-package-on-opam">Publishing a Package on Opam</h1>
-<p><em>Last Updated: 27, July 2020 at 09:35:49</em></p>
+<p><em>Last Updated: 02, October 2020 at 13:47:55</em></p>
 <div><p>Platform tools: <span class="details-tools"><a href="/platform/dune-release">Dune-release</a></span><span class="details-tools"><a href="/platform/opam-publish">opam-publish</a></span><span class="details-tools"><a href="/platform/dune">Dune</a></span></p></div>
 <h2 id="overview">Overview</h2>
+<p><em>Some prerequisites -- there are lots of ways to publish packages. This workflow will be using the git version control system along with a workflow for dune users and a workflow for non-dune users.</em></p>
+<p>Part of the appeal of open-source software is the ability to share the code with other users. This could be as a library, a command-line tool for an end user or something completely different. Ultimately the code needs to be put somewhere and a central source of where to find it needs to be updated. This workflow focuses on using <a href="/pages/opam">opam</a> to do just that.</p>
+<p>Opam is a package manager for OCaml. If you are reading this workflow then chances are you have interacted with the <a href="/pages/opam-client">opam-client</a> probably to install packages like <a href="/platform/dune">dune</a> or <a href="/platform/ocamlformat">OCamlFormat</a>. If you are looking to publish your code then you should also have <a href="/workflows/starting-a-new-project#generating-an-opam-file">an opam file</a> for your project.</p>
+<h3 id="opam-internals">Opam Internals</h3>
+<p>Before diving into the tools for publishing your code, it is important to understand how the opam ecosystem works. One of the key concepts to understand is the idea of an <a href="/pages/opam-client#repositories">opam repository</a>. This is a structured collection of opam files indicating where to find different versions of packages and how to build and install them. The main repository can be <a href="https://github.com/ocaml/opam-repository">found on Github</a> and here is an example of a package: <a href="https://github.com/ocaml/opam-repository/blob/master/packages/ocamlformat/ocamlformat.0.15.0/opam">ocamlformat.0.15.0</a>.</p>
+<p>In order to publish to the opam repository you need to tag your project - this means adding a <strong>tag</strong> to indicate that a particular commit represents your piece of software at a particular version. The OCaml community strive to use <a href="https://semver.org/">semantic versioning</a>.</p>
+<p><img src="/images/git-tag.png" alt="A diagram showing a git tree with the latest main branch commit tagged" /></p>
+<p>Tagging is used in order to create a <em>release</em> of your package. A release is an <a href="https://en.wikipedia.org/wiki/Tar_(computing)">archive</a> of the source code. The most common place to do this is on <a href="https://github.blog/2013-07-02-release-your-software/">Github</a>. You specify where a package is released to in the <code>url</code> field of the opam-repository opam files (not in the source code version as they change because of the checksum that is also added).</p>
+<p>How you tag, produce the archive, generate the slightly different opam file and create a pull-request to the opam-repository differs depending on the tool you use. Skip ahead to <a href="#for-dune-users">the dune-release workflow</a> or the <a href="#for-everyone-else">opam-publish workflow</a> if you don't want some information on the continuous integration opam offers.</p>
+<h3 id="opam-continuous-integration">Opam Continuous Integration</h3>
+<p>Whenever you make a pull-request to add your latest package information to the central opam repository a series of continuous integration tools are run to check your code builds, installs and how it impacts reverse dependencies (those tools that depend on your package). <a href="https://travis-ci.com/">TravisCI</a> is used to check if your new release will install on a variety of platforms including MacOS, FreeBSD and arm64. <a href="https://github.com/ocaml-opam/Camelus">Camelus</a> reports on a variety of problems to help ease the burden on maintainers like linting the file and checking what new packages have become available (or not) as a result of the PR.</p>
+<p>Finally, a tool called <a href="https://github.com/moby/datakit/tree/master/ci">DataKit-CI</a> does the heavy lifting and checks more platforms and the reverse dependencies. For those interested, there is a new CI tool based on <a href="https://github.com/ocurrent/ocurrent">ocurrent</a> pipelines <a href="https://www.youtube.com/watch?v=HjcCUZ9i-ug">coming soon</a>.</p>
 <h2 id="recommended-workflow">Recommended Workflow</h2>
-<h2 id="alternatives">Alternatives</h2>
-<h2 id="real-world-examples">Real World Examples</h2>
+<h3 id="for-dune-users">For Dune Users</h3>
+<p><a href="/platform/dune-release">Dune-release</a> is the recommended tool for people using dune, opam and Github. Provided you follow some conventions, most of the hard work is taken care of by <code>dune-release</code>. To install it, simply run <code>opam install dune-release</code>.</p>
+<p>A good first step is to run <code>dune-release lint</code> at the root of your project. This will check for the conventions that dune-release is expecting and report back on any errors.</p>
+<pre><code class="language-sh">$ dune build
+$ dune-release lint 
+[ OK ] File README is present.
+[FAIL] File LICENSE is missing.
+[FAIL] File CHANGES is missing.
+[ OK ] File opam is present.
+[ OK ] lint opam file lib.opam.
+[ OK ] opam field description is present
+[ OK ] opam fields homepage and dev-repo can be parsed by dune-release
+[ OK ] Skipping doc field linting, no doc field found
+</code></pre>
+<p>One of the more important documents is the <code>CHANGES</code> file. This specifies what parts of codebase have changed (new functionality, bug fixes etc.) since the last version. Not only is this important for users of your package, the <code>dune-release</code> tool can use it to automatically tag the latest commit with the correct version. The <a href="https://github.com/mirage/irmin/blob/master/CHANGES.md#220-2020-06-26">Irmin CHANGES</a> file is a good example you can base your own file off of.</p>
+<p>Licensing your software is also important, but not strictly necessary. The <a href="https://opensource.org/licenses">open source initiative</a> details their approved list. Another fairly common license is <a href="https://en.wikipedia.org/wiki/ISC_license">ISC</a>.</p>
+<p>Once <code>dune-release lint</code> is happy and you are ready to release your software, you need to tag it. This is as simple as running <code>dune-release tag</code>. As mentioned before, with a correctly formatted CHANGES file this will be automatic. Otherwise, dune-release will not find the change log and you need to manually specify the version number (e.g. <code>dune-release tag v.1.2.0</code>). You can use the <code>-d</code> flag to delete tags if you want to change something.</p>
+<p>The next steps generate the distribution archive, publish documentation, generate the opam package and submit a PR to the opam repository. This is the most common workflow with dune-release and can all be invoked with just <code>dune-release</code>. Under the hood this makes a call to <code>dune-release bistro</code>. If you want to understand each individual command called, then read on.</p>
+<p>The next step is to generate the archive -- this can be done by running <code>dune-release distrib</code>. Finally you can publish the release of your code to Github with <code>dune-release publish distrib</code> and if you want to push your documentation to Github pages then run <code>dune-release publish doc</code>.</p>
+<p>Now with your documentation and archive somewhere accessible, the last step is to generate the opam repository specific opam file and make a pull request to the central opam repository. To generate an opam file run <code>dune-release opam pkg</code> and to make the pull request <code>dune-release opam submit</code>.</p>
+<p>Note that all the commands have a very thorough and instructive <code>--help</code> page to explain in detail what they do. In summary, if everything is set up correctly you can run.</p>
+<pre><code>$ dune-release lint 
+# Update CHANGES with new release version
+$ dune-release tag 
+# You can run the next commands with just dune-release
+$ dune-release distrib
+$ dune-release publish 
+$ dune-release opam pkg 
+$ dune-release opam submit 
+</code></pre>
+<p>There is also <a href="/images/dune-release.png">this helpful graphic</a> to remind you of the process.</p>
+<h3 id="for-everyone-else">For Everyone Else</h3>
+<p>If you are not using dune and Github then the easiest way to publish your code is using <code>opam-publish</code>. The idea is very similar in terms of tagging your git repository, generating an archive and making a pull request to the central opam repository.</p>
+<p>The first thing you should probably try is <code>opam install .</code> from your repository. This is to ensure you have a well formatted opam file. If this installs successfully then you are good to move on.</p>
+<p>In your version control system (VCS) you need to tag a commit with a version ready for release. The command for git is:</p>
+<pre><code># Tag the commit with a version number
+$ git tag -a v.1.2.0 
+# Push upstream -- this generates an archive on Github
+$ git push origin v1.2.0
+</code></pre>
+<p>From here the <code>opam publish</code> command can take over and make the pull request for you. Note that the first time you use it you will have to provide credentials in order to integrate it with the code hosting service you use.</p>
+<pre><code># For Github users 
+$ opam publish 
+# For non-Github users 
+$ opam publish &lt;url-of-archive&gt; .
+</code></pre>
+<p>Opam-publish doesn't have the same documentation capabilities as dune-release so be sure the read up <a href="/workflows/documenting-your-project">on managing documentation</a> for your project.</p>
 
      <p id="edit">
       <span class="details">
