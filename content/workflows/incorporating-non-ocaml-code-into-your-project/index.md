@@ -17,7 +17,7 @@ libraries:
 resources: 
   - url: https://rwmj.wordpress.com/2009/08/04/ocaml-internals/
     title: A Beginners Guide to OCaml Internals
-    description: A series of great articles explaining the internal respresentation of values in OCaml, useful for understanding things like memory profiling and GC.
+    description: A series of great articles explaining the internal representation of values in OCaml, useful for understanding things like memory profiling and GC.
   - url: https://caml.inria.fr/pub/docs/oreilly-book/html/book-ora114.html
     title: Communication between C and Objective Caml 
     description: A chapter on how C and OCaml talk to each other with some useful diagrams too

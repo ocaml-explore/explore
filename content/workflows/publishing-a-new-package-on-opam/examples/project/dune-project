@@ -1,0 +1,24 @@
+(lang dune 2.7)
+
+(name lib)
+
+(using mdx 0.1)
+
+(formatting disabled)
+
+(generate_opam_files true)
+
+(source
+ (github camelus/lib))
+
+(license ISC)
+
+(authors "Camelus")
+
+(maintainers "camelus@example.com")
+
+(package
+ (name lib)
+ (synopsis "Lib is a library")
+ (description "Lib")
+ (depends core httpaf httpaf-lwt-unix))
