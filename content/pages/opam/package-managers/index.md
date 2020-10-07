@@ -10,24 +10,11 @@ Managing packages requires dealing with the two non-trivial problems: solving de
 
 When installing a package, the user has specified dependencies with additional meta-data about the exact version of the dependency and when it is needed. This is most commonly done in the [opam file](/pages/opam/opam-files). 
 
-Let's look at a simple example in OCaml to understand the problem better: 
+![Opam installing two packages X and Y, which depend on Yaml at different versions](/images/opam-install.png)
 
-```ocaml
-# let dep_a_package_x v = v < 10
-val dep_a_package_x : int -> bool = <fun>
-# let dep_a_package_y v = v > 6  
-val dep_a_package_y : int -> bool = <fun>
-# let sat v = dep_a_package_x v && dep_a_package_y v
-val sat : int -> bool = <fun>
-# sat 11
-- : bool = false
-# sat 9
-- : bool = true
-```
+In the image, opam is trying to install packages `x` and `y` which both depend on `yaml` but with different version constraints. The job of the solver is to find the right version such that the constraints are satisfied.  
 
-We are trying to install packages `x` and `y` which both depend on `a` but with different version constraints. The job of the solver is to find the right `v` to make `sat` true. 
-
-This is a greatly simplified example and in general the problem is more complex and only gets worse as the number of packages and dependencies increases. In addition to this as you can see from the example, there are multiple solutions (`6,7,8,9` would all work). Which is the best? It is not just "install the most recent" (i.e. `9`) because what if this forces an already installed package to be removed because it needs versions `>= 10`?
+This is a greatly simplified example and in general the problem is more complex and only gets worse as the number of packages and dependencies increases. In addition to this as you can see from the example, there are multiple solutions. Which is the best? It is not just "install the most recent" (i.e. at time of writing `2.1.0`) because what if this forces an already installed package to be removed because it needs versions `<= 2.0.0`?
 
 Opam has a set of criteria that can be specified to set installation and upgrading preferences. The defaults are: 
 
