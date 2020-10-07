@@ -54,3 +54,13 @@ Without anything installed besides the compiler, the `bin` directory has the OCa
 If we install `yaml` (`opam install yaml -y`) we will pull many more libraries into `lib` including `yaml`. In `~/.opam/4.11/lib/yaml` you will see both the source of [ocaml-yaml](https://github.com/avsm/ocaml-yaml) as well as the build artifacts. Upon installing a library, opam uses the build information stored in the opam file to also build the library. Whenever you build your own projects with `dune build`, and if they need `yaml`, this is where dune will get it from.
 
 Much of this information remains unchanged for the **local** switches except the information now lives in the same directory as your project in `_opam`. 
+
+## Compilers 
+
+The [source code](https://github.com/ocaml/ocaml) for the OCaml compiler is hosted on Github. The OCaml compiler can produce assembly code or bytecode that can be interpreted. Importantly there are three distinct "types" of compiler whenever you use opam to install them: 
+
+ - System compiler: `ocaml-system` is the [compiler installed](https://opam.ocaml.org/packages/ocaml-system/) by your distribution package manager (`brew`, `apt-get` ...), that is, it exists outside of opam.
+ - Base compiler: `ocaml-base-compiler` is the [official release](https://opam.ocaml.org/packages/ocaml-base-compiler/) of the OCaml compiler i.e. the `4.11.1` or `4.08.0` compilers.
+ - Variants: These compilers are different configured versions of the base compiler. They could contain extra compiler features (e.g. [4.11+flambda](https://opam.ocaml.org/packages/ocaml-variants/ocaml-variants.4.11.1+flambda/)) and/or be compiled differently (e.g. [4.11+musl+static+flambda](https://opam.ocaml.org/packages/ocaml-variants/ocaml-variants.4.11.1+musl+static+flambda/))
+
+ If your package depends on having the `4.11.1` OCaml compiler then usually having the `4.11.1` system compiler, base compiler or some variant of `4.11.1` is enough. To ask for this, you can use the [ocaml virtual package](https://github.com/ocaml/opam-repository/blob/master/packages/ocaml/ocaml.4.11.1/opam).
