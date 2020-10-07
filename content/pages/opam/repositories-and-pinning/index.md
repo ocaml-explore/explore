@@ -4,55 +4,30 @@ description: Opam repositories and the pinning mechanism
 date: 2020-10-05 11:00:44
 ---
 
-Your project's opam file is the key to unlocking the power of the OCaml Platform. It will be used for much more than just publishing your library for others to use - with it for example you can:
+## Repositories
 
-- Automate the installation of external dependencies
-- Give users points of contact - like where to submit issues
-- Pin your project locally making it much easier to develop other tools and do continuous integration
-- Install your project as a CLI tool
+Opam repositories are the source of truth for what `opam` can and cannot install. If the repostory doesn't have package `X` with an opam file, then it won't be installed. The default repository is where most people will begin and end their journey with repositories. This is where you can publish new releases of your libraries and others can update and upgrade to these versions. 
 
-## Versioning
+This is held on Github: [ocaml/opam-repository](https://github.com/ocaml/opam-repository)
 
-One of the best features of opam files is versioning. Every file begins with `opam-version`, a field indicating what version of opam your project uses.  This solves the problem that *[nvm solves with nvmrc files](https://github.com/nvm-sh/nvm#nvmrc).* It makes it easier to catch versioning mismatches quickly. 
+![Opam diagram with two switches](/images/opam.v1.png)
 
-## Example File
+Note in the diagram above, in the unselected switch, there are two repositories. There is no limit on the number you can have and when installing libraries `opam` will check each for a folder that matches what you are looking for. The above is an example of what you would have to do to start cross-compiling. Sometimes larger organisations might want to keep their own repository so that it doesn't update and break code, for example the [tezos repository](https://gitlab.com/tezos/opam-repository).
 
-Below is a very minimal opam file - there tend to be two main sections to an opam file. Metadata about the package and dependency/build information. 
+An important (and quite common misconception) is that the repository contains your code. It doesn't. It contains the opam file with an additional field pointing to where your code is available. For more information on this, check out the [publishing to opam](/workflows/publishing-a-new-package-on-opam) workflow.
 
-```
-opam-version: "2.0"
-version: "~dev"
-synopsis: "A short sentence about your project"
-maintainer: "<username> <email>"
-authors: ["<username1> <email1>"]
-license: "ISC"
-homepage: "<github-page-or-similar>"
-bug-reports: "<github-issues-page-or-similar>"
-depends: [
-  "ocaml"   {>= "4.07.0"}
-  "dune"    {>= "2.0.0"}
-  "zarith"
-  "alcotest" {with-test}
-]
-build: [
-  ["dune" "build" "-p" name "-j" jobs]
-  ["dune" "runtest" "-p" name] {with-test}
-]
-```
+### Updating & Upgrading
 
-### Common Opam File Parameters
+Hopefully with the explanation of repositories it is a little clearer what updating and upgrading means. When you install and opam switch you get a local, cloned copy of the opam repository. As you code this will remain unchanged even as library authors publish new releases. This is nice as it means the ground will not move from under you. 
 
-- *depends*: this describes your project's dependencies with versioning constraints and [package variables](https://opam.ocaml.org/doc/Manual.html#Package-variables). For example `with-test` is a boolean variable which is set to true if tests have been enabled, if they haven't then opam will not try and installed `alcotest`.
-- *build:* specifies the list of commands to run in order to build your program. The same filtering can applied here to ensure only certain commands run. When using dune there is no need to add an `install` parameter to your opam file - dune can install the package for you.
-- *pin-depends: s*ome times your package will depend on unreleased versions of other packages, this mean if you spe them as dependencies in *depends* opam will not be able to find them. To handles this you can add a *pin-depends* parameter to point opam in the direction of the latest source code.
+To get the newer (and hopefully better!) code you will essentially have to `git pull` the latest opam repository using `opam update` and then tell opam to install the latests version of libraries (`opam upgrade`). Remember, unlike installing packages the priorities for upgrading focus on not removing packages (because of dependency conflicts) and trying to get to the latest version. Changing the repository is less important than during a single package install. By supplying a single package to these commands you won't update and upgrade everything. 
 
-```
-depends: [
-  ...
-  "omd"
-  ...
-]
-pin-depends: [
-  "omd.dev" "git+https://github.com/ocaml/omd"
-]
-```
+Within your library opam file you can specify constraints on version numbers to ensure your code works correctly. A major version change say `irmin.1.0.0` to `irmin.2.0.0` would likely break your code. As explained in the [publishing workflow](/workflows/publishing-a-new-package-on-opam), opam has a serious of continuous integration checks to make sure reverse dependencies do not break code. If it does then you either need to constrain the dependency or change your code to build with the latest version of the dependency. 
+
+## Pinning
+
+Pinning is a method for overriding the opam repository. In the diagram at the top of the page, our repository has a version of `alcotest` at `1.1.0` - under normal circumstances this is what will be installed and used to build libraries that depend on it. 
+
+But say we want to add a new feature or fix some code in `alcotest` and then try building some libraries that use it, do we have to release a new version or manually change the opam repository? No. You can run `opam pin add alcotest . --kind=path` from within the `alcotest` library. Opam will dutifully recompile reverse dependencies for you.
+
+It is important to know that opam is git-based when it comes to source code hence the need to specify `--kind=path` otherwise it will try and use the latest commit and you don't want to commit every time you want to try to change something.

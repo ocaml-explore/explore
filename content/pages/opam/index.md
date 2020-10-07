@@ -27,3 +27,5 @@ How do you actually manipulate opam files?  There are several tools that can par
 3. [Repositories and pinning](/pages/opam/repositories-and-pinning)
 4. [Plugins](/pages/opam/plugins)
 5. [The client and common commands](/pages/opam/cheatsheet)
+
+<div style="width: 100px"></div>
