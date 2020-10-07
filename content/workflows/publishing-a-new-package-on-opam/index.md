@@ -22,11 +22,11 @@ tools:
 
 Part of the appeal of open-source software is the ability to share the code with other users. This could be as a library, a command-line tool for an end user or something completely different. Ultimately the code needs to be put somewhere and a central source of where to find it needs to be updated. This workflow focuses on using [opam](/pages/opam) to do just that. 
 
-Opam is a package manager for OCaml. If you are reading this workflow then chances are you have interacted with the [opam-client](/pages/opam-client) probably to install packages like [dune](/platform/dune) or [OCamlFormat](/platform/ocamlformat). If you are looking to publish your code then you should also have [an opam file](/workflows/starting-a-new-project#generating-an-opam-file) for your project.
+Opam is a package manager for OCaml. If you are reading this workflow then chances are you have interacted with the [opam-client](/pages/opam/opam-client) probably to install packages like [dune](/platform/dune) or [OCamlFormat](/platform/ocamlformat). If you are looking to publish your code then you should also have [an opam file](/workflows/starting-a-new-project#generating-an-opam-file) for your project.
 
 ### Opam Internals
 
-Before diving into the tools for publishing your code, it is important to understand how the opam ecosystem works. One of the key concepts to understand is the idea of an [opam repository](/pages/opam-client#repositories). This is a structured collection of opam files indicating where to find different versions of packages and how to build and install them. The main repository can be [found on Github](https://github.com/ocaml/opam-repository) and here is an example of a package: [ocamlformat.0.15.0](https://github.com/ocaml/opam-repository/blob/master/packages/ocamlformat/ocamlformat.0.15.0/opam).
+Before diving into the tools for publishing your code, it is important to understand how the opam ecosystem works. One of the key concepts to understand is the idea of an [opam repository](/pages/opam/opam-client#repositories). This is a structured collection of opam files indicating where to find different versions of packages and how to build and install them. The main repository can be [found on Github](https://github.com/ocaml/opam-repository) and here is an example of a package: [ocamlformat.0.15.0](https://github.com/ocaml/opam-repository/blob/master/packages/ocamlformat/ocamlformat.0.15.0/opam).
 
 In order to publish to the opam repository you need to tag your project - this means adding a **tag** to indicate that a particular commit represents your piece of software at a particular version. The OCaml community strive to use [semantic versioning](https://semver.org/).
 

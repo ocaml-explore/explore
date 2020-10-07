@@ -1,7 +1,7 @@
 ---
-title: Opam Files 
-description: Unlocking the power of the OCaml Plartform with an opam file
-date: 2020-07-27 09:35:49
+title: Repositories and Pinning
+description: Opam repositories and the pinning mechanism
+date: 2020-10-05 11:00:44
 ---
 
 Your project's opam file is the key to unlocking the power of the OCaml Platform. It will be used for much more than just publishing your library for others to use - with it for example you can:
