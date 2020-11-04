@@ -161,6 +161,22 @@
             Recommended Workflow
            </a>
            <ul class="toc">
+            <li><a class="toc-link toc-item-3" href="#ppx">PPX</a>
+             <ul class="toc">
+              <li class="toc-li">
+               <a class="toc-link toc-item-4" href="#derivers">Derivers</a>
+              </li>
+             </ul>
+             <ul class="toc">
+              <li class="toc-li">
+               <a class="toc-link toc-item-4" href="#extension-rewriters">
+                Extension Rewriters
+               </a>
+              </li>
+             </ul>
+            </li>
+           </ul>
+           <ul class="toc">
             <li class="toc-li">
              <a class="toc-link toc-item-3" href="#using-ppx-libraries">
               Using PPX libraries
@@ -168,9 +184,31 @@
             </li>
            </ul>
            <ul class="toc">
+            <li>
+             <a class="toc-link toc-item-3" href="#writing-a-ppx-deriver">
+              Writing a Ppx Deriver
+             </a>
+             <ul class="toc">
+              <li class="toc-li">
+               <a class="toc-link toc-item-4"
+                href="#from-types-to-expressions">From types to expressions
+               </a>
+              </li>
+             </ul>
+             <ul class="toc">
+              <li class="toc-li">
+               <a class="toc-link toc-item-4" href="#building-a-structure">
+                Building a structure
+               </a>
+              </li>
+             </ul>
+            </li>
+           </ul>
+           <ul class="toc">
             <li class="toc-li">
-             <a class="toc-link toc-item-3" href="#writing-ppx-libraries">
-              Writing PPX libraries
+             <a class="toc-link toc-item-3"
+              href="#writing-a-ppx-extension-rewriter">
+              Writing a Ppx Extension Rewriter
              </a>
             </li>
            </ul>
@@ -195,12 +233,12 @@
                                                      
     <main id="main"> 
      <h1 id="meta-programming-with-ppx">Meta-programming with PPX</h1>
-<p><em>Last Updated: 04, August 2020 at 11:22:34</em></p>
+<p><em>Last Updated: 24, September 2020 at 08:55:03</em></p>
 <div><p>Platform tools: <span class="details-tools"><a href="/platform/ppxlib">ppxlib</a></span><span class="details-tools"><a href="/platform/dune">dune</a></span><span class="details-tools"><a href="/platform/omp">omp</a></span></p></div>
 <h2 id="overview">Overview</h2>
 <p>Meta-programming is programming for programming. You can think of it as a program which works with another program as data. Ppx is the OCaml syntax extension allowing programmers to meta-program directly on the abstract syntax tree (AST) of OCaml code. This means simple tasks like writing comparison functions or hashing functions can be automated through clever inference on types.</p>
 <h3 id="the-abstract-syntax-tree">The Abstract Syntax Tree</h3>
-<p>Before diving into using a ppx or writing your own, it is important to understand the OCaml AST. Your program starts its life in OCaml's concrete syntax. This is the predefined set of strings which are given some semantic meaning in the OCaml world like <code>let ... in ...</code>. The first important job of the compiler is to render this as abstract syntax, a simpler internal represenation of your program often structured as a labelled tree.</p>
+<p>Before diving into using a ppx or writing your own, it is important to understand the OCaml AST. Your program starts its life in OCaml's concrete syntax. This is the predefined set of strings which are given some semantic meaning in the OCaml world like <code>let ... in ...</code>. The first important job of the compiler is to render this as abstract syntax, a simpler internal representation of your program often structured as a labelled tree.</p>
 <p>As a tree data-structure, transformations become much easier. The purpose of a ppx is to move from one AST to another. The OCaml AST is called the <a href="https://github.com/ocaml/ocaml/blob/trunk/parsing/parsetree.mli">Parsetree</a>. Using this definition, let's find the AST for:</p>
 <pre><code class="language-ocaml"># let add_one a = a + 1 
 val add_one : int -&gt; int = &lt;fun&gt;
@@ -250,8 +288,21 @@ val add_one : int -&gt; int = &lt;fun&gt;
 <p><img src="/images/parsetree.png" alt="The OCaml AST for let add_one x = x + 1" /></p>
 <p>Manipulating the tree structure is much simpler than working with text. A ppx works on these structures allowing you to access the information and perform transformations from one tree to another.</p>
 <h2 id="recommended-workflow">Recommended Workflow</h2>
+<hr />
+<h3 id="ppx">PPX</h3>
+<p>Before we build ppx libraries, there are a few important, ppx-specific concepts to look at. Firstly is the difference between derivers and extensions.</p>
+<h4 id="derivers">Derivers</h4>
+<p>In our AST, derivers will add new nodes to the tree. They use information from types to generate something useful and add this to the tree. See the <a href="#using-ppx-libraries">using ppx libraries</a> example where derivers like <a href="https://github.com/janestreet/ppx_compare/tree/master/src"><code>ppx_compare</code></a> builds comparison functions based on type signatures.</p>
+<h4 id="extension-rewriters">Extension Rewriters</h4>
+<p>Extensions (rewriters) allow you to take part of an AST and rewrite (transform) it into a different, valid AST. Take for example the <a href="https://github.com/ocsigen/tyxml/tree/master/ppx">Tyxml ppx</a> which allows you to write HTML directly in your OCaml code and convert it to the Tyxml HTML internal representation.</p>
+<pre><code class="language-ocaml"># open Tyxml
+# let s = &quot;Hello World&quot; 
+val s : string = &quot;Hello World&quot;
+# [%html &quot;&lt;h1&gt;&quot;[Html.txt s]&quot;&lt;/h1&gt;&quot;]
+- : [&gt; Html_types.h1 ] Html5.elt = &lt;abstr&gt;
+</code></pre>
 <h3 id="using-ppx-libraries">Using PPX libraries</h3>
-<p>Dune comes with ppx support which makes it very easy to start using different ppx libraries to meta-program in OCaml. In this example we will define a new type of person and try to use it with the <code>Core.Hashtbl</code> module.</p>
+<p>Dune comes with ppx support which makes it very easy to start using different ppx libraries to meta-program in OCaml. In this example we will define a new type of <code>person</code> and try to use it with the <code>Core.Hashtbl</code> module.</p>
 <p>The Core implementation of a <a href="https://github.com/janestreet/base/blob/master/src/hashtbl_intf.ml#L425">hashtable expects</a> an <code>'a Key.t</code> which should be a first-class module with hash, compare and s-expression functions. This is very common for Jane Street modules so they made ppxes to auto-generate such functions from type signatures.</p>
 <p>To generate these functions we label it with a type deriving attribute.</p>
 <div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/meta-programming-with-ppx/examples/ppx_jane/main.ml">Source Code</a></p></div><pre><code class="language-ocaml">open Core
@@ -296,13 +347,202 @@ include
   end[@@ocaml.doc &quot;@inline&quot;][@@merlin.hide ]
 </code></pre>
 <p>The main part being the new compare function which first uses physical equality before using integer equality on the integer record field of our type.</p>
-<h3 id="writing-ppx-libraries">Writing PPX libraries</h3>
-<p>To write your own ppx library you are strongly encourage to use <code>ppxlib</code> (linked in the libraries section). It provides a wrapper around the compiler hooks that ppx uses to modify the AST. The user documentation does a very good job at getting you started writing your own ppx libraries.</p>
-<p><a href="https://ppxlib.readthedocs.io/en/latest/">ppxlib's user manual - ppxlib documentation</a></p>
-<p>The best way to learn is by example. Let's continue with some of Jane Street's ppxes and look at how <code>ppx_compare</code> works.</p>
+<h3 id="writing-a-ppx-deriver">Writing a Ppx Deriver</h3>
+<p>To write your own ppx library you are strongly encouraged to use <a href="/libraries/ppxlib"><code>ppxlib</code></a>. It provides a wrapper around the compiler hooks that a ppx can use to modify the AST. The <a href="https://ppxlib.readthedocs.io/en/latest/">user documentation</a> does a very good job at getting you started writing your own ppx libraries.</p>
+<p>One of the best ways to learn is by building. To start, we will build a simple deriver for turning OCaml types into strings. It will not be complete or perfect, but it should expose the right number of concepts to help you get started writing ppx libraries.</p>
+<p>As we have noted, a deriver is something that adds additional nodes to our AST based on the meta-programming information inferred from our types. A good deriver tends to be one where you can almost imagine writing all of the functions by hand and you just want to crank the wheel and turn them out. One example would be generating string producing functions for OCaml types.</p>
+<p>Here are a few that might feel obvious:</p>
+<pre><code class="language-ocaml"># string_of_int
+- : int -&gt; string = &lt;fun&gt;
+# let int_list_stringify lst = &quot;[&quot; ^ List.fold_left (fun acc s -&gt; acc ^ (string_of_int s) ^ &quot;;&quot;) &quot;&quot; lst ^ &quot;]&quot;
+val int_list_stringify : int list -&gt; string = &lt;fun&gt;
+# int_list_stringify [1;2;3;4]
+- : string = &quot;[1;2;3;4;]&quot;
+</code></pre>
+<p>The tedium should be apparent, not to mention how (without supplying many different arguments) it would be difficult to add more <code>*_list_stringify</code> functions.</p>
+<p>This can be solved with a ppx which derives our stringify functions straight from the type definitions. For succinctness, we will focus on making functions for simple types like <code>int</code> and <code>t list</code>.</p>
+<h4 id="from-types-to-expressions">From types to expressions</h4>
+<p>The cornerstone of our ppx will be a function, <code>expr_of_type : Ppxlib.core_type -&gt; Ppxlib.expression</code>. Note that these are aliases to the <code>Parsetree</code> definitions in the compiler. Actually trying to reconstruct a <a href="https://github.com/ocaml/ocaml/blob/trunk/parsing/parsetree.mli#L82"><code>core_type</code></a> or an <a href="https://github.com/ocaml/ocaml/blob/trunk/parsing/parsetree.mli#L259"><code>expression</code></a> by hand is doable, but accident prone and will quickly fill up your file making it hard to read and find bugs. Luckily, we can use <code>Ppxlib.metaquot</code>.</p>
+<p>Metaquot is a ppx for writing ppxes. It allows you to write valid OCaml syntax and transform it into the <code>Parsetree</code> equivalent using the preprocessor. This is useful in building up large and complex AST components.</p>
+<pre><code class="language-ocaml"># #require &quot;ppxlib,ppxlib.metaquot&quot; 
+# open Ppxlib
+# let loc = !Ast_helper.default_loc in [%expr 23]
+- : expression =
+{pexp_desc = Pexp_constant (Pconst_integer (&quot;23&quot;, None));
+ pexp_loc =
+  {loc_start =
+    {pos_fname = &quot;_none_&quot;; pos_lnum = 0; pos_bol = 0; pos_cnum = -1};
+   loc_end = {pos_fname = &quot;_none_&quot;; pos_lnum = 0; pos_bol = 0; pos_cnum = -1};
+   loc_ghost = true};
+ pexp_loc_stack = []; pexp_attributes = []}
+</code></pre>
+<p>The three main metaquot extensions are:</p>
+<ol>
+<li><code>[%expr]</code> - for building expressions like functions
+</li>
+<li><code>[%pat]</code> - for building patterns for things like function arguments
+</li>
+<li><code>[%type:]</code> - for building types
+</li>
+</ol>
+<p>We can build our <code>expr_of_type</code> function by pattern-matching on different types (using <code>[%type ...]</code>) and producing the right <strong>stringifying</strong> functions (using <code>[%expr...]</code>).</p>
+<pre><code class="language-ocaml">let rec expr_of_type typ =
+  let loc = typ.ptyp_loc in
+  match typ with
+  | [%type: int] -&gt; [%expr string_of_int]
+  | [%type: string] -&gt; [%expr fun i -&gt; i]
+  | [%type: bool] -&gt; [%expr string_of_bool]
+  | [%type: float] -&gt; [%expr string_of_float]
+  | [%type: [%t? t] list] -&gt;
+      [%expr
+        fun lst -&gt;
+          &quot;[&quot;
+          ^ List.fold_left
+              (fun acc s -&gt; acc ^ [%e expr_of_type t] s ^ &quot;;&quot;)
+              &quot;&quot; lst
+          ^ &quot;]&quot;]
+  | _ -&gt;
+      Location.raise_errorf ~loc &quot;No support for this type: %s&quot;
+        (string_of_core_type typ)
+</code></pre>
+<p>The first thing to notice is the definition of the <code>loc</code> variable. Most <code>Parsetree</code> types have some meta-information including their location for things like better error messages. As we build new expressions we need to supply a good location so that ppx-induced errors are also useful. <code>[%expr...]</code> expects a location to be called <code>loc</code> to be available.</p>
+<p>After this we match are type declaration with types we are interested in. For example, <code>int</code> produces a function which is really just <code>string_of_int</code>. This is similar for <code>bool</code>, <code>float</code> and <code>string</code>.</p>
+<p>The more interesting example is list. It has some additional type to describe the elements. Note this isn't a type variable <code>'a</code> here, this is a statically known element like <code>int list</code> or <code>float list</code> (later we'll talk a little about handling the <code>'a</code> case). We use the <code>[%t? t]</code> to extract that type.</p>
+<p>From here it builds one of the many possible ways you could 'stringify' a list. Note the recursive call in the <code>fold_left</code> function to <code>expr_of_type</code> supplying it with the element type of the list. Like the <code>[%t...]</code> syntax, <code>[%e...]</code> within an <code>[%expr...]</code> is like a hole where you can supply things of type <code>expression</code> and the preprocessor will just leave them be.</p>
+<h4 id="building-a-structure">Building a structure</h4>
+<p>Once we're happy with the functions we are generating we need to register the deriver. Ppxlib provides a lot of functions to make this easy. Firstly, we'll use <code>Deriving.Generator.V2.make_noarg</code> to make a <code>('output_ast, 'input_ast) Deriving.Generator.t</code>. In order to do so, we need to supply it with an implementation.</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/meta-programming-with-ppx/examples/ppx_stringify/ppx/ppx_stringify.ml">Source Code</a></p></div><pre><code class="language-ocaml">let generate_impl ~ctxt (_rec_flag, type_decls) =
+  let loc = Expansion_context.Deriver.derived_item_loc ctxt in
+  List.map
+    (fun typ_decl -&gt;
+      match typ_decl with
+      | { ptype_kind = Ptype_abstract; ptype_manifest; _ } -&gt; (
+          match ptype_manifest with
+          | Some t -&gt;
+              let stringify = expr_of_type t in
+              let func_name =
+                if typ_decl.ptype_name.txt = &quot;t&quot; then { loc; txt = &quot;stringify&quot; }
+                else { loc; txt = typ_decl.ptype_name.txt ^ &quot;_stringify&quot; }
+              in
+              [%stri let [%p Pat.var func_name] = [%e stringify]]
+          | None -&gt;
+              Location.raise_errorf ~loc &quot;Cannot derive anything for this type&quot;
+          )
+      | _ -&gt; Location.raise_errorf ~loc &quot;Cannot derive anything for this type&quot;)
+    type_decls
+</code></pre>
+</div><p><code>make_noarg</code> is expecting a function which takes an <code>Expansion_context</code> and an input AST which in this case will be a pair - a recursive flag which we can ignore and the type declarations. We need to produce a <code>structure_item list</code> which is essentially an OCaml program. We can do this with some help from metaquot again.</p>
+<p>Type declarations fall into four possible type kinds:</p>
+<ol>
+<li><code>Ptype_abstract</code>: For types like <code>type t = int list</code>.
+</li>
+<li><code>Ptype_variants</code>: normal variants such as <code>type camel = Bactrian | Dromedary</code>.
+</li>
+<li><code>Ptype_open</code>: used to mark types which are <a href="http://caml.inria.fr/pub/docs/manual-ocaml/extensiblevariants.html">extensible variants</a>.
+</li>
+<li><code>Ptype_record</code>: for record types, <code>type t = { name : string }</code>.
+</li>
+</ol>
+<p>For our very simple ppx we only care about the first, so we can pattern-match on only values that match this. The manifest is the actual types that come after the <code>=</code>. These are what we want to pass to our <code>expr_of_type</code> function to generate our function (<code>stringify</code>). We also need to provide a name for our function, to do this we simply take the name of our type and add the suffix <code>_stringify</code>.
+Conventionally if the name is <code>t</code> then you drop this and just use the suffix.</p>
+<p>Using the structure item generating ppx from metaquot (<code>[%stri]</code>) we finally generate the function with the correct name and the correct expression for the body.</p>
+<p>The final steps are just registering the ppx using functions provided by ppxlib.</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/meta-programming-with-ppx/examples/ppx_stringify/ppx/ppx_stringify.ml">Source Code</a></p></div><pre><code class="language-ocaml">let impl_generator = Deriving.Generator.V2.make_noarg generate_impl
+
+let stringify = Deriving.add &quot;stringify&quot; ~str_type_decl:impl_generator
+</code></pre>
+</div><p>And a special dune file to mark our code as a ppx deriver, preprocess our files with <code>ppxlib.metaquot</code> and include <code>ppxlib</code>.</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/meta-programming-with-ppx/examples/ppx_stringify/ppx/dune">Source Code</a></p></div><pre><code>(library
+ (name ppx_stringify)
+ (kind ppx_deriver)
+ (libraries ppxlib)
+ (preprocess
+  (pps ppxlib.metaquot)))
+</code></pre>
+</div><p>Here is an example using the deriver.</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/meta-programming-with-ppx/examples/ppx_stringify/example/main.ml">Source Code</a></p></div><pre><code class="language-ocaml">type i_list = int list [@@deriving stringify]
+
+type b_list = bool list [@@deriving stringify]
+
+type i_list_list = int list list [@@deriving stringify]
+
+let () =
+  let i_lst = [ 1; 2; 3 ] in
+  let b_lst = [ true; false; true ] in
+  let i_lst_lst = [ [ 1; 2; 3 ]; [ 4; 5; 6 ] ] in
+  print_endline (i_list_stringify i_lst);
+  print_endline (b_list_stringify b_lst);
+  print_endline (i_list_list_stringify i_lst_lst)
+</code></pre>
+</div><pre><code class="language-sh">$ dune exec -- ./example/main.exe
+[1;2;3;]
+[true;false;true;]
+[[1;2;3;];[4;5;6;];]
+</code></pre>
+<h3 id="writing-a-ppx-extension-rewriter">Writing a Ppx Extension Rewriter</h3>
+<p>Instead of adding new nodes to an AST, we will now focus on rewriting them. The example we will use is turning association lists into hashtables. If you followed the deriver example there are many shared concepts. At the heart of this ppx will be a function <code>expand : Ppxlib.expression -&gt; Ppxlib.expression</code>.</p>
+<p>A hashtable is just a key-value store with <code>O(1)</code> amortised access time and association lists are just key-value stores but with <code>O(n)</code> access time. Both have their use cases. <code>Ppx_hashtbl</code> will take an association list (e.g. <code>[(&quot;hello&quot;, 1)]</code>) and rewrite it as a hashtable using the standard library functions to do so.</p>
+<p>Again, it is worthwhile thinking how you might go about this in code. For empty lists we might just create an empty hashtable of size <code>10</code>. For non-empty lists, we need to check that it is indeed of type <code>('a * 'b) list</code> before creating a fresh hashtable and adding each key-value pair into it and finally returning that table for the programmer to use.</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/meta-programming-with-ppx/examples/ppx_hashtbl/ppx/ppx_hashtbl.ml">Source Code</a></p></div><pre><code class="language-ocaml">let expand ~ctxt expr =
+  let loc = Expansion_context.Extension.extension_point_loc ctxt in
+  match expr with
+  | [%expr []] -&gt; [%expr Hashtbl.create 10]
+  | [%expr [%e? _pair] :: [%e? _]] -&gt;
+      let fun_list = handle_list ~loc expr in
+      let len = List.length fun_list in
+      [%expr
+        Hashtbl.create [%e eint ~loc len] |&gt; fun tbl -&gt;
+        List.iter (fun f -&gt; f tbl) [%e elist ~loc fun_list];
+        tbl]
+  | _ -&gt; Location.raise_errorf ~loc &quot;Expected a list&quot;
+</code></pre>
+</div><p>The main pattern-matching here finds the list where there is a head and tail. It passes the list expression to a separate <code>handle_list</code> function which returns a list of <code>Hashtbl.add</code> functions (skip ahead to see that function). We then produce an expression which creates a hashtable (the same length as the number of elements in the list), iterates over the add functions which expect a table to add the key-value pairs to and finally returns the table.</p>
+<p>The use of <code>eint</code> and <code>elist</code> is from the <code>Ast_builder.Default</code> module making it easier to build expressions matching integers, lists etc.</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/meta-programming-with-ppx/examples/ppx_hashtbl/ppx/ppx_hashtbl.ml">Source Code</a></p></div><pre><code class="language-ocaml">let get_tuple ~loc = function
+  | { pexp_desc = Pexp_tuple [ key; value ]; _ } -&gt; (key, value)
+  | _ -&gt; Location.raise_errorf ~loc &quot;Expected a list of tuple pairs&quot;
+
+let rec handle_list ~loc = function
+  | [%expr []] -&gt; []
+  | [%expr [%e? pair] :: [%e? tl]] -&gt;
+      let k, v = get_tuple ~loc pair in
+      let add = [%expr fun tbl -&gt; Hashtbl.add tbl [%e k] [%e v]] in
+      let rest = handle_list ~loc tl in
+      add :: rest
+  | _ -&gt; Location.raise_errorf ~loc &quot;Expected a list of tuple pairs&quot;
+</code></pre>
+</div><p>The <code>get_tuple</code> function simple extracts key-value pairs from an expression that is a tuple and raises an error otherwise. The <code>handle_list</code> function builds the functions for adding elements to the hashtable.</p>
+<p>This is the core of the ppx finished, all that is left is to register it, build it and use it.</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/meta-programming-with-ppx/examples/ppx_hashtbl/ppx/ppx_hashtbl.ml">Source Code</a></p></div><pre><code class="language-ocaml">let my_extension =
+  Extension.V3.declare &quot;hashtbl&quot; Extension.Context.expression
+    Ast_pattern.(single_expr_payload __)
+    expand
+
+let rule = Ppxlib.Context_free.Rule.extension my_extension
+
+let () = Driver.register_transformation ~rules:[ rule ] &quot;hashtbl&quot;
+</code></pre>
+</div><p>The <code>declare</code> function lets us produce a new extension. It needs a label, the context which dictates what type of things we should be returning from our expander and then the pattern of inputs (here just an single expression). The final step is to convert the extension to a rule and register the transformation.</p>
+<p>The following dune file will be sufficient to build our ppx rewriter.</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/meta-programming-with-ppx/examples/ppx_hashtbl/ppx/dune">Source Code</a></p></div><pre><code>(library
+ (name ppx_hashtbl)
+ (kind ppx_rewriter)
+ (libraries ppxlib)
+ (preprocess
+  (pps ppxlib.metaquot)))
+</code></pre>
+</div><p>And here it is in use!</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/meta-programming-with-ppx/examples/ppx_hashtbl/example/main.ml">Source Code</a></p></div><pre><code class="language-ocaml">let () =
+  let tbl = [%hashtbl [ (&quot;Hello&quot;, 1) ]] in
+  print_int (Hashtbl.find tbl &quot;Hello&quot;)
+</code></pre>
+</div><pre><code class="language-sh">$ dune exec -- ./example/main.exe
+1
+</code></pre>
 <h2 id="real-world-examples">Real World Examples</h2>
-<p><a href="https://github.com/ocaml-ppx/ppx_deriving_yojson">ocaml-ppx/ppx_deriving_yojson</a></p>
-<p><a href="https://github.com/ocaml-ppx/ppx_deriving_protobuf">ocaml-ppx/ppx_deriving_protobuf</a></p>
+<hr />
+<p>There are lots of great ppx libraries. <a href="https://github.com/ocaml-ppx/ppx_deriving_yojson">Ppx_deriving_yojson</a> allows you to generate json from OCaml types and convert json back to OCaml types and <a href="https://github.com/ocaml-ppx/ppx_deriving_protobuf">ppx_deriving_protobuf</a> is very similar only for Google's <a href="https://developers.google.com/protocol-buffers/">protocol buffers</a>.</p>
+<p>As already mentioned, Tyxml offer <a href="https://github.com/ocsigen/tyxml/tree/master/ppx">rewriters</a> for building statically correct HTML in your OCaml files.</p>
 
      <h3>Resources</h3>
      <ol>
@@ -312,7 +552,7 @@ include
         >An Introduction to OCaml PPX Ecosystem
        </a> - 
        Nathan Rebours gives a very detailed and excellently explained guide
-       to writing your own ppx using ppxlib
+       to writing your own ppx using ppxlib.
       </li>
      </ol>
      <p id="edit">
