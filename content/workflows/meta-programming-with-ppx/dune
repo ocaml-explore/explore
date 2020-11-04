@@ -2,4 +2,4 @@
  (files index.md)
  (preludes prelude.ml))
 
-; (data_only_dirs examples)
+(data_only_dirs examples)
