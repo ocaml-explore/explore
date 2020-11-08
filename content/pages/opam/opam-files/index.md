@@ -1,6 +1,6 @@
 ---
 title: Opam Files 
-description: Unlocking the power of the OCaml Plartform with an opam file
+description: Unlocking the power of the OCaml Platform with an opam file
 date: 2020-07-27 09:35:49
 ---
 

@@ -18,17 +18,6 @@ A simplified diagram of some of the key features in opam.
 
 ## Key Concepts
 
-### Switches
-
-In the official documentation switches are described as (`opam switch --help`): 
-
-> This command is used to manage "switches", which are independent
-installation prefixes with their own compiler and sets of installed and
-pinned packages. This is typically useful to have different versions of
-the compiler available at once.
-
-Switches can either be local or system-wide. The former is usually installed alongside your code is an `_opam` directory whilst the latter exists in `~/.opam`. Local switches are similar to *node_modules* in the NodeJS ecosystem. 
-
 ### Repositories
 
 Opam repositories are the source of truth for what `opam` can and cannot install. If the repostory doesn't have package `X` with an opam file, then it won't be installed. The default repository is where most people will begin and end their journey with repositories. This is where you can publish new releases of your libraries and others can update and upgrade to these versions. 

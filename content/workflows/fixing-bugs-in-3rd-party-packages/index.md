@@ -33,7 +33,7 @@ There are multiple aspects to unpack in this workflow including:
 2. Pinning packages locally. 
 3. Logging libraries 
 
-Quite a lot of this workflow is made simpler by using the [opam client](/pages/opam-client). 
+Quite a lot of this workflow is made simpler by using the [opam client](/pages/opam/opam-client). 
 
 ## Recommended Workflow
 
