@@ -12,6 +12,7 @@ workflows:
   - Fixing Bugs in 3rd Party Packages
   - Publishing a Package on Opam
   - Fuzz Testing your Project
+  - Writing Scientific Computing Applications
   - Incorporating non-OCaml Code into your Project
   - Meta-programming with PPX 
   - Profiling your Project 

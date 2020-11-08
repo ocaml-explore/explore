@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+ <head><title>Writing Scientific Computing Applications</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8"/>
+  <meta name="description"
+   content="Use the OWL library to build scientific computing applications in OCaml"
+   />
+  <link rel="stylesheet"
+   href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
+   />
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/base.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-dropdown.css"/>
+  <link rel="stylesheet" href="/css/main.css"/>
+  <link rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
+   />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js">
+  </script>
+  <script
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"
+   >
+  </script>
+  <script charset="UTF-8"
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/ocaml.min.js"
+   >
+  </script><script>hljs.initHighlightingOnLoad();</script>
+ </head>
+ <body>
+             
+  <header>
+                  
+   <a class="skip-to-content" href="#main"> Skip to main content </a>
+   <div class="pure-g">
+                             
+    <div class="pure-u-1-3">
+                                    
+     <a class="title-link" href="/">
+                                              
+      <h2 style="text-align: center">Explore OCaml</h2>
+                                                               
+     </a>
+               
+    </div>
+                
+    <div class="pure-u-1-3"></div>
+                                          
+    <nav class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
+     
+               
+     <ul class="flex-row flex-center nav-ul">
+      <li class="nav-button">
+                                           
+       <a href="/platform">
+                                           Tools 
+                                         </a>
+       
+                   
+      </li>
+      <li class="nav-button">
+                                           
+       <a href="/users">
+                                        Users
+                                      </a>
+       
+                   
+      </li>
+      <li class="nav-button">
+                                           
+       <a href="/libraries">
+                                            Libraries
+                                          </a>
+       
+                   
+      </li>
+     </ul>
+                  
+    </nav>
+                  
+    <nav class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu
+     pure-menu-horizontal flex-col flex-vert pure-u-1-3">
+                                                                   
+     <ul class="pure-menu-list" style="text-align: center">
+      <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+       
+                   <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
+       
+                   
+       <ul class="pure-menu-children mob-menu-list">
+        <li class="pure-menu-item mob-menu-item">
+                                                                   
+         <a href="/platform">
+                                                 Tools 
+                                               </a>
+         
+                         
+        </li>
+        <li class="pure-menu-item mob-menu-item">
+                                                                   
+         <a href="/users">
+                                              Users
+                                            </a>
+         
+                         
+        </li>
+        <li class="pure-menu-item mob-menu-item">
+                                                                   
+         <a href="/libraries">
+                                                Libraries
+                                                
+         </a>
+                             
+        </li>
+       </ul>
+                        
+      </li>
+     </ul>
+                  
+    </nav>
+              
+   </div>
+               
+  </header>
+                   
+  <div class="pure-g">
+                                
+   <div class="pure-u-1-12 pure-u-md-1-4">
+                                                      
+    <div class="pure-hidden-xs pure-hidden-sm pure-hidden-md toc-container
+     sticky">
+     <ul class="toc">
+      <li>
+       <ul class="toc">
+        <li>
+         <a class="toc-link toc-item-1"
+          href="#writing-scientific-computing-applications">
+          Writing Scientific Computing Applications
+         </a>
+         <ul class="toc">
+          <li class="toc-li">
+           <a class="toc-link toc-item-2" href="#overview">Overview</a>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li>
+           <a class="toc-link toc-item-2" href="#recommended-workflow">
+            Recommended Workflow
+           </a>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#introduction-to-owl">
+              Introduction to Owl
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3"
+              href="#using-and-reading-datasets">Using and reading datasets
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3"
+              href="#basic-scientific-computing-tasks-and-plotting">
+              Basic Scientific Computing Tasks and Plotting
+             </a>
+            </li>
+           </ul>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </div>
+                    
+   </div>
+                   
+   <div class="pure-u-5-6 pure-u-md-1-2">
+                                                     
+    <main id="main"> 
+     <h1 id="writing-scientific-computing-applications">Writing Scientific Computing Applications</h1>
+<p><em>Last Updated: 28, September 2020 at 11:21:33</em></p>
+<div><p>Platform tools: <span class="details-tools"><a href="/platform/dune">dune</a></span></p></div>
+<h2 id="overview">Overview</h2>
+<p>Data science applications are typically written in Python thanks to the large community providing excellent libraries for nearly any area of analysis. OCaml can offer concise, fast and crucially type-safe code in the scientific computing arena. Thanks to ongoing work by <a href="https://www.cl.cam.ac.uk/~lw525/">Liang Wang</a> et al. OCaml now has the Owl scientific computing library.</p>
+<p>What follows are some brief examples to give you a taste of scientific computing in OCaml. If you like what you see, then the next stop for you is the amazing <a href="https://ocaml.xyz/book/">OCaml Scientific Computing</a> book.</p>
+<h2 id="recommended-workflow">Recommended Workflow</h2>
+<h3 id="introduction-to-owl">Introduction to Owl</h3>
+<p>Owl is a library for running scientific computations in OCaml. Besides providing a base of useful functions for manipulating data, Owl has the difficult task of managing memory efficiently in a functional language like OCaml. Using a computation graph, Owl can perform operations lazily and help reduce how much memory is allocated.</p>
+<p>The most ubiquitous data type is the <code>Ndarray</code> (n-dimensional array).</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/writing-scientific-computing-applications/examples/simple/main.ml">Source Code</a></p></div><pre><code class="language-ocaml">open Owl.Dense
+module IntArr = Ndarray.Generic
+
+let () =
+  let open Owl.Arr in
+  let arr1 = Ndarray.Generic.ones Int64 [| 5; 5 |] in
+  let arr2 = Ndarray.Generic.ones Int64 [| 5; 5 |] in
+  Ndarray.Generic.pp_dsnda Format.std_formatter (arr1 + arr2)
+</code></pre>
+</div><p>Note we locally open <code>Owl.Arr</code> in order to get the infix array addition operator.</p>
+<pre><code class="language-sh">$ dune exec -- ./main.exe
+
+   C0 C1 C2 C3 C4
+R0  2  2  2  2  2
+R1  2  2  2  2  2
+R2  2  2  2  2  2
+R3  2  2  2  2  2
+R4  2  2  2  2  2
+</code></pre>
+<h3 id="using-and-reading-datasets">Using and reading datasets</h3>
+<p>Implementing algorithms for processing and inferring interesting results from data is only part of scientific computation. Another larger part is simply reading, cleaning and showing the data.</p>
+<p>There are some useful functions like <code>Owl.Dataset.download_all</code> to be able to download and then use common datasets like the <a href="http://yann.lecun.com/exdb/mnist/">MNIST dataset</a> -- <a href="https://ocaml.xyz/book/utilities.html">this part of the book</a> explains that part well.</p>
+<p>For using different datasets probably the most common format is comma-separated values (CSVs). Owl comes with utility functions to make using CSVs easy. Consider this small dataset:</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/writing-scientific-computing-applications/examples/data/data.csv">Source Code</a></p></div><pre><code>language,url,kind
+OCaml,https://ocaml.org,multiparadigm
+Haskell,https://www.haskell.org/,functional
+</code></pre>
+</div><p>Using the <code>Dataframe</code> module we can load this file as a dataframe, and the <code>Owl_pretty</code> function makes it easy to inspect the data.</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/writing-scientific-computing-applications/examples/data/main.ml">Source Code</a></p></div><pre><code class="language-ocaml">open Owl
+
+let () =
+  let open Dataframe in
+  let csv = of_csv &quot;data.csv&quot; in
+  Owl_pretty.pp_dataframe Format.std_formatter csv;
+  (* Print the first row's kind *)
+  Format.(
+    fprintf std_formatter &quot;\n==== %s ====&quot; (unpack_string csv.%((0, &quot;kind&quot;))));
+  let is_functional arr = function &quot;functional&quot; -&gt; Some arr | _ -&gt; None in
+  let keep_functional =
+    filter_map_row (fun arr -&gt; is_functional arr (unpack_string arr.(2))) csv
+  in
+  Owl_pretty.pp_dataframe Format.std_formatter keep_functional
+</code></pre>
+</div><p>Finally we can run this example:</p>
+<pre><code class="language-sh">$ dune exec -- ./main.exe
+
+  +--------+------------------------+-------------
+   language                      url          kind
+  +--------+------------------------+-------------
+R0    OCaml        https://ocaml.org multiparadigm
+R1  Haskell https://www.haskell.org/    functional
+
+==== multiparadigm ====
+
+  +--------+------------------------+----------
+   language                      url       kind
+  +--------+------------------------+----------
+R0  Haskell https://www.haskell.org/ functional
+</code></pre>
+<p>The <a href="https://ocaml.xyz/book/dataframe.html">dataframe module</a> is very useful for exploring the data and is similar to the same structure found in the very popular <a href="https://pandas.pydata.org/docs/reference/frame.html">python pandas</a> library.</p>
+<p>In the example you can see different functions being used like the <code>.%()</code> which extracts a row and column based on the index and label provided. The <code>filter_map_row</code> shows how one might go about cleaning data by removing unwanted rows (for example those with N/A values).</p>
+<h3 id="basic-scientific-computing-tasks-and-plotting">Basic Scientific Computing Tasks and Plotting</h3>
+<p>As a final, small example to give you a taste of doing scientific computing in OCaml we'll compute a simple linear regression. We'll define a simple function <code>f</code> that is really a straight line (<code>mx + c</code>) with a little randomness thrown in. Then we'll try and find the parameters <code>m</code> and <code>c</code> that best fit the function using linear regression.</p>
+<p>Again, the <a href="https://ocaml.xyz/book/regression.html">owl book</a> has a brilliant chapter on different forms of regression and treats the topic much more rigorously.</p>
+<p>A linear regression involves trying to model a function by taking a linear combination of variables, in this example we keep it simple with only one independent variable as well as a constant parameter. We can then construct a &quot;cost function&quot; for determining how wrong our model is compared to our training data and try to minimise that error using standard methods like gradient descent, all of which Owl generously provides.</p>
+<div><div><p class="toolbar"><a href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/writing-scientific-computing-applications/examples/linear/linear.ml">Source Code</a></p></div><pre><code class="language-ocaml">let () =
+  (* The parameters we will try to guess *)
+  let m = 3.7 in
+  let c = 0.5 in
+  let h = Plot.create &quot;linreg.png&quot; in
+  (* The function with some randomness *)
+  let f = f ~randomness:20. m c in
+  let line m c x = (m *. x) +. c in
+  Plot.set_title h
+    ( &quot;Linear Regression for y = &quot; ^ string_of_float m ^ &quot;x + &quot;
+    ^ string_of_float c );
+  Plot.set_font_size h 8.;
+  Plot.set_pen_size h 3.;
+  (* Generating training and plotting data *)
+  let xs_train, xs_plot =
+    (Mat.linspace (-5.) 20. 1000, Mat.linspace (-5.) 20. 40)
+  in
+  let ys_train, ys_plot = (Mat.map f xs_train, Mat.map f xs_plot) in
+  (* Scatter plot the plotting data *)
+  Plot.scatter ~h ~spec:[ Marker &quot;o&quot; ] xs_plot ys_plot;
+  (* Use the built-in linear regression (on doubles) *)
+  let c, m = Linalg.D.linreg xs_train ys_train in
+  (* Our guess *)
+  let guess = line m c in
+  Plot.plot_fun ~h ~spec:[ RGB (255, 165, 0) ] guess (-5.) 20.;
+  Plot.set_font_size h 6.;
+  Plot.(
+    text ~h
+      ~spec:[ RGB (255, 165, 0) ]
+      (-3.)
+      (guess 10. -. 0.2)
+      ( &quot;y = &quot;
+      ^ string_of_float (round3dp m)
+      ^ &quot;x + &quot;
+      ^ string_of_float (round3dp c) ));
+  Plot.output h
+</code></pre>
+</div><p>We use the plotting functionality that Owl provides opening <code>Owl_plot</code>.</p>
+<p><img src="/workflows/writing-scientific-computing-applications/examples/linear/linreg.png" alt="Linear Regression example" /></p>
+
+     <p id="edit">
+      <span class="details">
+       <a
+        href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/writing-scientific-computing-applications/index.md"
+        >Edit this page on Github
+       </a>
+      </span>
+     </p>
+    </main>
+                     
+   </div>
+                 
+  </div>
+            
+          
+        </body>
+</html>

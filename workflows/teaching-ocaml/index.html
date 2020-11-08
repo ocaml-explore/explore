@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
- <head><title>Utop</title>
+ <head><title>Teaching OCaml</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta charset="utf-8"/>
-  <meta name="description" content="OCaml's Universal Toplevel"/>
+  <meta name="description"
+   content="Teach OCaml using Jupyter notebooks or online resources"/>
   <link rel="stylesheet"
    href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
    />
@@ -139,16 +140,40 @@
      <ul class="toc">
       <li>
        <ul class="toc">
-        <li><a class="toc-link toc-item-1" href="#utop">Utop</a>
+        <li>
+         <a class="toc-link toc-item-1" href="#teaching-ocaml">Teaching OCaml
+         </a>
          <ul class="toc">
           <li class="toc-li">
            <a class="toc-link toc-item-2" href="#overview">Overview</a>
           </li>
          </ul>
          <ul class="toc">
-          <li class="toc-li">
-           <a class="toc-link toc-item-2" href="#key-concepts">Key Concepts
+          <li>
+           <a class="toc-link toc-item-2" href="#recommended-workflow">
+            Recommended Workflow
            </a>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3"
+              href="#locally-running-an-ocaml-jupyter-notebook">
+              Locally Running an OCaml Jupyter Notebook
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#using-docker">Using Docker
+             </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#presentation-tools">
+              Presentation tools
+             </a>
+            </li>
+           </ul>
           </li>
          </ul>
         </li>
@@ -162,68 +187,48 @@
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                      
     <main id="main"> 
-     <h1 id="utop">Utop</h1>
-<p><em>Last Updated: 27, July 2020 at 09:35:49</em></p>
-<div>Meta-data: <span class="details">License: 3 Clause BSD</span><span class="details"><a href="https://github.com/ocaml-community/utop">Repository</a></span><span class="details active">Lifecycle: active</span></div>
+     <h1 id="teaching-ocaml">Teaching OCaml</h1>
+<p><em>Last Updated: 21, September 2020 at 10:21:03</em></p>
+<p><span></span></p>
 <h2 id="overview">Overview</h2>
-<p><a href="https://github.com/ocaml-community/utop">Utop</a> is the <em>universal top-level</em> for OCaml. It is essentially a <em>read-evaluate-print</em> loop which makes it great for prototyping functions, learning OCaml and checking type signatures. It can be installed using opam with <code>opam install utop</code>.</p>
-<h2 id="key-concepts">Key Concepts</h2>
-<p>Utop is much more than just a learning tool - it can help any OCaml programmer discover type signatures and prototype new ideas quickly without having to build a full program. Some of the most useful directives are:</p>
-<pre><code class="language-ocaml">(* load external packages *)
-utop # #require &quot;omd&quot; 
-
-(* load source files providing dependent packages are loaded *)
-utop # #use &quot;src/utils.ml&quot; 
+<p>There are lots of reasons to teach OCaml (it's a great language, it is multi-paradigm, it's great for introducing more theoretical aspects of programming languages) and there are lots of ways to teach it. Before jumping into more complex solutions, two resources currently available may be all you need. OCamlpro's <a href="https://try.ocamlpro.com/">try ocaml</a> is a great way to introduce people to things like syntax or modules. The OCaml Software Foundation's <a href="http://ocaml.hackojo.org/">learn-ocaml</a> is a much more complex platform for building essentially a course on OCaml.</p>
+<p>The solution this workflow describes using Jupyter notebooks which combines an interactive read-evaluate-print-loop (REPL) with markdown text (with support for LATEX) to offer a unique solution for people wanting to teach or explore OCaml. This is based largely on <a href="https://kcsrk.info/ocaml/prolog/jupyter/notebooks/2020/01/19/OCaml-Prolog-Jupyter/">KC Sivaramakrishnan's experiences</a> when teaching a paradigms of programming languages course.</p>
+<h2 id="recommended-workflow">Recommended Workflow</h2>
+<h3 id="locally-running-an-ocaml-jupyter-notebook">Locally Running an OCaml Jupyter Notebook</h3>
+<p>The best way to get <em>ocaml-juptyer</em> up and running is through <code>opam</code> and installing <code>jupyter</code> using <code>pip</code> the python package manager. More information on python and <code>pip</code> can be found in their <a href="https://docs.python.org/3/installing/index.html">documentation</a>.</p>
+<p>With <code>pip</code> and <code>opam</code> installed, the following should represent a typical way of getting started with a jupyter notebook with an OCaml kernel.</p>
+<pre><code class="language-bash">$ pip install jupyter # Install jupyter
+$ opam install jupyter # Install jupyter opam package 
+$ opam install jupyter-archimedes  # Jupyter-friendly 2D plotting library
+$ ocaml-jupyter-opam-genspec
+$ jupyter kernelspec install [ --user ] --name ocaml-jupyter &quot;$(opam var share)/jupyter&quot;
 </code></pre>
-<p>With packages loaded into the toplevel we can explore them to help speed up are development process when using them, for example if we wished to know what all of the exposed functions and types are for the <code>Omd</code> module we can run <code>#show omd</code> . For specific functions we can just print them.</p>
-<pre><code class="language-ocaml">(* load omd *)
-utop # #require &quot;omd&quot;
-
-(* see type signature of the of_channel function *)
-utop # Omd.of_channel;;
-- : in_channel -&gt; Omd.doc = &lt;fun&gt;
-
-(* see what the doc type aliases *)
-utop # #show Omd.doc;; 
-- : type nonrec doc = Omd.block list
+<p>Further documentation can be found at in the <a href="https://github.com/akabe/ocaml-jupyter">OCaml Jupyter repository</a>.</p>
+<h3 id="using-docker">Using Docker</h3>
+<p>Docker is a tool for running containers, isolated, light-weight environments for running code in a reproducible and uniform manner with great support on MacOS and Linux. This can provide a nice way to abstract the nitty-gritty details of setting up an OCaml environment for many students.</p>
+<p><a href="https://github.com/patricoferris/ocaml-teaching">OCaml-teaching</a> is a solution building on <a href="https://github.com/kayceesrk/cs3100_f19/blob/gh-pages/_docker/dockerfile">KC's docker images</a>. It offers an environment with preconfigured editors (vim and emacs), preinstalled Jupyter notebook and opam installed. The repository also contains an example of using <a href="https://nbgrader.readthedocs.io/en/stable/">nbgrader</a> to provide an environment for writing assignments and auto-grading them.</p>
+<p>To try this out for yourself, with Docker installed, you can run:</p>
+<pre><code>$ docker run -it -p 8888:8888 -v=$(pwd):/notebooks patricoferris/ocaml-teaching:4.10 
 </code></pre>
-<p>This process is much faster and smoother than checking the online documentation or the source code. It also prints the return types of functions which is especially useful when you move beyond the primitive types like <code>float</code> and <code>int</code>.</p>
-<pre><code class="language-ocaml">(* see what the doc type aliases *)
-utop # Omd.of_string &quot;[OCaml](https://ocaml.org/)&quot;
-- : Omd.doc =
-[{Omd.bl_desc =
-   Omd.Paragraph
-    {Omd.il_desc =
-      Omd.Link
-       {Omd.label = {Omd.il_desc = Omd.Text &quot;OCaml&quot;; il_attributes = []};
-        destination = &quot;https://ocaml.org/&quot;; title = None};
-     il_attributes = []};
-  bl_attributes = []}]
-</code></pre>
-<p>This can help you make sure functions return the types you expect instead of having to find the pretty printer and add print statements over parts of your code you want to inspect.</p>
+<p>Then navigate to <code>https://localhost:8888</code> to explore OCaml in a Jupyter notebook that persists to the current directory.</p>
+<h3 id="presentation-tools">Presentation tools</h3>
+<p>For teachers or presenters you can use the <a href="https://rise.readthedocs.io/en/stable/">RISE</a> tool to present your code and text in the browser from a running OCaml Jupyter Notebook. It will generate interactive slides from the code and text blocks in your notebook. OCaml-teaching comes with this preconfigured.</p>
 
-     <h2>Related Workflows</h2>
-     <div> <div><h3>Starter</h3></div>
-                                            
-      <ol>
-       <li class="ordered-list">
-        <a class="index-a" href="/workflows/navigating-ocaml-projects">
-         Navigating OCaml Projects 
-        </a> - 
-        Learn how to navigate and read OCaml projects to help you use and
-        understand other projects
-       </li>
-       <li class="ordered-list">
-        <a class="index-a" href="/workflows/getting-started">Getting Started 
-        </a> - Write and run OCaml code quickly
-       </li>
-      </ol>
-               
-     </div><span></span><span></span><span></span><span></span><span></span>
+     <h3>Resources</h3>
+     <ol>
+      <li>
+       <a
+        href="https://kcsrk.info/ocaml/prolog/jupyter/notebooks/2020/01/19/OCaml-Prolog-Jupyter/"
+        >KC's Paradigms of Programming Languages
+       </a> - 
+       KC explains his setup for using Jupyter notebooks to teach a course on
+       paradigms of programming languages using OCaml and Prolog.
+      </li>
+     </ol>
      <p id="edit">
       <span class="details">
        <a
-        href="https://github.com/ocaml-explore/explore/tree/trunk/content/platform/utop/index.md"
+        href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/teaching-ocaml/index.md"
         >Edit this page on Github
        </a>
       </span>

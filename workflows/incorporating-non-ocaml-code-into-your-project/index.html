@@ -145,15 +145,7 @@
           Incorporating non-OCaml Code into your Project
          </a>
          <ul class="toc">
-          <li class="toc-li">
-           <a class="toc-link toc-item-2" href="#overview">Overview</a>
-          </li>
-         </ul>
-         <ul class="toc">
-          <li>
-           <a class="toc-link toc-item-2" href="#recommended-workflow">
-            Recommended Workflow
-           </a>
+          <li><a class="toc-link toc-item-2" href="#overview">Overview</a>
            <ul class="toc">
             <li class="toc-li">
              <a class="toc-link toc-item-3" href="#ocaml-internals">
@@ -161,6 +153,13 @@
              </a>
             </li>
            </ul>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li>
+           <a class="toc-link toc-item-2" href="#recommended-workflow">
+            Recommended Workflow
+           </a>
            <ul class="toc">
             <li class="toc-li">
              <a class="toc-link toc-item-3"
@@ -202,13 +201,12 @@
 <div><p>Platform tools: <span class="details-tools"><a href="/platform/dune">Dune</a></span></p></div>
 <h2 id="overview">Overview</h2>
 <p>Sometimes OCaml just can't do what lower level languages can do or you want to use pre-existing code written in C or Rust from OCaml.</p>
-<h2 id="recommended-workflow">Recommended Workflow</h2>
 <h3 id="ocaml-internals">OCaml Internals</h3>
 <p>Programming languages must have a representation of data at runtime, for example how should OCaml represent <code>type camel = Dromedary of int</code> in memory? When you interface between two languages much of the battle is converting in-and-out of each programming language's internal data represenation. A <a href="https://caml.inria.fr/pub/docs/manual-ocaml/intfc.html#s%3Ac-ocaml-datatype-repr">detailed introduction</a> of OCaml's internal data representation is given in the manual, what follows is a brief summary.</p>
 <p>OCaml has a uniform memory representation where everything is a word-sized value. These can either be immediates (represented as unboxed integers) or non-immediates (pointers to a block stored in the OCaml or the C heap). Boxing is the process of wrapping additional meta-data around a value much like IP packets and their header.</p>
-<p><img src="/images/data-repr.jpg" alt="OCaml runtime data represenation" /></p>
-<p>To distinguish between immediates and non-immediates (pointers), OCaml uses a tag bit in the least significant bit as a flag. When it is set to 1 this indicates an immediate, otherwise it should be interpretted as a pointer. This means on a 32-bit machine OCaml integers can only be 31-bit. The runtime value of the number <code>7</code> in OCaml is actually <code>15</code>. The conversion function can be seen <a href="https://github.com/ocaml/ocaml/blob/trunk/runtime/caml/mlvalues.h#L75">here</a> in the OCaml compiler.</p>
-<p>Integers are not the only values represented as immediates. Normal and polymorphic variants with constant constructors are represented as immediates, the latter as a hash of the constructor name. The built-in boolen values are also immediates i.e. true is <code>1</code> (which in OCaml is <code>3</code>) and false is <code>0</code> (<code>1</code> in OCaml).</p>
+<p><img src="/images/data-repr.jpg" alt="OCaml runtime data representation" /></p>
+<p>To distinguish between immediates and non-immediates (pointers), OCaml uses a tag bit in the least significant bit as a flag. When it is set to 1 this indicates an immediate, otherwise it should be interpreted as a pointer. This means on a 32-bit machine OCaml integers can only be 31-bit. The runtime value of the number <code>7</code> in OCaml is actually <code>15</code>. The conversion function can be seen <a href="https://github.com/ocaml/ocaml/blob/trunk/runtime/caml/mlvalues.h#L75">here</a> in the OCaml compiler.</p>
+<p>Integers are not the only values represented as immediates. Normal and polymorphic variants with constant constructors are represented as immediates, the latter as a hash of the constructor name. The built-in boolean values are also immediates i.e. true is <code>1</code> (which in OCaml is <code>3</code>) and false is <code>0</code> (<code>1</code> in OCaml).</p>
 <pre><code class="language-ocaml"># type vehicle = Car | Bicycle of string | Truck 
 type vehicle = Car | Bicycle of string | Truck
 # type poly = [`String | `Int]
@@ -216,7 +214,7 @@ type poly = [ `Int | `String ]
 # true
 - : bool = true
 </code></pre>
-<p>Variants with non-constant constructors are heap allocated as blocks (only the non-constant ones). Blocks in the heap start with a one-word header, either 32 or 64-bit depending on thearchitecture, which contains information about the length of the value (22 or 54 bits), 2 bits for a colour which is used in garbage collection and 8 bits for a multi-purpose tag byte to indicate what the block is. The type unsafe <code>Obj</code> module lets you inspect the runtime information of values.</p>
+<p>Variants with non-constant constructors are heap allocated as blocks (only the non-constant ones). Blocks in the heap start with a one-word header, either 32 or 64-bit depending on the architecture, which contains information about the length of the value (22 or 54 bits), 2 bits for a colour which is used in garbage collection and 8 bits for a multi-purpose tag byte to indicate what the block is. The type unsafe <code>Obj</code> module lets you inspect the runtime information of values.</p>
 <pre><code class="language-ocaml"># Obj.tag (Obj.repr Car)
 - : int = 1000
 # Obj.is_int (Obj.magic Car)
@@ -230,6 +228,7 @@ type poly = [ `Int | `String ]
 # Obj.tag (Obj.repr (fun x -&gt; x)) 
 - : int = 247
 </code></pre>
+<h2 id="recommended-workflow">Recommended Workflow</h2>
 <h3 id="interacting-with-c-from-ocaml">Interacting with C from OCaml</h3>
 <p>To interact with C code you need to use the Foreign Function Interface (FFI) in OCaml and make some changes to your <code>dune</code> files to incorporate the extra code. To use a foreign C function in OCaml you need to add:</p>
 <pre><code class="language-ocaml">external &lt;ocaml-name&gt; : &lt;type-of-function&gt; = &quot;&lt;c-function-name&gt;&quot;
