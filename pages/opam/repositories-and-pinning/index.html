@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
- <head><title>Opam</title>
+ <head><title>Repositories and Pinning</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta charset="utf-8"/>
   <meta name="description"
-   content="An explanation of the OCaml Package Manager client and file format"
-   />
+   content="Opam repositories and the pinning mechanism"/>
   <link rel="stylesheet"
    href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
    />
@@ -141,23 +140,26 @@
      <ul class="toc">
       <li>
        <ul class="toc">
-        <li><a class="toc-link toc-item-1" href="#opam">Opam</a>
+        <li>
+         <a class="toc-link toc-item-1" href="#repositories-and-pinning">
+          Repositories and Pinning
+         </a>
          <ul class="toc">
-          <li class="toc-li">
-           <a class="toc-link toc-item-2" href="#managing-packages-in-ocaml">
-            Managing Packages in OCaml
+          <li>
+           <a class="toc-link toc-item-2" href="#repositories">Repositories
            </a>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#updating-&amp;-upgrading">
+              Updating &amp; Upgrading
+             </a>
+            </li>
+           </ul>
           </li>
          </ul>
          <ul class="toc">
           <li class="toc-li">
-           <a class="toc-link toc-item-2" href="#opam-files">Opam files</a>
-          </li>
-         </ul>
-         <ul class="toc">
-          <li class="toc-li">
-           <a class="toc-link toc-item-2" href="#opam-concepts">Opam Concepts
-           </a>
+           <a class="toc-link toc-item-2" href="#pinning">Pinning</a>
           </li>
          </ul>
         </li>
@@ -171,36 +173,22 @@
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                      
     <main id="main"> 
-     <h1 id="opam">Opam</h1>
-<p><em>Last Updated: 11, August 2020 at 17:08:57</em></p>
-<h2 id="managing-packages-in-ocaml">Managing Packages in OCaml</h2>
-<p><a href="https://opam.ocaml.org/">Opam</a> is the the OCaml package manager and compiler manager. Packages could be executables to run from the command-line, compilers for other languages, libraries to use in your code etc. If you are arriving at OCaml from other languages, the <a href="/pages/opam/opam-client">opam-client</a> (the tool you interact with from the command line) is roughly equivalent to:</p>
-<ul>
-<li>Rust: <code>rustup</code> &amp; <code>cargo</code>
-</li>
-<li>Node (Javascript): <code>nvm</code> &amp; <code>npm</code> (or <code>yarn</code>)
-</li>
-<li>Python: <code>pyenv</code> &amp; <code>pip</code>
-</li>
-</ul>
-<p>In order to join the OCaml open source community, all you need to do is to add an <a href="./pages/opam/opam-files">opam file</a> to your project.  This <code>opam</code> file describes the build instructions for your project, as well as any dependencies it might need. An <code>opam</code> file is useful for a project of any size — from toy learning exercises to big theorem provers — since it allows someone else to easily rebuild and replicate your work, and even extend it if they choose to.</p>
-<h2 id="opam-files">Opam files</h2>
-<p>Once you are comfortable with your code and want to share it more publicly, an <a href="/pages/opam/opam-files">opam file</a> can be published to the central OCaml <a href="https://github.com/ocaml/opam-repository/">opam repository</a>.  This is a collection of tens of thousands of packages that have been contributed freely by the community since 2013.  The opam-repository does not contain the full source code to your project; instead, it tracks pointers to different versions of your code, and also the various compatibility constraints to automatically figure out which versions work with each other.  The usual mechanism to track your releases is to use a version control system such as git.  You can <a href="https://opam.ocaml.org">browse the packages</a> online to see what's available.</p>
-<h2 id="opam-concepts">Opam Concepts</h2>
-<p>How do you actually manipulate opam files?  There are several tools that can parse these files and repositories and install the software you want.  The primary reference implementation that runs on macOS and Linux is also the <a href="/pages/opam/opam-client">opam client</a> , and is the first thing you will want to configure on your system to get started. The following pages will guide you through a foundational understanding of how Opam works.</p>
-<ol>
-<li><a href="/pages/opam/package-managers">Solving dependencies</a>
-</li>
-<li><a href="/pages/opam/switches-and-compilers">Switches and compilers</a>
-</li>
-<li><a href="/pages/opam/repositories-and-pinning">Repositories and pinning</a>
-</li>
-<li><a href="/pages/opam/plugins">Plugins</a>
-</li>
-<li><a href="/pages/opam/cheatsheet">The client and common commands</a>
-</li>
-</ol>
-<div style="width: 100px"></div>
+     <h1 id="repositories-and-pinning">Repositories and Pinning</h1>
+<p><em>Last Updated: 05, October 2020 at 11:00:44</em></p>
+<h2 id="repositories">Repositories</h2>
+<p>Opam repositories are the source of truth for what <code>opam</code> can and cannot install. If the repostory doesn't have package <code>X</code> with an opam file, then it won't be installed. The default repository is where most people will begin and end their journey with repositories. This is where you can publish new releases of your libraries and others can update and upgrade to these versions.</p>
+<p>This is held on Github: <a href="https://github.com/ocaml/opam-repository">ocaml/opam-repository</a></p>
+<p><img src="/images/opam.v1.png" alt="Opam diagram with two switches" /></p>
+<p>Note in the diagram above, in the unselected switch, there are two repositories. There is no limit on the number you can have and when installing libraries <code>opam</code> will check each for a folder that matches what you are looking for. The above is an example of what you would have to do to start cross-compiling. Sometimes larger organisations might want to keep their own repository so that it doesn't update and break code, for example the <a href="https://gitlab.com/tezos/opam-repository">tezos repository</a>.</p>
+<p>An important (and quite common misconception) is that the repository contains your code. It doesn't. It contains the opam file with an additional field pointing to where your code is available. For more information on this, check out the <a href="/workflows/publishing-a-new-package-on-opam">publishing to opam</a> workflow.</p>
+<h3 id="updating-&amp;-upgrading">Updating &amp; Upgrading</h3>
+<p>Hopefully with the explanation of repositories it is a little clearer what updating and upgrading means. When you install and opam switch you get a local, cloned copy of the opam repository. As you code this will remain unchanged even as library authors publish new releases. This is nice as it means the ground will not move from under you.</p>
+<p>To get the newer (and hopefully better!) code you will essentially have to <code>git pull</code> the latest opam repository using <code>opam update</code> and then tell opam to install the latests version of libraries (<code>opam upgrade</code>). Remember, unlike installing packages the priorities for upgrading focus on not removing packages (because of dependency conflicts) and trying to get to the latest version. Changing the repository is less important than during a single package install. By supplying a single package to these commands you won't update and upgrade everything.</p>
+<p>Within your library opam file you can specify constraints on version numbers to ensure your code works correctly. A major version change say <code>irmin.1.0.0</code> to <code>irmin.2.0.0</code> would likely break your code. As explained in the <a href="/workflows/publishing-a-new-package-on-opam">publishing workflow</a>, opam has a serious of continuous integration checks to make sure reverse dependencies do not break code. If it does then you either need to constrain the dependency or change your code to build with the latest version of the dependency.</p>
+<h2 id="pinning">Pinning</h2>
+<p>Pinning is a method for overriding the opam repository. In the diagram at the top of the page, our repository has a version of <code>alcotest</code> at <code>1.1.0</code> - under normal circumstances this is what will be installed and used to build libraries that depend on it.</p>
+<p>But say we want to add a new feature or fix some code in <code>alcotest</code> and then try building some libraries that use it, do we have to release a new version or manually change the opam repository? No. You can run <code>opam pin add alcotest . --kind=path</code> from within the <code>alcotest</code> library. Opam will dutifully recompile reverse dependencies for you.</p>
+<p>It is important to know that opam is git-based when it comes to source code hence the need to specify <code>--kind=path</code> otherwise it will try and use the latest commit and you don't want to commit every time you want to try to change something.</p>
 
     </main>
                      

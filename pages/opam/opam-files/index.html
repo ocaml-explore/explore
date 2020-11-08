@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
- <head><title>Opam</title>
+ <head><title>Opam Files</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta charset="utf-8"/>
   <meta name="description"
-   content="An explanation of the OCaml Package Manager client and file format"
-   />
+   content="Unlocking the power of the OCaml Platform with an opam file"/>
   <link rel="stylesheet"
    href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
    />
@@ -141,23 +140,23 @@
      <ul class="toc">
       <li>
        <ul class="toc">
-        <li><a class="toc-link toc-item-1" href="#opam">Opam</a>
+        <li><a class="toc-link toc-item-1" href="#opam-files">Opam Files</a>
          <ul class="toc">
           <li class="toc-li">
-           <a class="toc-link toc-item-2" href="#managing-packages-in-ocaml">
-            Managing Packages in OCaml
-           </a>
+           <a class="toc-link toc-item-2" href="#versioning">Versioning</a>
           </li>
          </ul>
          <ul class="toc">
-          <li class="toc-li">
-           <a class="toc-link toc-item-2" href="#opam-files">Opam files</a>
-          </li>
-         </ul>
-         <ul class="toc">
-          <li class="toc-li">
-           <a class="toc-link toc-item-2" href="#opam-concepts">Opam Concepts
+          <li>
+           <a class="toc-link toc-item-2" href="#example-file">Example File
            </a>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3"
+              href="#common-opam-file-parameters">Common Opam File Parameters
+             </a>
+            </li>
+           </ul>
           </li>
          </ul>
         </li>
@@ -171,36 +170,60 @@
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                      
     <main id="main"> 
-     <h1 id="opam">Opam</h1>
-<p><em>Last Updated: 11, August 2020 at 17:08:57</em></p>
-<h2 id="managing-packages-in-ocaml">Managing Packages in OCaml</h2>
-<p><a href="https://opam.ocaml.org/">Opam</a> is the the OCaml package manager and compiler manager. Packages could be executables to run from the command-line, compilers for other languages, libraries to use in your code etc. If you are arriving at OCaml from other languages, the <a href="/pages/opam/opam-client">opam-client</a> (the tool you interact with from the command line) is roughly equivalent to:</p>
+     <h1 id="opam-files">Opam Files</h1>
+<p><em>Last Updated: 27, July 2020 at 09:35:49</em></p>
+<p>Your project's opam file is the key to unlocking the power of the OCaml Platform. It will be used for much more than just publishing your library for others to use - with it for example you can:</p>
 <ul>
-<li>Rust: <code>rustup</code> &amp; <code>cargo</code>
+<li>Automate the installation of external dependencies
 </li>
-<li>Node (Javascript): <code>nvm</code> &amp; <code>npm</code> (or <code>yarn</code>)
+<li>Give users points of contact - like where to submit issues
 </li>
-<li>Python: <code>pyenv</code> &amp; <code>pip</code>
+<li>Pin your project locally making it much easier to develop other tools and do continuous integration
+</li>
+<li>Install your project as a CLI tool
 </li>
 </ul>
-<p>In order to join the OCaml open source community, all you need to do is to add an <a href="./pages/opam/opam-files">opam file</a> to your project.  This <code>opam</code> file describes the build instructions for your project, as well as any dependencies it might need. An <code>opam</code> file is useful for a project of any size — from toy learning exercises to big theorem provers — since it allows someone else to easily rebuild and replicate your work, and even extend it if they choose to.</p>
-<h2 id="opam-files">Opam files</h2>
-<p>Once you are comfortable with your code and want to share it more publicly, an <a href="/pages/opam/opam-files">opam file</a> can be published to the central OCaml <a href="https://github.com/ocaml/opam-repository/">opam repository</a>.  This is a collection of tens of thousands of packages that have been contributed freely by the community since 2013.  The opam-repository does not contain the full source code to your project; instead, it tracks pointers to different versions of your code, and also the various compatibility constraints to automatically figure out which versions work with each other.  The usual mechanism to track your releases is to use a version control system such as git.  You can <a href="https://opam.ocaml.org">browse the packages</a> online to see what's available.</p>
-<h2 id="opam-concepts">Opam Concepts</h2>
-<p>How do you actually manipulate opam files?  There are several tools that can parse these files and repositories and install the software you want.  The primary reference implementation that runs on macOS and Linux is also the <a href="/pages/opam/opam-client">opam client</a> , and is the first thing you will want to configure on your system to get started. The following pages will guide you through a foundational understanding of how Opam works.</p>
-<ol>
-<li><a href="/pages/opam/package-managers">Solving dependencies</a>
+<h2 id="versioning">Versioning</h2>
+<p>One of the best features of opam files is versioning. Every file begins with <code>opam-version</code>, a field indicating what version of opam your project uses.  This solves the problem that <em><a href="https://github.com/nvm-sh/nvm#nvmrc">nvm solves with nvmrc files</a>.</em> It makes it easier to catch versioning mismatches quickly.</p>
+<h2 id="example-file">Example File</h2>
+<p>Below is a very minimal opam file - there tend to be two main sections to an opam file. Metadata about the package and dependency/build information.</p>
+<pre><code>opam-version: &quot;2.0&quot;
+version: &quot;~dev&quot;
+synopsis: &quot;A short sentence about your project&quot;
+maintainer: &quot;&lt;username&gt; &lt;email&gt;&quot;
+authors: [&quot;&lt;username1&gt; &lt;email1&gt;&quot;]
+license: &quot;ISC&quot;
+homepage: &quot;&lt;github-page-or-similar&gt;&quot;
+bug-reports: &quot;&lt;github-issues-page-or-similar&gt;&quot;
+depends: [
+  &quot;ocaml&quot;   {&gt;= &quot;4.07.0&quot;}
+  &quot;dune&quot;    {&gt;= &quot;2.0.0&quot;}
+  &quot;zarith&quot;
+  &quot;alcotest&quot; {with-test}
+]
+build: [
+  [&quot;dune&quot; &quot;build&quot; &quot;-p&quot; name &quot;-j&quot; jobs]
+  [&quot;dune&quot; &quot;runtest&quot; &quot;-p&quot; name] {with-test}
+]
+</code></pre>
+<h3 id="common-opam-file-parameters">Common Opam File Parameters</h3>
+<ul>
+<li><em>depends</em>: this describes your project's dependencies with versioning constraints and <a href="https://opam.ocaml.org/doc/Manual.html#Package-variables">package variables</a>. For example <code>with-test</code> is a boolean variable which is set to true if tests have been enabled, if they haven't then opam will not try and installed <code>alcotest</code>.
 </li>
-<li><a href="/pages/opam/switches-and-compilers">Switches and compilers</a>
+<li><em>build:</em> specifies the list of commands to run in order to build your program. The same filtering can applied here to ensure only certain commands run. When using dune there is no need to add an <code>install</code> parameter to your opam file - dune can install the package for you.
 </li>
-<li><a href="/pages/opam/repositories-and-pinning">Repositories and pinning</a>
+<li><em>pin-depends: s</em>ome times your package will depend on unreleased versions of other packages, this mean if you spe them as dependencies in <em>depends</em> opam will not be able to find them. To handles this you can add a <em>pin-depends</em> parameter to point opam in the direction of the latest source code.
 </li>
-<li><a href="/pages/opam/plugins">Plugins</a>
-</li>
-<li><a href="/pages/opam/cheatsheet">The client and common commands</a>
-</li>
-</ol>
-<div style="width: 100px"></div>
+</ul>
+<pre><code>depends: [
+  ...
+  &quot;omd&quot;
+  ...
+]
+pin-depends: [
+  &quot;omd.dev&quot; &quot;git+https://github.com/ocaml/omd&quot;
+]
+</code></pre>
 
     </main>
                      

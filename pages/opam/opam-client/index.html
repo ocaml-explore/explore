@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
- <head><title>Fixing Bugs in 3rd Party Packages</title>
+ <head><title>Opam Client</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta charset="utf-8"/>
   <meta name="description"
-   content="Track down and fix bugs in libraries that you use"/>
+   content="The Opam client is a tool used to work with Opam, an OCaml Package Manager"
+   />
   <link rel="stylesheet"
    href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
    />
@@ -141,10 +142,7 @@
       <li>
        <ul class="toc">
         <li>
-         <a class="toc-link toc-item-1"
-          href="#fixing-bugs-in-3rd-party-packages">
-          Fixing Bugs in 3rd Party Packages
-         </a>
+         <a class="toc-link toc-item-1" href="#opam-client">Opam Client</a>
          <ul class="toc">
           <li class="toc-li">
            <a class="toc-link toc-item-2" href="#overview">Overview</a>
@@ -152,29 +150,36 @@
          </ul>
          <ul class="toc">
           <li>
-           <a class="toc-link toc-item-2" href="#recommended-workflow">
-            Recommended Workflow
+           <a class="toc-link toc-item-2" href="#key-concepts">Key Concepts
            </a>
            <ul class="toc">
             <li class="toc-li">
-             <a class="toc-link toc-item-3" href="#getting-the-source-code">
-              Getting the Source Code
+             <a class="toc-link toc-item-3" href="#repositories">Repositories
              </a>
             </li>
            </ul>
            <ul class="toc">
             <li class="toc-li">
-             <a class="toc-link toc-item-3" href="#locally-pinning">
-              Locally pinning
+             <a class="toc-link toc-item-3" href="#updating-&amp;-upgrading">
+              Updating &amp; Upgrading
              </a>
             </li>
            </ul>
            <ul class="toc">
             <li class="toc-li">
-             <a class="toc-link toc-item-3"
-              href="#subsequent-changes-&amp;-upgrading">
-              Subsequent Changes &amp; Upgrading
+             <a class="toc-link toc-item-3" href="#pinning">Pinning</a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#source-and-show">
+              Source and Show
              </a>
+            </li>
+           </ul>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#plugins">Plugins</a>
             </li>
            </ul>
           </li>
@@ -190,75 +195,40 @@
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                      
     <main id="main"> 
-     <h1 id="fixing-bugs-in-3rd-party-packages">Fixing Bugs in 3rd Party Packages</h1>
-<p><em>Last Updated: 27, July 2020 at 09:35:49</em></p>
-<div><p>Platform tools: <span class="details-tools"><a href="/platform/dune">Dune</a></span></p></div>
+     <h1 id="opam-client">Opam Client</h1>
+<p><em>Last Updated: 03, August 2020 at 13:20:38</em></p>
 <h2 id="overview">Overview</h2>
-<p>Working with third-party packages means coming across areas for improvement or those that need fixing. Knowing how common codebases are structured and an appreciation for the tools allows you to more easily:</p>
+<p>opam is an OCaml Package Manager. It handles the sharing of libraries and code, dependency management and installation. In addition to this it also handles compiler installation. Opam handles what the following do for other languages:</p>
 <ul>
-<li>Fix the bug if you know how.
+<li>Rust: <code>rustup</code> &amp; <code>cargo</code>
 </li>
-<li>Raise an issue wherever the code is being hosted on.
+<li>Node (Javascript): <code>nvm</code> &amp; <code>npm</code> (or <code>yarn</code>)
 </li>
-<li>Find and comment on an existing issue with extra information you have from my own debugging.
+<li>Python: <code>pyenv</code> &amp; <code>pip</code>
 </li>
 </ul>
-<p>This will also give you insight into how you can structure your own code to allow others to more easily debug it.</p>
-<p>There are multiple aspects to unpack in this workflow including:</p>
-<ol>
-<li>Getting the source code.
-</li>
-<li>Pinning packages locally.
-</li>
-<li>Logging libraries
-</li>
-</ol>
-<p>Quite a lot of this workflow is made simpler by using the <a href="/pages/opam/opam-client">opam client</a>.</p>
-<h2 id="recommended-workflow">Recommended Workflow</h2>
-<h3 id="getting-the-source-code">Getting the Source Code</h3>
-<p>If the library is part of the <em>opam-repository</em> then the easiest way to get the source code is using the opam client: <code>opam source &lt;package&gt;</code> - this can also be given an optional version constraint.</p>
-<pre><code class="language-bash"># Downloads latest version of Irmin - at time of writing 2.2.0
-opam source irmin
+<p><img src="/images/opam.v1.png" alt="opam client diagram" /></p>
+<p>A simplified diagram of some of the key features in opam.</p>
+<h2 id="key-concepts">Key Concepts</h2>
+<h3 id="repositories">Repositories</h3>
+<p>Opam repositories are the source of truth for what <code>opam</code> can and cannot install. If the repostory doesn't have package <code>X</code> with an opam file, then it won't be installed. The default repository is where most people will begin and end their journey with repositories. This is where you can publish new releases of your libraries and others can update and upgrade to these versions.</p>
+<p>This is held on Github: <a href="https://github.com/ocaml/opam-repository">ocaml/opam-repository</a></p>
+<p>Note in the diagram above, in the unselected switch, there are two repositories. There is no limit on the number you can have and when installing libraries <code>opam</code> will check each for a folder that matches what you are looking for. The above is an example of what you would have to do to start cross-compiling. If you are interested check:</p>
+<h3 id="updating-&amp;-upgrading">Updating &amp; Upgrading</h3>
+<p>Hopefully with the explanation of repositories it is a little clearer what updating and upgrading means. When you install and opam switch you get a local cloned copy of the opam repository. As you code this will remain unchanged even as library authors publish new releases.</p>
+<p>To get the newer (and hopefully better!) code you will essentially have to <code>git pull</code> the latest opam repository (<code>opam update</code>) and then tell opam to install the latests version of libraries (<code>opam upgrade</code>). By supplying a single package to these commands you won't update and upgrade everything.</p>
+<p>Within your library opam file you can specify constraints on version numbers to ensure your code works correctly. A major version change say <code>irmin.1.0.0</code> to <code>irmin.2.0.0</code> would likely break your code.</p>
+<h3 id="pinning">Pinning</h3>
+<p>Pinning is a method for overriding the opam repository. In the diagram our repository has a version of <code>alcotest</code> at <code>1.1.0</code> - under normal circumstances this is what will be installed and used to build libraries that depend on it.</p>
+<p>But say we want to add a new feature or fix some code in <code>alcotest</code> and then try building some libraries that use it, do we have to release a new version or manually change the opam repository? No. You can run <code>opam pin add alcotest . --kind=path</code> from within the <code>alcotest</code> library.</p>
+<p>It is important to know that opam is git-based when it comes to source code hence the need to specify <code>--kind=path</code> otherwise it will try and use the latest commit and you don't want to commit every time you want to try to change something.</p>
+<h3 id="source-and-show">Source and Show</h3>
+<p>Source and show are very useful commands for library authors. Source downloads the latest code attached to the version of a given library.</p>
+<p>Show allows you to see the metadata associated with a library. You can even print the opam file with: <code>opam show &lt;library&gt; --raw</code></p>
+<h3 id="plugins">Plugins</h3>
+<p>Plugins in opam are ways to extend opam's functionality in a more accessible way (anyone can write a plugin!). One of the most used is <a href="https://github.com/ocaml-opam/opam-depext">depext</a> - you can tell it is a plugin from it's opam file which has <code>tags: &quot;flags:plugin&quot;</code>. Depext tries to install external dependencies for you. Other plugins include <code>opam-user-setup</code> which can be used to setup common tooling for supported editors like <em>emacs</em> or <em>vim.</em></p>
+<p>Another plugin is <a href="https://github.com/avsm/opam-tools">opam-tools</a> which initialises a local development environment (i.e. using a local switch). The goal is that you could clone a repository and run <code>opam tools</code> which should do a lot of the manual setup to start developing for you.</p>
 
-# Download the 2.0.0 version of Irmin
-opam source irmin.2.0.0
-</code></pre>
-<p>If you envisage wanting to make a pull request to fix something then forking and cloning the package is probably a better way to go about it.</p>
-<pre><code class="language-bash">git clone https://github.com/patricoferris/irmin.git
-cd irmin
-git checkout -b my-awesome-fix
-</code></pre>
-<h3 id="locally-pinning">Locally pinning</h3>
-<p>To tell opam that you want to use a modified version of a package you <strong>pin</strong> it. This is like pinning a note to the package in the opam-respository that points to the source code you are developing (rather than the released version from Github).</p>
-<pre><code class="language-bash"># In the clone irmin directory 
-opam pin add irmin . --kind=path 
-</code></pre>
-<p>Note: it is quite common to have multiple opam packages per repository. Irmin for example has <code>irmin</code>, <code>irmin-unix</code>, <code>irmin-graphql</code>... If your changes are only for a certain package it is best to only pin that one package. <code>--kind=path</code> means we don't have to commit the changes as by default opam tries to use git pins.</p>
-<p>Opam will rebuild dependent projects as well - depending on what package you change and how many dependent projects you have installed in your switch this can take a bit of time.</p>
-<p>Keeping track of what packages you have pinned and which ones you haven't can be done with <code>opam pin list</code> - this will helpfully tell you where the package is pinned to (<code>git+file...</code>, <code>git+https...</code> etc.) and whether or not it is installed.</p>
-<h3 id="subsequent-changes-&amp;-upgrading">Subsequent Changes &amp; Upgrading</h3>
-<p>Pinning a package tells opam where the source code is coming from but as you add new bits of code, opam doesn't see these. In order to add those you will have to run <code>opam upgrade</code> to get the latest changes of pinned packages.</p>
-
-     <h3>Resources</h3>
-     <ol>
-      <li>
-       <a
-        href="http://www.dra27.uk/blog/platform/2018/08/15/dune-vendoring.html"
-        >The Joys of Dune Vendoring
-       </a> - 
-       David Allsopp explains how using dune in the future will make the
-       development process (changing dependencies and rebuilding projects)
-       much simpler and quicker
-      </li>
-     </ol>
-     <p id="edit">
-      <span class="details">
-       <a
-        href="https://github.com/ocaml-explore/explore/tree/trunk/content/workflows/fixing-bugs-in-3rd-party-packages/index.md"
-        >Edit this page on Github
-       </a>
-      </span>
-     </p>
     </main>
                      
    </div>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+ <head><title>Switches and Compilers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Compilers and switches in opam"/>
+  <link rel="stylesheet"
+   href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
+   />
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/base.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-units.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/grids-responsive.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-core.css"/>
+  <link rel="stylesheet"
+   href="https://unpkg.com/purecss@2.0.0/build/menus-dropdown.css"/>
+  <link rel="stylesheet" href="/css/main.css"/>
+  <link rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/gruvbox-dark.min.css"
+   />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js">
+  </script>
+  <script
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"
+   >
+  </script>
+  <script charset="UTF-8"
+   src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/ocaml.min.js"
+   >
+  </script><script>hljs.initHighlightingOnLoad();</script>
+ </head>
+ <body>
+             
+  <header>
+                  
+   <a class="skip-to-content" href="#main"> Skip to main content </a>
+   <div class="pure-g">
+                             
+    <div class="pure-u-1-3">
+                                    
+     <a class="title-link" href="/">
+                                              
+      <h2 style="text-align: center">Explore OCaml</h2>
+                                                               
+     </a>
+               
+    </div>
+                
+    <div class="pure-u-1-3"></div>
+                                          
+    <nav class="pure-hidden-xs pure-hidden-sm pure-u-1-3 flex-col flex-vert">
+     
+               
+     <ul class="flex-row flex-center nav-ul">
+      <li class="nav-button">
+                                           
+       <a href="/platform">
+                                           Tools 
+                                         </a>
+       
+                   
+      </li>
+      <li class="nav-button">
+                                           
+       <a href="/users">
+                                        Users
+                                      </a>
+       
+                   
+      </li>
+      <li class="nav-button">
+                                           
+       <a href="/libraries">
+                                            Libraries
+                                          </a>
+       
+                   
+      </li>
+     </ul>
+                  
+    </nav>
+                  
+    <nav class="pure-hidden-md pure-hidden-lg pure-hidden-xl pure-menu
+     pure-menu-horizontal flex-col flex-vert pure-u-1-3">
+                                                                   
+     <ul class="pure-menu-list" style="text-align: center">
+      <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+       
+                   <a href="#" id="menuLink1" class="pure-menu-link">Menu</a>
+       
+                   
+       <ul class="pure-menu-children mob-menu-list">
+        <li class="pure-menu-item mob-menu-item">
+                                                                   
+         <a href="/platform">
+                                                 Tools 
+                                               </a>
+         
+                         
+        </li>
+        <li class="pure-menu-item mob-menu-item">
+                                                                   
+         <a href="/users">
+                                              Users
+                                            </a>
+         
+                         
+        </li>
+        <li class="pure-menu-item mob-menu-item">
+                                                                   
+         <a href="/libraries">
+                                                Libraries
+                                                
+         </a>
+                             
+        </li>
+       </ul>
+                        
+      </li>
+     </ul>
+                  
+    </nav>
+              
+   </div>
+               
+  </header>
+                   
+  <div class="pure-g">
+                                
+   <div class="pure-u-1-12 pure-u-md-1-4">
+                                                      
+    <div class="pure-hidden-xs pure-hidden-sm pure-hidden-md toc-container
+     sticky">
+     <ul class="toc">
+      <li>
+       <ul class="toc">
+        <li>
+         <a class="toc-link toc-item-1" href="#switches-and-compilers">
+          Switches and Compilers
+         </a>
+         <ul class="toc">
+          <li class="toc-li">
+           <a class="toc-link toc-item-2" href="#switches">Switches</a>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li>
+           <a class="toc-link toc-item-2" href="#inside-the-.opam-directory">
+            Inside the .opam directory
+           </a>
+           <ul class="toc">
+            <li class="toc-li">
+             <a class="toc-link toc-item-3" href="#installing-libraries">
+              Installing Libraries
+             </a>
+            </li>
+           </ul>
+          </li>
+         </ul>
+         <ul class="toc">
+          <li class="toc-li">
+           <a class="toc-link toc-item-2" href="#compilers">Compilers</a>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </div>
+                    
+   </div>
+                   
+   <div class="pure-u-5-6 pure-u-md-1-2">
+                                                     
+    <main id="main"> 
+     <h1 id="switches-and-compilers">Switches and Compilers</h1>
+<p><em>Last Updated: 05, October 2020 at 11:00:44</em></p>
+<h2 id="switches">Switches</h2>
+<p>In the official documentation switches are described as (<code>opam switch --help</code>):</p>
+<blockquote>
+<p>This command is used to manage &quot;switches&quot;, which are independent
+installation prefixes with their own compiler and sets of installed and
+pinned packages. This is typically useful to have different versions of
+the compiler available at once.</p>
+</blockquote>
+<p><img src="/images/opam.v1.png" alt="opam client diagram" /></p>
+<p>A switch is a set of installed packages with some compiler version or variant. All of the installed packages will have been built with that compiler so you can be sure that this won't be a problem. The diagram shows two switches, for now unless you have read the <a href="/pages/opam/repositories-and-pinning">repositories</a> page, you can ignore the <em>Default Repository</em> part. Each switch has a compiler associated with it (<code>4.10.0</code> and <code>4.11.0+cross-riscv</code>).</p>
+<p>Switches can either be local or system-wide. The former is usually installed alongside your code in an <code>_opam</code> directory whilst the latter exists in <code>~/.opam</code>. Local switches can be treated like <em>node_modules</em> in the NodeJS ecosystem. See the <a href="/pages/opam/plugins">opam-tools plugin</a> for more about this.</p>
+<p>Switches can be created with:</p>
+<pre><code class="language-sh"># System switches 
+$ opam switch create 4.11.0
+# Local switches 
+$ opam switch create . 4.11.0
+</code></pre>
+<p>One common question is why does opam tell me <code>You should run: eval $(opam env)</code>? This sets up the correct environment for opam. For example, it ensures the correct bin folder is stored in your <code>PATH</code> variable on MacOS and Linux. That way when you try to run and installed executable the correct one is selected from the current switch. Likewise, this becomes part of dune's installed world and so dune can find external dependencies from this.</p>
+<h2 id="inside-the-.opam-directory">Inside the .opam directory</h2>
+<p>You should never have to touch the <code>~/.opam</code> directory. The only interactions with it should be through the <code>opam</code> client. But it is also useful to understand what is going on inside it to give you a better mental model of how opam works.</p>
+<p>With a brand new <code>4.11</code> global switch the <code>~/.opam</code> directory looks something like this with some less important files and directories removed.</p>
+<pre><code>|-- 4.11
+|-- download-cache
+|-- plugins
+`-- repo
+</code></pre>
+<p>The <code>4.11</code> directory is for our switch, <code>plugins</code> stores the global <a href="/pages/opam/plugins">opam plugins</a> and <code>repo</code> holds the <a href="/pages/opam/repositories-and-pinning">opam reposiory information</a>. The <code>download-cache</code> is exactly that.</p>
+<p>The <code>4.11</code> directory contains the installed executables (<code>~/.opam/4.11/bin</code>) and the installed libraries (<code>~/.opam/4.11/lib</code>) as well as manual pages, documentation and shared packages.</p>
+<p>Without anything installed besides the compiler, the <code>bin</code> directory has the OCaml compiler executables such as <code>ocamlopt</code> and <code>ocamlc</code>. Note our <code>PATH</code> variable contains <code>~/.opam/4.11/bin</code> hence we can run these commands from the command line.</p>
+<h3 id="installing-libraries">Installing Libraries</h3>
+<p>If we install <code>yaml</code> (<code>opam install yaml -y</code>) we will pull many more libraries into <code>lib</code> including <code>yaml</code>. In <code>~/.opam/4.11/lib/yaml</code> you will see both the source of <a href="https://github.com/avsm/ocaml-yaml">ocaml-yaml</a> as well as the build artifacts. Upon installing a library, opam uses the build information stored in the opam file to also build the library. Whenever you build your own projects with <code>dune build</code>, and if they need <code>yaml</code>, this is where dune will get it from.</p>
+<p>Much of this information remains unchanged for the <strong>local</strong> switches except the information now lives in the same directory as your project in <code>_opam</code>.</p>
+<h2 id="compilers">Compilers</h2>
+<p>The <a href="https://github.com/ocaml/ocaml">source code</a> for the OCaml compiler is hosted on Github. The OCaml compiler can produce assembly code or bytecode that can be interpreted. Importantly there are three distinct &quot;types&quot; of compiler whenever you use opam to install them:</p>
+<ul>
+<li>System compiler: <code>ocaml-system</code> is the <a href="https://opam.ocaml.org/packages/ocaml-system/">compiler installed</a> by your distribution package manager (<code>brew</code>, <code>apt-get</code> ...), that is, it exists outside of opam.
+</li>
+<li>Base compiler: <code>ocaml-base-compiler</code> is the <a href="https://opam.ocaml.org/packages/ocaml-base-compiler/">official release</a> of the OCaml compiler i.e. the <code>4.11.1</code> or <code>4.08.0</code> compilers.
+</li>
+<li>Variants: These compilers are different configured versions of the base compiler. They could contain extra compiler features (e.g. <a href="https://opam.ocaml.org/packages/ocaml-variants/ocaml-variants.4.11.1+flambda/">4.11+flambda</a>) and/or be compiled differently (e.g. <a href="https://opam.ocaml.org/packages/ocaml-variants/ocaml-variants.4.11.1+musl+static+flambda/">4.11+musl+static+flambda</a>)
+</li>
+</ul>
+<p>If your package depends on having the <code>4.11.1</code> OCaml compiler then usually having the <code>4.11.1</code> system compiler, base compiler or some variant of <code>4.11.1</code> is enough. To ask for this, you can use the <a href="https://github.com/ocaml/opam-repository/blob/master/packages/ocaml/ocaml.4.11.1/opam">ocaml virtual package</a>.</p>
+
+    </main>
+                     
+   </div>
+                 
+  </div>
+            
+          
+        </body>
+</html>

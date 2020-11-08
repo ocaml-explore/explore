@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
- <head><title>Opam</title>
+ <head><title>Cheatsheet</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta charset="utf-8"/>
   <meta name="description"
-   content="An explanation of the OCaml Package Manager client and file format"
-   />
+   content="Some common opam commands all in one place"/>
   <link rel="stylesheet"
    href="https://fonts.googleapis.com/css2?family=Roboto+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400&amp;display=swap"
    />
@@ -141,25 +140,8 @@
      <ul class="toc">
       <li>
        <ul class="toc">
-        <li><a class="toc-link toc-item-1" href="#opam">Opam</a>
-         <ul class="toc">
-          <li class="toc-li">
-           <a class="toc-link toc-item-2" href="#managing-packages-in-ocaml">
-            Managing Packages in OCaml
-           </a>
-          </li>
-         </ul>
-         <ul class="toc">
-          <li class="toc-li">
-           <a class="toc-link toc-item-2" href="#opam-files">Opam files</a>
-          </li>
-         </ul>
-         <ul class="toc">
-          <li class="toc-li">
-           <a class="toc-link toc-item-2" href="#opam-concepts">Opam Concepts
-           </a>
-          </li>
-         </ul>
+        <li class="toc-li">
+         <a class="toc-link toc-item-1" href="#cheatsheet">Cheatsheet</a>
         </li>
        </ul>
       </li>
@@ -171,36 +153,41 @@
    <div class="pure-u-5-6 pure-u-md-1-2">
                                                      
     <main id="main"> 
-     <h1 id="opam">Opam</h1>
-<p><em>Last Updated: 11, August 2020 at 17:08:57</em></p>
-<h2 id="managing-packages-in-ocaml">Managing Packages in OCaml</h2>
-<p><a href="https://opam.ocaml.org/">Opam</a> is the the OCaml package manager and compiler manager. Packages could be executables to run from the command-line, compilers for other languages, libraries to use in your code etc. If you are arriving at OCaml from other languages, the <a href="/pages/opam/opam-client">opam-client</a> (the tool you interact with from the command line) is roughly equivalent to:</p>
-<ul>
-<li>Rust: <code>rustup</code> &amp; <code>cargo</code>
-</li>
-<li>Node (Javascript): <code>nvm</code> &amp; <code>npm</code> (or <code>yarn</code>)
-</li>
-<li>Python: <code>pyenv</code> &amp; <code>pip</code>
-</li>
-</ul>
-<p>In order to join the OCaml open source community, all you need to do is to add an <a href="./pages/opam/opam-files">opam file</a> to your project.  This <code>opam</code> file describes the build instructions for your project, as well as any dependencies it might need. An <code>opam</code> file is useful for a project of any size — from toy learning exercises to big theorem provers — since it allows someone else to easily rebuild and replicate your work, and even extend it if they choose to.</p>
-<h2 id="opam-files">Opam files</h2>
-<p>Once you are comfortable with your code and want to share it more publicly, an <a href="/pages/opam/opam-files">opam file</a> can be published to the central OCaml <a href="https://github.com/ocaml/opam-repository/">opam repository</a>.  This is a collection of tens of thousands of packages that have been contributed freely by the community since 2013.  The opam-repository does not contain the full source code to your project; instead, it tracks pointers to different versions of your code, and also the various compatibility constraints to automatically figure out which versions work with each other.  The usual mechanism to track your releases is to use a version control system such as git.  You can <a href="https://opam.ocaml.org">browse the packages</a> online to see what's available.</p>
-<h2 id="opam-concepts">Opam Concepts</h2>
-<p>How do you actually manipulate opam files?  There are several tools that can parse these files and repositories and install the software you want.  The primary reference implementation that runs on macOS and Linux is also the <a href="/pages/opam/opam-client">opam client</a> , and is the first thing you will want to configure on your system to get started. The following pages will guide you through a foundational understanding of how Opam works.</p>
-<ol>
-<li><a href="/pages/opam/package-managers">Solving dependencies</a>
-</li>
-<li><a href="/pages/opam/switches-and-compilers">Switches and compilers</a>
-</li>
-<li><a href="/pages/opam/repositories-and-pinning">Repositories and pinning</a>
-</li>
-<li><a href="/pages/opam/plugins">Plugins</a>
-</li>
-<li><a href="/pages/opam/cheatsheet">The client and common commands</a>
-</li>
-</ol>
-<div style="width: 100px"></div>
+     <h1 id="cheatsheet">Cheatsheet</h1>
+<p><em>Last Updated: 05, October 2020 at 11:00:44</em></p>
+<pre><code># Check for well formatted opam files 
+$ opam lint 
+
+# Install a package 
+$ opam install yaml
+
+# Update repository and upgrade the packages 
+$ opam update &amp;&amp; opam upgrade 
+
+# List packages which are installed in your current switch
+$ opam list --installed 
+
+# List packages which depend on a certain other package 
+$ opam list --depends-on yaml
+
+# Pretty print the meta information for a package, add --raw for the file 
+$ opam show irmin
+
+# Pin a package not using git, but just the actual file content 
+$ opam pin add . --kind=path 
+
+# Create a new global switch with compiler 4.11.0 
+$ opam switch create 4.11.0
+
+# Create a new local switch with compileer 4.11.0
+$ opam switch create . 4.11.0
+
+# List all of my switches and indicate which I am currently on
+$ opam switch
+
+# Clean the cache 
+$ opam clean
+</code></pre>
 
     </main>
                      
