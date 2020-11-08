@@ -5,7 +5,7 @@ workflows:
   - Finding Answers to your Questions
   - Getting Started
   - Navigating OCaml Projects
-  - Teaching and Data Science
+  - Teaching OCaml
   - Configuring OCaml Tools for your Editor
   - Starting a new Project
   - Debugging and Exploring OCaml Projects

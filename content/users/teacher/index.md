@@ -5,7 +5,7 @@ workflows:
   - Finding Answers to your Questions
   - Getting Started
   - Navigating OCaml Projects
-  - Teaching and Data Science
+  - Teaching OCaml
   - Configuring OCaml Tools for your Editor
 description: Teaching the OCaml syntax and language features or using OCaml to teach other CS principles.
 ---

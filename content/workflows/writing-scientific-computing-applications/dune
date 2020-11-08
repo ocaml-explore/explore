@@ -1,0 +1,17 @@
+(mdx
+ (files index.md)
+ (preludes prelude.ml))
+
+(data_only_dirs examples)
+
+(rule
+ (alias linear)
+ (deps
+  (source_tree ./examples/linear))
+ (action
+  (run dune build @all @runtest --root ./examples/linear)))
+
+(alias
+ (name runtest)
+ (deps
+  (alias linear)))
