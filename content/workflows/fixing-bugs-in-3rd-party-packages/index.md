@@ -52,7 +52,7 @@ opam source irmin.2.0.0
 If you envisage wanting to make a pull request to fix something then forking and cloning the package is probably a better way to go about it.
 
 ```bash
-git clone https://github.com/patricoferris/irmin.git
+opam source irmin --dev-repo
 cd irmin
 git checkout -b my-awesome-fix
 ```
@@ -62,7 +62,7 @@ git checkout -b my-awesome-fix
 To tell opam that you want to use a modified version of a package you **pin** it. This is like pinning a note to the package in the opam-respository that points to the source code you are developing (rather than the released version from Github). 
 
 ```bash
-# In the clone irmin directory 
+# In the cloned irmin directory 
 opam pin add irmin . --kind=path 
 ```
 
